@@ -1,0 +1,134 @@
+{
+  "checkedAt": "2026-11-06T10:09:01.294Z",
+  "scope": "Automated axe WCAG rules on four primary views in both themes. Not a screen-reader session or conformance certification.",
+  "results": [
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "adventure",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "missions",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "explorer",
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "leaderboard",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "adventure",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "missions",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "explorer",
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "leaderboard",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "adventure",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "missions",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "explorer",
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "leaderboard",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "adventure",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "missions",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "explorer",
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "leaderboard",
+      "passes": 22,
+      "violations": [],
+      "incomplete": []
+    }
+  ]
+}

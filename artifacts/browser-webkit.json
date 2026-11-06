@@ -1,0 +1,15 @@
+{
+  "engine": "webkit",
+  "startedAt": "2026-11-06T09:51:23.544Z",
+  "finishedAt": "2026-11-06T09:51:23.762Z",
+  "scope": "Production static export at /preview/. Live API requests except explicitly injected outage scenario.",
+  "results": [
+    {
+      "name": "Browser setup or execution",
+      "passed": false,
+      "error": "browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libgtk-4.so.1                                    ║\n║     libpangocairo-1.0.so.0                           ║\n║     libgdk_pixbuf-2.0.so.0                           ║\n║     libcairo-gobject.so.2                            ║\n║     libgraphene-1.0.so.0                             ║\n║     liblcms2.so.2                                    ║\n║     libevent-2.1.so.7                                ║\n║     libopus.so.0                                     ║\n║     libgstallocators-1.0.so.0                        ║\n║     libgstapp-1.0.so.0                               ║\n║     libgstpbutils-1.0.so.0                           ║\n║     libgstaudio-1.0.so.0                             ║\n║     libgsttag-1.0.so.0                               ║\n║     libgstvideo-1.0.so.0                             ║\n║     libgstgl-1.0.so.0                                ║\n║     libgstcodecparsers-1.0.so.0                      ║\n║     libgstfft-1.0.so.0                               ║\n║     libwebpdemux.so.2                                ║\n║     libavif.so.13                                    ║\n║     libharfbuzz-icu.so.0                             ║\n║     libepoxy.so.0                                    ║\n║     libwebpmux.so.3                                  ║\n║     libwayland-egl.so.1                              ║\n║     libmanette-0.2.so.0                              ║\n║     libenchant-2.so.2                                ║\n║     libsecret-1.so.0                                 ║\n║     libhyphen.so.0                                   ║\n║     libGLESv2.so.2                                   ║\n║     libx264.so                                       ║\n╚══════════════════════════════════════════════════════╝"
+    }
+  ],
+  "pageErrors": [],
+  "resourceErrors": []
+}

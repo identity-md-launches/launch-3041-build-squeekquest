@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 3,
+  "installationId": "sepolia-core-sepolia-20261103",
+  "status": "available",
+  "generatedAt": "2026-11-06T09:19:38.167Z",
+  "release": {
+    "id": "core-sepolia-20261103",
+    "protocolRevision": "staged-launch-1",
+    "rewardModelRevision": "funded-stream-q128-1"
+  },
+  "chain": {
+    "target": "sepolia",
+    "chainId": "11155111",
+    "confirmations": "12",
+    "deploymentBlock": "12057556",
+    "indexedThroughBlock": "12075634",
+    "safeThroughBlock": "12075623",
+    "safeBlockHash": "0x366ccd8b4483e8073f70ad43f25f442c44be3708e714260ffdde31d113562235",
+    "safeBlockTimestamp": "2026-11-06T09:17:00.000Z"
+  },
+  "deployment": {
+    "releaseId": "core-sepolia-20261103",
+    "chainId": "11155111",
+    "revision": 7,
+    "components": {
+      "core": {
+        "address": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4"
+      },
+      "collection": {
+        "address": "0xc4c7982657f00509548f3a3a41db7fa439a6856b"
+      },
+      "token": {
+        "address": "0xd78a3956cf63164d1fa1c622ad3c66623162fa1e"
+      },
+      "mining": {
+        "address": "0x2dccb11fcc2defdd188555e45acb52231e82e218"
+      },
+      "staking": {
+        "address": "0x50fd1780526c3186a0c037c7622203bc4fb611ca"
+      }
+    }
+  },
+  "capabilities": {
+    "schemaVersion": 1,
+    "deploymentEvidenceHash": "0xd3c6d0e7fe21a9dc5dc894c13512e5eb93fbbefc670b167df794253bc709661d",
+    "evaluation": {
+      "blockNumber": "12075623",
+      "blockHash": "0x366ccd8b4483e8073f70ad43f25f442c44be3708e714260ffdde31d113562235",
+      "blockTimestamp": "1793956620"
+    },
+    "core": {
+      "status": "verified",
+      "paused": false,
+      "currentRound": "369",
+      "blockHeight": "1140"
+    },
+    "collection": {
+      "status": "verified",
+      "mintPaused": false,
+      "mergesOpen": true,
+      "launch": "0xe78b4420ce205b8864f2f326f3181f9dd5ea8b5f"
+    },
+    "launch": {
+      "status": "absent"
+    },
+    "dispenser": {
+      "status": "verified"
+    },
+    "token": {
+      "status": "verified",
+      "binding": "bound",
+      "mining": "0x2dccb11fcc2defdd188555e45acb52231e82e218"
+    },
+    "miningFactory": {
+      "status": "verified"
+    },
+    "mining": {
+      "status": "verified",
+      "phase": "active",
+      "paused": false,
+      "startRound": "17",
+      "currentRound": "369",
+      "staking": "0x50fd1780526c3186a0c037c7622203bc4fb611ca"
+    },
+    "staking": {
+      "status": "verified",
+      "paused": false,
+      "bound": true
+    }
+  },
+  "asset": {
+    "address": "0xd78a3956cf63164d1fa1c622ad3c66623162fa1e",
+    "symbol": "SQK",
+    "decimals": 18
+  },
+  "lifecycle": {
+    "stage": "active",
+    "startRound": "17",
+    "currentRound": "369",
+    "paused": false,
+    "guardian": "0xb2826926ef5cffebef86037c27b48ce345ed691f"
+  },
+  "supply": {
+    "capBaseUnits": "2100000000000000000000000000",
+    "premintBaseUnits": "210000000000000000000000000",
+    "miningMintedBaseUnits": "4189010598012554959716406",
+    "totalMintedBaseUnits": "214189010598012554959716406",
+    "totalBurnedBaseUnits": "151312321292069735117",
+    "liveSupplyBaseUnits": "214188859285691262889981289",
+    "unmintedCapacityBaseUnits": "1885810989401987445040283594"
+  },
+  "schedule": {
+    "allowanceBaseUnits": "1890000000000000000000000000",
+    "launchBonusBaseUnits": "105000000000000000000000000",
+    "bonusBlocks": "97020",
+    "halvingBlocks": "393470",
+    "firstPeriodRateBaseUnits": "2592319617759930871476",
+    "startHeight": "0",
+    "closedThroughBlock": "1140",
+    "issuedBaseUnits": "4189010598012554959716406"
+  },
+  "mining": {
+    "processedThroughRound": "368",
+    "fundedBlocks": "1140"
+  },
+  "staking": {
+    "paused": false,
+    "launchReady": true,
+    "totalStakedBaseUnits": "1865143830111847711113837",
+    "freshPrincipalBaseUnits": "2560894203480332571417",
+    "freshUntilRound": "370",
+    "totalNftPower": "5660400000000000000000000",
+    "totalSqkPower": "347968500717772493338994",
+    "sqkPerPower": "40000000000000000000",
+    "referencePower": "1000000000000000000000",
+    "exitPolicy": {
+      "minBps": 200,
+      "maxBps": 6000,
+      "saturationBps": 2000,
+      "windowDays": 7,
+      "pressureFloorBaseUnits": "21000000000000000000000000"
+    },
+    "rewards": {
+      "fundedBaseUnits": "4189010598012554959716406",
+      "paidBaseUnits": "365526821647710989892328",
+      "compoundedBaseUnits": "1779434891111098128041450",
+      "remainingBaseUnits": "0",
+      "rewardIndex": "8455055081501744498281112891597061440781",
+      "streamRateBaseUnitsPerSecond": "0",
+      "streamEndsAt": "0"
+    }
+  },
+  "nft": {
+    "collectionCap": "9999",
+    "saleAllocation": "8888",
+    "protocolAllocation": "1000",
+    "teamAllocation": "111",
+    "initialReserve": "1111",
+    "issued": "9999",
+    "burned": "1331",
+    "live": "8668",
+    "mergesOpen": true,
+    "maximumLevel": 10,
+    "cooldownBlocks": [
+      "0",
+      "3000",
+      "7000",
+      "14000",
+      "21000",
+      "28000",
+      "35000",
+      "42000",
+      "49000",
+      "0"
+    ],
+    "basePower": [
+      "1000",
+      "2200",
+      "4840",
+      "10648",
+      "23426",
+      "51536",
+      "113380",
+      "249436",
+      "548759",
+      "1207269"
+    ]
+  },
+  "authMinter": {
+    "address": "0xe78b4420ce205b8864f2f326f3181f9dd5ea8b5f",
+    "claimsOpen": true,
+    "signer": "0xcff305d772591e569a286549ee5b58db2aa3ba1a",
+    "totalClaimed": "8888",
+    "remaining": "0"
+  }
+}

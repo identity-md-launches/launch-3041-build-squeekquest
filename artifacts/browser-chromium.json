@@ -1,0 +1,91 @@
+{
+  "engine": "chromium",
+  "startedAt": "2026-11-06T10:08:37.428Z",
+  "finishedAt": "2026-11-06T10:08:56.556Z",
+  "scope": "Production static export at /preview/. Live API requests except explicitly injected outage scenario.",
+  "results": [
+    {
+      "name": "Production page hydrates at a static hosting subpath",
+      "passed": true,
+      "durationMs": 140
+    },
+    {
+      "name": "Live API loads validated settled height and economy in the browser",
+      "passed": true,
+      "durationMs": 534
+    },
+    {
+      "name": "Product and primary action fit on the first 390px screen",
+      "passed": true,
+      "durationMs": 101
+    },
+    {
+      "name": "Forage: move to five seeds, return home and save a real run",
+      "passed": true,
+      "durationMs": 5406
+    },
+    {
+      "name": "Keyboard movement, pause and resume work",
+      "passed": true,
+      "durationMs": 185
+    },
+    {
+      "name": "Wheel works: station visit, inspect settlement and earn local quest XP",
+      "passed": true,
+      "durationMs": 1925
+    },
+    {
+      "name": "Signal station: inspect safe event, log evidence and claim daily challenge",
+      "passed": true,
+      "durationMs": 1148
+    },
+    {
+      "name": "Squeek grove: validate ID, load real NFT and log discovery",
+      "passed": true,
+      "durationMs": 2824
+    },
+    {
+      "name": "Journal shows earned achievements and persistent evidence",
+      "passed": true,
+      "durationMs": 81
+    },
+    {
+      "name": "Leaderboard, profile validation, sort and export work",
+      "passed": true,
+      "durationMs": 661
+    },
+    {
+      "name": "Explorer filtering, empty state, event details and pagination work",
+      "passed": true,
+      "durationMs": 1290
+    },
+    {
+      "name": "Dark mode persists and help returns keyboard focus",
+      "passed": true,
+      "durationMs": 486
+    },
+    {
+      "name": "All four pages reflow without horizontal scrolling",
+      "passed": true,
+      "durationMs": 1485
+    },
+    {
+      "name": "Reduced motion disables continuous game animations",
+      "passed": true,
+      "durationMs": 41
+    },
+    {
+      "name": "Unavailable API blocks chain discoveries while local gameplay remains usable",
+      "passed": true,
+      "durationMs": 2401
+    },
+    {
+      "name": "No page exceptions or failed production assets",
+      "passed": true,
+      "durationMs": 1
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "resourceErrors": []
+}

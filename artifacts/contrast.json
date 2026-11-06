@@ -1,0 +1,110 @@
+{
+  "checkedAt": "2026-11-06T10:13:33.676Z",
+  "method": "WCAG sRGB relative luminance using browser-computed foreground and nearest solid background. These pairs do not certify every pixel over artwork.",
+  "results": [
+    {
+      "theme": "light",
+      "pairs": [
+        {
+          "name": "Page title",
+          "selector": "h1",
+          "foreground": "rgb(41, 55, 41)",
+          "background": "rgb(247, 248, 242)",
+          "ratio": 11.76
+        },
+        {
+          "name": "Page description",
+          "selector": ".page-intro p",
+          "foreground": "rgb(100, 110, 93)",
+          "background": "rgb(247, 248, 242)",
+          "ratio": 5
+        },
+        {
+          "name": "Primary action",
+          "selector": ".game-actionbar .primary",
+          "foreground": "rgb(255, 254, 250)",
+          "background": "rgb(47, 91, 62)",
+          "ratio": 7.74
+        },
+        {
+          "name": "Quest description",
+          "selector": ".quest-panel > p",
+          "foreground": "rgb(100, 110, 93)",
+          "background": "rgb(255, 254, 250)",
+          "ratio": 5.29
+        },
+        {
+          "name": "Daily challenge",
+          "selector": ".daily-panel p",
+          "foreground": "rgb(114, 90, 50)",
+          "background": "rgb(243, 236, 217)",
+          "ratio": 5.52
+        },
+        {
+          "name": "Map station",
+          "selector": ".station-label",
+          "foreground": "rgb(62, 80, 52)",
+          "background": "rgb(251, 249, 237)",
+          "ratio": 8.27
+        }
+      ],
+      "inputBoundary": {
+        "border": "rgb(135, 146, 124)",
+        "background": "rgb(255, 254, 250)",
+        "ratio": 3.23
+      }
+    },
+    {
+      "theme": "dark",
+      "pairs": [
+        {
+          "name": "Page title",
+          "selector": "h1",
+          "foreground": "rgb(237, 241, 227)",
+          "background": "rgb(23, 35, 29)",
+          "ratio": 14.13
+        },
+        {
+          "name": "Page description",
+          "selector": ".page-intro p",
+          "foreground": "rgb(177, 189, 171)",
+          "background": "rgb(23, 35, 29)",
+          "ratio": 8.29
+        },
+        {
+          "name": "Primary action",
+          "selector": ".game-actionbar .primary",
+          "foreground": "rgb(34, 56, 32)",
+          "background": "rgb(194, 213, 155)",
+          "ratio": 8.03
+        },
+        {
+          "name": "Quest description",
+          "selector": ".quest-panel > p",
+          "foreground": "rgb(177, 189, 171)",
+          "background": "rgb(33, 48, 40)",
+          "ratio": 7.07
+        },
+        {
+          "name": "Daily challenge",
+          "selector": ".daily-panel p",
+          "foreground": "rgb(229, 210, 162)",
+          "background": "rgb(58, 56, 39)",
+          "ratio": 7.93
+        },
+        {
+          "name": "Map station",
+          "selector": ".station-label",
+          "foreground": "rgb(62, 80, 52)",
+          "background": "rgb(251, 249, 237)",
+          "ratio": 8.27
+        }
+      ],
+      "inputBoundary": {
+        "border": "rgb(129, 148, 125)",
+        "background": "rgb(33, 48, 40)",
+        "ratio": 4.26
+      }
+    }
+  ]
+}

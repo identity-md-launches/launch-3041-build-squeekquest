@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 4,
+  "installationId": "sepolia-core-sepolia-20261103",
+  "status": "available",
+  "generatedAt": "2026-11-06T09:19:41.256Z",
+  "release": {
+    "id": "core-sepolia-20261103",
+    "protocolRevision": "staged-launch-1",
+    "rewardModelRevision": "funded-stream-q128-1"
+  },
+  "chain": {
+    "target": "sepolia",
+    "chainId": "11155111",
+    "confirmations": "12",
+    "deploymentBlock": "12057556",
+    "indexedThroughBlock": "12075635",
+    "safeThroughBlock": "12075624",
+    "safeBlockHash": "0x9fe73303622f288656d380379766585f99620e1de51aa4f3fc35d6f44dbb1003",
+    "safeBlockTimestamp": "2026-11-06T09:17:12.000Z"
+  },
+  "deployment": {
+    "releaseId": "core-sepolia-20261103",
+    "chainId": "11155111",
+    "revision": 7,
+    "components": {
+      "core": {
+        "address": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4"
+      },
+      "collection": {
+        "address": "0xc4c7982657f00509548f3a3a41db7fa439a6856b"
+      },
+      "token": {
+        "address": "0xd78a3956cf63164d1fa1c622ad3c66623162fa1e"
+      },
+      "mining": {
+        "address": "0x2dccb11fcc2defdd188555e45acb52231e82e218"
+      },
+      "staking": {
+        "address": "0x50fd1780526c3186a0c037c7622203bc4fb611ca"
+      }
+    }
+  },
+  "capabilities": {
+    "schemaVersion": 1,
+    "deploymentEvidenceHash": "0xd3c6d0e7fe21a9dc5dc894c13512e5eb93fbbefc670b167df794253bc709661d",
+    "evaluation": {
+      "blockNumber": "12075624",
+      "blockHash": "0x9fe73303622f288656d380379766585f99620e1de51aa4f3fc35d6f44dbb1003",
+      "blockTimestamp": "1793956632"
+    },
+    "core": {
+      "status": "verified",
+      "paused": false,
+      "currentRound": "369",
+      "blockHeight": "1140"
+    },
+    "collection": {
+      "status": "verified",
+      "mintPaused": false,
+      "mergesOpen": true,
+      "launch": "0xe78b4420ce205b8864f2f326f3181f9dd5ea8b5f"
+    },
+    "launch": {
+      "status": "absent"
+    },
+    "dispenser": {
+      "status": "verified"
+    },
+    "token": {
+      "status": "verified",
+      "binding": "bound",
+      "mining": "0x2dccb11fcc2defdd188555e45acb52231e82e218"
+    },
+    "miningFactory": {
+      "status": "verified"
+    },
+    "mining": {
+      "status": "verified",
+      "phase": "active",
+      "paused": false,
+      "startRound": "17",
+      "currentRound": "369",
+      "staking": "0x50fd1780526c3186a0c037c7622203bc4fb611ca"
+    },
+    "staking": {
+      "status": "verified",
+      "paused": false,
+      "bound": true
+    }
+  },
+  "catalogVersion": "public-activity-v4",
+  "nextCursor": "eyJ2IjoxLCJrIjoicGEiLCJjIjoiYWxsIiwicyI6IjEyMDc1NjI0IiwiYiI6IjEyMDc1NjE4IiwidCI6IjEzIiwibCI6IjM3NSIsIm8iOm51bGwsInIiOm51bGwsImUiOm51bGx9",
+  "category": "all",
+  "activeEventTypes": [
+    "system.settlement_completed",
+    "system.mining_checkpointed",
+    "account.rewards_claimed",
+    "account.claim_recipient_set",
+    "account.rewards_staked",
+    "account.sqk_staked",
+    "account.sqk_unstaked",
+    "nft.deposited",
+    "nft.withdrawn",
+    "nft.merged",
+    "measurement.distance_milestone",
+    "measurement.daily_distance_milestone",
+    "measurement.speed_milestone",
+    "measurement.speed_record",
+    "measurement.distance_streak"
+  ],
+  "events": [
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0x10b2a5f3da16dbf7762b10882c7c29dd7eb37f7fe9a68e71e31cbba1807d0499:224:nft.merged",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:36.000Z",
+      "recordedAt": "2026-11-06T09:16:36.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075621",
+        "blockHash": "0xec1212e6b30f8aedd2440971373159eefc1c6e835e3c4453b8c7a88a45d0d397",
+        "transactionHash": "0x10b2a5f3da16dbf7762b10882c7c29dd7eb37f7fe9a68e71e31cbba1807d0499",
+        "transactionIndex": "79",
+        "logIndex": "224",
+        "confirmationStatus": "safe"
+      },
+      "type": "nft.merged",
+      "payload": {
+        "account": "0x38e4528c4816cb7483570b646364959ebf816fab",
+        "collection": "0xc4c7982657f00509548f3a3a41db7fa439a6856b",
+        "survivorTokenId": "705",
+        "donorTokenId": "706",
+        "level": 2,
+        "nextMergeHeight": "4140",
+        "custody": "staking",
+        "nftPowerDelta": "200000000000000000000"
+      }
+    },
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0xee9967b4df0921bea65341727e9924f21403e212520bbf42bac213f8bf21d7e5:205:nft.withdrawn",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:24.000Z",
+      "recordedAt": "2026-11-06T09:16:24.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075620",
+        "blockHash": "0x13feba973ed95a4ae3468e575ba6299cdf8466eada105d542a947105707cd738",
+        "transactionHash": "0xee9967b4df0921bea65341727e9924f21403e212520bbf42bac213f8bf21d7e5",
+        "transactionIndex": "97",
+        "logIndex": "205",
+        "confirmationStatus": "safe"
+      },
+      "type": "nft.withdrawn",
+      "payload": {
+        "account": "0x226806a893b5ae4749b8db85343b38fd9eccb53b",
+        "collection": "0xc4c7982657f00509548f3a3a41db7fa439a6856b",
+        "tokenId": "3153",
+        "basePower": "1000"
+      }
+    },
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0xf479d2b9462a14ee1442b3844ef8689d6f3222d9d357dc903cfa219b9007f4ae:192:nft.merged",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:24.000Z",
+      "recordedAt": "2026-11-06T09:16:24.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075620",
+        "blockHash": "0x13feba973ed95a4ae3468e575ba6299cdf8466eada105d542a947105707cd738",
+        "transactionHash": "0xf479d2b9462a14ee1442b3844ef8689d6f3222d9d357dc903cfa219b9007f4ae",
+        "transactionIndex": "83",
+        "logIndex": "192",
+        "confirmationStatus": "safe"
+      },
+      "type": "nft.merged",
+      "payload": {
+        "account": "0xdaa6c40762712a106c02f9656d898138379cd30e",
+        "collection": "0xc4c7982657f00509548f3a3a41db7fa439a6856b",
+        "survivorTokenId": "7926",
+        "donorTokenId": "7927",
+        "level": 2,
+        "nextMergeHeight": "4140",
+        "custody": "staking",
+        "nftPowerDelta": "200000000000000000000"
+      }
+    },
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0xcb5caa0437ee7825bcc8773eb3ce109da8a428b104a791e377f02c742b91fd08:169:nft.deposited",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:24.000Z",
+      "recordedAt": "2026-11-06T09:16:24.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075620",
+        "blockHash": "0x13feba973ed95a4ae3468e575ba6299cdf8466eada105d542a947105707cd738",
+        "transactionHash": "0xcb5caa0437ee7825bcc8773eb3ce109da8a428b104a791e377f02c742b91fd08",
+        "transactionIndex": "80",
+        "logIndex": "169",
+        "confirmationStatus": "safe"
+      },
+      "type": "nft.deposited",
+      "payload": {
+        "account": "0x768619af749295e2e33d36ec3a0b739e633c24a2",
+        "collection": "0xc4c7982657f00509548f3a3a41db7fa439a6856b",
+        "tokenId": "7548",
+        "basePower": "1000"
+      }
+    },
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0x87af2fb078d1c072c175fff31d1914860ded1a4db1e97409b88af8263c67c254:168:account.rewards_staked",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:24.000Z",
+      "recordedAt": "2026-11-06T09:16:24.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075620",
+        "blockHash": "0x13feba973ed95a4ae3468e575ba6299cdf8466eada105d542a947105707cd738",
+        "transactionHash": "0x87af2fb078d1c072c175fff31d1914860ded1a4db1e97409b88af8263c67c254",
+        "transactionIndex": "79",
+        "logIndex": "168",
+        "confirmationStatus": "safe"
+      },
+      "type": "account.rewards_staked",
+      "payload": {
+        "account": "0xadd8ffea86e0dd4f9e297d7ccfb342595b197c0e",
+        "amountBaseUnits": "191654009245251758945",
+        "principalBaseUnits": "191654009245251758945",
+        "freshUntilRound": "370",
+        "asset": {
+          "address": "0xd78a3956cf63164d1fa1c622ad3c66623162fa1e",
+          "symbol": "SQK",
+          "decimals": 18
+        }
+      }
+    },
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0xd29226b94440ccc32412d665c73a7af665254c49495371fb9ad38422a5e4cf31:39:nft.deposited",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:24.000Z",
+      "recordedAt": "2026-11-06T09:16:24.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075620",
+        "blockHash": "0x13feba973ed95a4ae3468e575ba6299cdf8466eada105d542a947105707cd738",
+        "transactionHash": "0xd29226b94440ccc32412d665c73a7af665254c49495371fb9ad38422a5e4cf31",
+        "transactionIndex": "26",
+        "logIndex": "39",
+        "confirmationStatus": "safe"
+      },
+      "type": "nft.deposited",
+      "payload": {
+        "account": "0xc0f47169dc22ca3194d2d5563240b7c39f0e62d2",
+        "collection": "0xc4c7982657f00509548f3a3a41db7fa439a6856b",
+        "tokenId": "5100",
+        "basePower": "1000"
+      }
+    },
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0x99a464a337cf484a380d5388e6e504bbfe80fdea4e49c9b405eccb1f1fe52bf4:578:account.rewards_claimed",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:00.000Z",
+      "recordedAt": "2026-11-06T09:16:00.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075618",
+        "blockHash": "0x38b7bdc6b3289dab67abfd8f92f38434468a4407b11e9cbbfc759265e45b761a",
+        "transactionHash": "0x99a464a337cf484a380d5388e6e504bbfe80fdea4e49c9b405eccb1f1fe52bf4",
+        "transactionIndex": "87",
+        "logIndex": "578",
+        "confirmationStatus": "safe"
+      },
+      "type": "account.rewards_claimed",
+      "payload": {
+        "account": "0x856dc4a12f08afa49f42b52f81769a96505f312c",
+        "recipient": "0x856dc4a12f08afa49f42b52f81769a96505f312c",
+        "amountBaseUnits": "94965956171041068801",
+        "asset": {
+          "address": "0xd78a3956cf63164d1fa1c622ad3c66623162fa1e",
+          "symbol": "SQK",
+          "decimals": 18
+        }
+      }
+    },
+    {
+      "id": "chain:11155111:0x50fd1780526c3186a0c037c7622203bc4fb611ca:0x4ea19a8e92e5738a929188b56332597cc8ebf3d0d5ae903cbf33e64b7c4706d9:375:nft.withdrawn",
+      "eventVersion": 1,
+      "occurredAt": "2026-11-06T09:16:00.000Z",
+      "recordedAt": "2026-11-06T09:16:00.000Z",
+      "source": {
+        "kind": "chain",
+        "chainId": "11155111",
+        "target": "sepolia",
+        "releaseId": "core-sepolia-20261103",
+        "contractAddress": "0x50fd1780526c3186a0c037c7622203bc4fb611ca",
+        "blockNumber": "12075618",
+        "blockHash": "0x38b7bdc6b3289dab67abfd8f92f38434468a4407b11e9cbbfc759265e45b761a",
+        "transactionHash": "0x4ea19a8e92e5738a929188b56332597cc8ebf3d0d5ae903cbf33e64b7c4706d9",
+        "transactionIndex": "13",
+        "logIndex": "375",
+        "confirmationStatus": "safe"
+      },
+      "type": "nft.withdrawn",
+      "payload": {
+        "account": "0x226806a893b5ae4749b8db85343b38fd9eccb53b",
+        "collection": "0xc4c7982657f00509548f3a3a41db7fa439a6856b",
+        "tokenId": "3152",
+        "basePower": "1000"
+      }
+    }
+  ]
+}

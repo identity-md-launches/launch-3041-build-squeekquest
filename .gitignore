@@ -1,0 +1,24 @@
+# Path budget: this file <= 1 KiB. Source + dist + artifacts <= 8 MiB.
+!dist/
+!dist/**
+!artifacts/
+!artifacts/*.md
+!artifacts/*.json
+!artifacts/screenshots/
+!artifacts/screenshots/*.webp
+!artifacts/licenses/
+!artifacts/licenses/*.txt
+**/node_modules/
+**/.next/
+**/out/
+**/.cache/
+**/.tmp/
+**/npm-cache/
+**/.npm/
+**/.pnpm-store/
+**/.turbo/
+**/coverage/
+**/*.tsbuildinfo
+test/scratch/
+*.log
+.DS_Store

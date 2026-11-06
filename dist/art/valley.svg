@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" fill="none">
+<defs>
+  <pattern id="grass" width="65" height="60" patternUnits="userSpaceOnUse"><path d="m12 33 3-5 3 5m34 13 2-4 2 4" stroke="#92b375" stroke-width="1.5" opacity=".45"/><circle cx="40" cy="9" r="2" fill="#96b47b" opacity=".4"/></pattern>
+  <pattern id="soil" width="30" height="27" patternUnits="userSpaceOnUse"><path d="m6 5 4 1m12 14 2-1" stroke="#cdbb8e" stroke-width="2" opacity=".5"/></pattern>
+  <g id="tree"><ellipse cx="0" cy="33" rx="37" ry="12" fill="#64854e" opacity=".15"/><path d="M-4 4h10v33H-4Z" fill="#967448"/><path d="m0 15-14-11m17 5 12-9" stroke="#967448" stroke-width="6"/><path d="M-29 7C-51-13-29-33-21-32c-10-23 32-39 42-14 26-10 45 24 27 35 15 22-10 42-29 27C3 34-28 30-29 7Z" fill="#91ad68"/><path d="M-21-32c-12-1-29 15-24 29 12-10 23-7 35-15 13-9 17-22 31-28C11-69-28-56-21-32Z" fill="#a7bd7b"/><path d="M-24 11c18 16 39 8 47 1" stroke="#779458" stroke-width="3" stroke-linecap="round"/></g>
+  <g id="bush"><ellipse cy="9" rx="31" ry="10" fill="#64854e" opacity=".13"/><path d="M-27 4C-40-13-19-24-11-15c1-23 31-18 29-4 25-4 30 29 4 31H-14c-5 0-13-1-13-8" fill="#82a565"/><path d="m-8-4 6-4m15 9 6-4" stroke="#acc58a" stroke-width="3" stroke-linecap="round"/></g>
+  <g id="flower"><path d="M0 4v10m0-3 5-3" stroke="#73925b" stroke-width="2"/><path d="M-6-2a4 4 0 0 1 6-3 4 4 0 0 1 6 3 4 4 0 0 1-1 7c-3 1-4-1-5-1-4 3-9-1-6-6" fill="#fff5ce"/><circle r="2.5" fill="#d1a44e"/></g>
+  <g id="stone"><ellipse cy="5" rx="16" ry="8" fill="#829477" opacity=".15"/><path d="m-14 2 7-13 14 1 9 12-7 7-18-1Z" fill="#b8c0a0"/><path d="m-14 2 12-3 9-9-14-1Z" fill="#c9d0b0"/></g>
+</defs>
+<path fill="#d8e4be" d="M0 0h960v600H0z"/><path fill="url(#grass)" d="M0 0h960v600H0z"/>
+<path d="M-15 77C90 46 133 112 241 74S445 18 551 54s171 4 228-25 124-14 194 6V-5H-5Z" fill="#bdd09e"/>
+<path d="M-21 101c143-70 157 45 291-6S407 51 519 83s199 18 264-20 119-9 193 7" stroke="#c5d7a7" stroke-width="19"/>
+<path d="M-12 493c132-98 210-17 283-47s68-65 129-62 151 63 264 42 166-41 311 18v159H-13Z" fill="#c8d9a9"/>
+<!-- Soft sandy paths between the four discovery stations. -->
+<path d="M183 466c58-34 121-55 158-100 43-55 61-111 92-154 24-32 88-17 134-26 84-18 106-15 162 21m-380 147c133-34 193 26 277 57 51 19 105 35 161 58" stroke="#b6c590" stroke-width="73" stroke-linecap="round" stroke-linejoin="round" opacity=".45"/>
+<path d="M183 459c58-34 121-55 158-100 43-55 61-111 92-154 24-32 88-17 134-26 84-18 106-15 162 21m-380 147c133-34 193 26 277 57 51 19 105 35 161 58" stroke="#e4d6af" stroke-width="59" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M183 459c58-34 121-55 158-100 43-55 61-111 92-154 24-32 88-17 134-26 84-18 106-15 162 21m-380 147c133-34 193 26 277 57 51 19 105 35 161 58" stroke="url(#soil)" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- A pond and its stepping stones. -->
+<path d="M65 207c-40 1-49 28-29 54s9 52 42 64 83-6 104-35-4-51-12-70-55-15-105-13" fill="#a3c2ad"/>
+<path d="M66 211c-32 2-42 26-22 46s10 48 40 58 72-9 92-32-2-43-11-60-55-15-99-12" fill="#bad8c2"/>
+<path d="M70 235h25m20 30h30m-69 25h18" stroke="#e2efe0" stroke-width="3" stroke-linecap="round"/>
+<ellipse cx="139" cy="243" rx="13" ry="6" fill="#86ab7e"/><path d="m140 238-3 7 14-2" fill="#bad8c2"/>
+<use href="#stone" transform="translate(199 291) scale(.7)"/><use href="#stone" transform="translate(214 310) scale(.6)"/>
+<!-- Wheel works: real work inspires an imaginary building. -->
+<ellipse cx="735" cy="226" rx="93" ry="24" fill="#719354" opacity=".18"/>
+<path d="M674 170h73v69h-73Z" fill="#e9d8af" stroke="#8e9268" stroke-width="3"/>
+<path d="m657 171 54-53 55 53Z" fill="#829765" stroke="#5c7952" stroke-width="4" stroke-linejoin="round"/>
+<path d="m711 119 55 52h-17l-38-36-38 36h-16Z" fill="#9bae7d"/>
+<path d="M691 239v-44q19-13 30 0v44" fill="#6c7e57"/><path d="M685 177h50" stroke="#d3bd8f" stroke-width="3"/>
+<path d="M761 148v90m-29-45h61m-53-24 43 49m-43 0 43-49" stroke="#9e744c" stroke-width="6"/>
+<circle cx="762" cy="190" r="44" fill="#d6bb85" fill-opacity=".3" stroke="#967349" stroke-width="9"/><circle cx="762" cy="190" r="35" stroke="#ead6a8" stroke-width="4"/><circle cx="762" cy="190" r="7" fill="#967349"/>
+<path d="m750 237-6 11m27-11 8 11" stroke="#967349" stroke-width="6" stroke-linecap="round"/>
+<path d="M688 140v-24h10v17" fill="#9d7953"/>
+<!-- Signal station: a cosy observatory. -->
+<ellipse cx="423" cy="216" rx="69" ry="19" fill="#719354" opacity=".17"/>
+<path d="M390 154h62v65h-62Z" fill="#ede0b8" stroke="#9a946a" stroke-width="3"/>
+<path d="M377 155c0-52 87-52 87 0Z" fill="#87a08e" stroke="#648570" stroke-width="3"/>
+<path d="M389 145c4-20 23-29 39-28" stroke="#a7bdb0" stroke-width="5" stroke-linecap="round"/>
+<path d="M407 219v-32a14 14 0 0 1 28 0v32" fill="#8c8f62"/><path d="M386 161h71" stroke="#cfbf8d" stroke-width="4"/>
+<path d="m431 108 15-27" stroke="#8b7955" stroke-width="5"/><path d="m428 82 25-1c-3 17-19 20-25 1Z" fill="#dcbe7e" stroke="#9e8d63" stroke-width="3"/><circle cx="445" cy="76" r="3" fill="#9e8d63"/>
+<path d="M461 90q12 5 12 17m-8-29q20 7 21 28" stroke="#9db18a" stroke-width="3" stroke-linecap="round"/>
+<!-- Burrow, a home among the roots. -->
+<ellipse cx="159" cy="485" rx="97" ry="23" fill="#719354" opacity=".18"/>
+<path d="M70 479c-2-86 30-128 95-125 65 4 95 43 88 125Z" fill="#acc482"/>
+<path d="M80 452c-2-53 42-91 91-85 39 3 66 25 76 68-40-18-58-21-96-6-25 11-47 28-71 23Z" fill="#bdd395"/>
+<path d="M123 481v-43a36 36 0 0 1 72 0v43Z" fill="#ad885c" stroke="#8b744c" stroke-width="5"/>
+<path d="M134 481v-42a25 25 0 0 1 50 0v42Z" fill="#665d40"/><path d="M149 481v-38q9-13 20 0v38" fill="#7c6a48"/>
+<circle cx="174" cy="456" r="3" fill="#d9bd7d"/><path d="m105 484 106 0" stroke="#bca279" stroke-width="9" stroke-linecap="round"/>
+<path d="m114 393-10-5m99-4 9-8m-60-8 2-9" stroke="#739559" stroke-width="3" stroke-linecap="round"/>
+<use href="#flower" transform="translate(107 431)"/><use href="#flower" transform="translate(224 431) scale(.8)"/>
+<!-- Squeek grove, a miniature field museum. -->
+<ellipse cx="784" cy="484" rx="86" ry="22" fill="#719354" opacity=".15"/>
+<path d="M738 421h92v55h-92Z" fill="#e8d7b3" stroke="#9d8c60" stroke-width="3"/>
+<path d="m727 424 56-41 59 41Z" fill="#bb8961" stroke="#916e4d" stroke-width="3" stroke-linejoin="round"/>
+<path d="m783 384 59 40h-15l-44-29-42 29h-14Z" fill="#d0a178"/>
+<path d="M752 476v-38h64v38" fill="#b9c797" stroke="#9d8c60" stroke-width="3"/>
+<path d="M750 451h67m-46-14v39m23-39v39" stroke="#dfcca1" stroke-width="4"/>
+<path d="M760 445h6v7h-6Zm21 5h8v8h-8Zm20-6h7v9h-7" fill="#729276"/><path d="M737 479h95" stroke="#a89068" stroke-width="6" stroke-linecap="round"/>
+<!-- Trees, flowers and quiet forest details. -->
+<use href="#tree" transform="translate(42 73) scale(1.2)"/><use href="#tree" transform="translate(126 57) scale(.9)"/><use href="#tree" transform="translate(221 46)"/><use href="#tree" transform="translate(293 73) scale(.8)"/>
+<use href="#tree" transform="translate(612 52) scale(1.15)"/><use href="#tree" transform="translate(854 62) scale(1.3)"/><use href="#tree" transform="translate(932 104) scale(1.1)"/>
+<use href="#tree" transform="translate(904 244) scale(1.3)"/><use href="#tree" transform="translate(867 349) scale(.9)"/><use href="#tree" transform="translate(913 468) scale(1.2)"/>
+<use href="#tree" transform="translate(37 405) scale(.85)"/><use href="#tree" transform="translate(42 553) scale(1.15)"/><use href="#tree" transform="translate(301 550) scale(1.2)"/><use href="#tree" transform="translate(637 547) scale(1.1)"/><use href="#tree" transform="translate(864 566) scale(1.15)"/>
+<use href="#bush" transform="translate(100 115)"/><use href="#bush" transform="translate(339 92) scale(.7)"/><use href="#bush" transform="translate(547 91)"/><use href="#bush" transform="translate(820 281)"/><use href="#bush" transform="translate(883 171) scale(.8)"/><use href="#bush" transform="translate(273 434) scale(.65)"/><use href="#bush" transform="translate(473 514) scale(.9)"/><use href="#bush" transform="translate(574 292)"/>
+<use href="#flower" transform="translate(333 259)"/><use href="#flower" transform="translate(320 271) scale(.7)"/><use href="#flower" transform="translate(842 405)"/><use href="#flower" transform="translate(855 416) scale(.7)"/><use href="#flower" transform="translate(555 446)"/><use href="#flower" transform="translate(569 451) scale(.8)"/><use href="#flower" transform="translate(199 157)"/><use href="#flower" transform="translate(688 324) scale(.8)"/>
+<use href="#stone" transform="translate(528 236) scale(.8)"/><use href="#stone" transform="translate(541 249) scale(.5)"/><use href="#stone" transform="translate(357 467) scale(.7)"/><use href="#stone" transform="translate(647 126) scale(.8)"/>
+<path d="m260 250 7-8 7 8m205 211 7-8 7 8m239-133 7-8 7 8" stroke="#8da76b" stroke-width="3" stroke-linecap="round"/>
+<g fill="#e5bd70"><circle cx="263" cy="255" r="3"/><circle cx="735" cy="334" r="3"/><circle cx="482" cy="466" r="3"/></g>
+<g stroke="#a88d5f" stroke-width="3" stroke-linecap="round"><path d="m338 130 5 17m10-20 5 17m-24-5 29-8"/><path d="m619 474 5 17m10-20 5 17m-24-5 29-8"/></g>
+</svg>

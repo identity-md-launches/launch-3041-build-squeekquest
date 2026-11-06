@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 3,
+  "installationId": "sepolia-core-sepolia-20261103",
+  "status": "available",
+  "generatedAt": "2026-11-06T09:19:41.200Z",
+  "release": {
+    "id": "core-sepolia-20261103",
+    "protocolRevision": "staged-launch-1",
+    "rewardModelRevision": "funded-stream-q128-1"
+  },
+  "chain": {
+    "target": "sepolia",
+    "chainId": "11155111",
+    "confirmations": "12",
+    "deploymentBlock": "12057556",
+    "indexedThroughBlock": "12075635",
+    "safeThroughBlock": "12075624",
+    "safeBlockHash": "0x9fe73303622f288656d380379766585f99620e1de51aa4f3fc35d6f44dbb1003",
+    "safeBlockTimestamp": "2026-11-06T09:17:12.000Z"
+  },
+  "deployment": {
+    "releaseId": "core-sepolia-20261103",
+    "chainId": "11155111",
+    "revision": 7,
+    "components": {
+      "core": {
+        "address": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4"
+      },
+      "collection": {
+        "address": "0xc4c7982657f00509548f3a3a41db7fa439a6856b"
+      },
+      "token": {
+        "address": "0xd78a3956cf63164d1fa1c622ad3c66623162fa1e"
+      },
+      "mining": {
+        "address": "0x2dccb11fcc2defdd188555e45acb52231e82e218"
+      },
+      "staking": {
+        "address": "0x50fd1780526c3186a0c037c7622203bc4fb611ca"
+      }
+    }
+  },
+  "capabilities": {
+    "schemaVersion": 1,
+    "deploymentEvidenceHash": "0xd3c6d0e7fe21a9dc5dc894c13512e5eb93fbbefc670b167df794253bc709661d",
+    "evaluation": {
+      "blockNumber": "12075624",
+      "blockHash": "0x9fe73303622f288656d380379766585f99620e1de51aa4f3fc35d6f44dbb1003",
+      "blockTimestamp": "1793956632"
+    },
+    "core": {
+      "status": "verified",
+      "paused": false,
+      "currentRound": "369",
+      "blockHeight": "1140"
+    },
+    "collection": {
+      "status": "verified",
+      "mintPaused": false,
+      "mergesOpen": true,
+      "launch": "0xe78b4420ce205b8864f2f326f3181f9dd5ea8b5f"
+    },
+    "launch": {
+      "status": "absent"
+    },
+    "dispenser": {
+      "status": "verified"
+    },
+    "token": {
+      "status": "verified",
+      "binding": "bound",
+      "mining": "0x2dccb11fcc2defdd188555e45acb52231e82e218"
+    },
+    "miningFactory": {
+      "status": "verified"
+    },
+    "mining": {
+      "status": "verified",
+      "phase": "active",
+      "paused": false,
+      "startRound": "17",
+      "currentRound": "369",
+      "staking": "0x50fd1780526c3186a0c037c7622203bc4fb611ca"
+    },
+    "staking": {
+      "status": "verified",
+      "paused": false,
+      "bound": true
+    }
+  },
+  "economy": {
+    "currentRound": "369",
+    "coreBlockHeight": "1140",
+    "mergesOpen": true,
+    "stakingPaused": false,
+    "maximumLevel": 10
+  },
+  "tokenId": "1",
+  "custody": {
+    "owner": "0x798cf7770337a9283b6f2af69a8f079b3d7544dc",
+    "depositor": null,
+    "stray": false,
+    "burned": false
+  },
+  "level": 1,
+  "basePower": "1000",
+  "nextMergeHeight": "0",
+  "mergeState": "ready",
+  "metadata": {
+    "status": "available",
+    "refreshedAtBlock": "12057855",
+    "name": "Squeek #1",
+    "description": "Squeek is a dot-grid character rendered fully onchain from an immutable art page.",
+    "attributes": [
+      {
+        "traitType": "Palette",
+        "value": "Void Violet"
+      },
+      {
+        "traitType": "Color Pattern",
+        "value": "Spectral Noise"
+      },
+      {
+        "traitType": "Body Glyph",
+        "value": "Shield"
+      },
+      {
+        "traitType": "Face Glyph",
+        "value": "Circle"
+      },
+      {
+        "traitType": "Eye Glyph",
+        "value": "Teardrop"
+      },
+      {
+        "traitType": "Muzzle Glyph",
+        "value": "Lightning Bolt"
+      },
+      {
+        "traitType": "Ear Glyph",
+        "value": "Triangle"
+      },
+      {
+        "traitType": "Illumination",
+        "value": "Phase Sweep"
+      },
+      {
+        "traitType": "Eyes",
+        "value": "Sleepy Bars"
+      },
+      {
+        "traitType": "Ears",
+        "value": "Compact Round"
+      },
+      {
+        "traitType": "Background",
+        "value": "Cross Grid"
+      }
+    ]
+  }
+}

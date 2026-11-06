@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "installationId": "sepolia-core-sepolia-20261103",
+  "status": "available",
+  "chain": {
+    "target": "sepolia",
+    "chainId": "11155111",
+    "confirmations": "12",
+    "deploymentBlock": "12057556",
+    "indexedThroughBlock": "12075634",
+    "safeThroughBlock": "12075623"
+  },
+  "identities": {
+    "core": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4"
+  },
+  "configuration": {
+    "streamId": "0xa78faebd5aad38b4f90c7f61b9c5c10e8d9b9afe74ebfc2e82ca98b7e57ed562",
+    "genesisTimestamp": "1793735400",
+    "roundDuration": "600",
+    "maxWorkPerRound": "10000",
+    "maxRoundsPerBatch": "16",
+    "guardian": "0xb2826926ef5cffebef86037c27b48ce345ed691f",
+    "reporter": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86",
+    "initialWorkPerThousandBlocks": "10875",
+    "targetBlocksPerActiveRound": "40",
+    "difficultySmoothingRounds": "30",
+    "blockUnitsPerBlock": "1000000000"
+  },
+  "core": {
+    "cumulativeWork": "11048",
+    "cumulativeBlockUnits": "1140662790326",
+    "blockHeight": "1140",
+    "blockProgress": "662790326",
+    "workPerThousandBlocks": "9002",
+    "settledThroughRound": "368",
+    "authorizationNonce": "183",
+    "paused": false
+  },
+  "implementation": {
+    "codeAddress": "0x6869d6102696243fd17013ab955d99cd0c522ad3",
+    "codeVersion": "3",
+    "storageLayoutDigest": "0x9a9c008e029460808209571703fbf2679785874e0e6d3232f16a864d12abcb20",
+    "runtimeHash": "0x65b5780a4fccafedeca1260806364d2bb512b4501c097253f792ae2839565a9c"
+  },
+  "governance": {
+    "operationId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "operationKind": "None",
+    "operationState": "None"
+  },
+  "source": {
+    "eventName": "BatchSettled",
+    "blockNumber": "12075593",
+    "blockHash": "0x57fb7ea1a414db6d123f732b00306d32f88c0a03128d81b9b911c5e7829e74bd",
+    "blockTimestamp": "1793956236",
+    "transactionHash": "0x1000579ccb0f42ee853ee8748250255dd98340e9e4a94cb506e274612cd0f7d7",
+    "transactionIndex": "112",
+    "logIndex": "195"
+  }
+}
