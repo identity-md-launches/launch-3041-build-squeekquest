@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-11-06T12:00:43.874Z",
+  "checks": [
+    {
+      "name": "Keyboard focus ring, modal focus trap, Escape and trigger restoration",
+      "passed": true
+    },
+    {
+      "name": "Canvas shortcut dialog restores world focus",
+      "passed": true
+    },
+    {
+      "name": "light text contrast across eight rendered solid-background pairs",
+      "passed": true
+    },
+    {
+      "name": "dark text contrast across eight rendered solid-background pairs",
+      "passed": true
+    },
+    {
+      "name": "200% text enlargement at 320px (not native zoom)",
+      "passed": true,
+      "measurements": {
+        "documentWidth": 320,
+        "viewport": 320,
+        "dialogScroll": 296,
+        "dialogWidth": 296
+      }
+    },
+    {
+      "name": "200% text enlargement at 390px (not native zoom)",
+      "passed": true,
+      "measurements": {
+        "documentWidth": 390,
+        "viewport": 390,
+        "dialogScroll": 366,
+        "dialogWidth": 366
+      }
+    },
+    {
+      "name": "200% text enlargement at 768px (not native zoom)",
+      "passed": true,
+      "measurements": {
+        "documentWidth": 768,
+        "viewport": 768,
+        "dialogScroll": 720,
+        "dialogWidth": 720
+      }
+    },
+    {
+      "name": "200% text enlargement at 1440px (not native zoom)",
+      "passed": true,
+      "measurements": {
+        "documentWidth": 1440,
+        "viewport": 1440,
+        "dialogScroll": 850,
+        "dialogWidth": 850
+      }
+    }
+  ],
+  "passed": true
+}

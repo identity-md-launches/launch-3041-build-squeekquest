@@ -275,7 +275,7 @@ export function GameMap({
             <span>
               {status === 'complete'
                 ? `${collected.length} seeds tucked away`
-                : 'Find seeds. Follow signals. Make discoveries.'}
+                : 'Find seeds. Fill your cheeks. Come home.'}
             </span>
           </div>
         )}
@@ -328,10 +328,10 @@ export function GameMap({
             .
           </span>
         </p>
-        <span className="small muted">Local game · no wallet needed</span>
+        <span className="small muted">Local mini-game · seeds for your satchel</span>
       </div>
       {status === 'playing' && (
-        <div className="dpad" aria-label="Movement controls">
+        <div className="dpad" role="group" aria-label="Movement controls">
           <button aria-label="Move up" onClick={() => move(0, -1)}>
             <Icon name="up" />
           </button>

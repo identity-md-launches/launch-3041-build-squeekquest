@@ -1,6 +1,13 @@
 import type { CSSProperties } from 'react';
 
 const paths: Record<string, string> = {
+  bolt: 'm13 2-9 12h7l-1 8 10-12h-7Z',
+  heart:
+    'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z',
+  bag: 'M6 7h12l3 14H3Zm3 0V5a3 3 0 0 1 6 0v2M8 12h8v5H8Z',
+  hammer: 'm4 21 10-10m-4-7 4-3 8 8-3 4-3-3-3 3-5-5Z',
+  fire: 'M12 2c4 6-2 7 3 11 2-1 3-3 3-5 7 10 0 14-6 14S1 15 5 9c0 4 4 6 4 2 0-2 1-6 3-9Z',
+  chest: 'M3 10h18v11H3Zm0 0V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v4M10 9h4v6h-4Z',
   arrow: 'M5 12h14m-6-6 6 6-6 6',
   chevron: 'm9 5 7 7-7 7',
   close: 'm6 6 12 12M6 18 18 6',

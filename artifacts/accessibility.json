@@ -1,134 +1,439 @@
 {
-  "checkedAt": "2026-11-06T10:09:01.294Z",
-  "scope": "Automated axe WCAG rules on four primary views in both themes. Not a screen-reader session or conformance certification.",
+  "checkedAt": "2026-11-06T12:02:08.309Z",
+  "scope": "Automated axe WCAG checks in two themes and two widths across menu, game and nine panels; not a screen-reader session or compliance certification.",
   "results": [
     {
       "theme": "light",
       "width": 390,
-      "view": "adventure",
-      "passes": 22,
+      "view": "menu",
+      "passes": 20,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "playing",
+      "passes": 20,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "light",
       "width": 390,
-      "view": "missions",
-      "passes": 22,
+      "view": "inventory",
+      "passes": 17,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "light",
       "width": 390,
-      "view": "explorer",
-      "passes": 21,
+      "view": "crafting",
+      "passes": 17,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "light",
       "width": 390,
-      "view": "leaderboard",
-      "passes": 22,
+      "view": "building",
+      "passes": 17,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "quests",
+      "passes": 17,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "map",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "help",
+      "passes": 19,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "minigame",
+      "passes": 18,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "profile",
+      "passes": 19,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "view": "new-game",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "menu",
+      "passes": 20,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "playing",
+      "passes": 20,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "light",
       "width": 1440,
-      "view": "adventure",
-      "passes": 22,
+      "view": "inventory",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "crafting",
+      "passes": 16,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "light",
       "width": 1440,
-      "view": "missions",
-      "passes": 22,
+      "view": "building",
+      "passes": 16,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "light",
       "width": 1440,
-      "view": "explorer",
-      "passes": 21,
+      "view": "quests",
+      "passes": 17,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "light",
       "width": 1440,
-      "view": "leaderboard",
-      "passes": 22,
+      "view": "map",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "help",
+      "passes": 18,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "minigame",
+      "passes": 18,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "profile",
+      "passes": 19,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "new-game",
+      "passes": 16,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 390,
-      "view": "adventure",
-      "passes": 22,
+      "view": "menu",
+      "passes": 20,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "playing",
+      "passes": 20,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 390,
-      "view": "missions",
-      "passes": 22,
+      "view": "inventory",
+      "passes": 17,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 390,
-      "view": "explorer",
-      "passes": 21,
+      "view": "crafting",
+      "passes": 17,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 390,
-      "view": "leaderboard",
-      "passes": 22,
+      "view": "building",
+      "passes": 17,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "quests",
+      "passes": 17,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "map",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "help",
+      "passes": 19,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "minigame",
+      "passes": 18,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "profile",
+      "passes": 19,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "view": "new-game",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "menu",
+      "passes": 20,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "playing",
+      "passes": 20,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 1440,
-      "view": "adventure",
-      "passes": 22,
+      "view": "inventory",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "crafting",
+      "passes": 16,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 1440,
-      "view": "missions",
-      "passes": 22,
+      "view": "building",
+      "passes": 16,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 1440,
-      "view": "explorer",
-      "passes": 21,
+      "view": "quests",
+      "passes": 17,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     },
     {
       "theme": "dark",
       "width": 1440,
-      "view": "leaderboard",
-      "passes": 22,
+      "view": "map",
+      "passes": 16,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "help",
+      "passes": 18,
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "minigame",
+      "passes": 18,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "profile",
+      "passes": 19,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "new-game",
+      "passes": 16,
+      "overflow": false,
       "violations": [],
       "incomplete": []
     }
-  ]
+  ],
+  "passed": true
 }

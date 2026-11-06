@@ -1,162 +1,104 @@
-# SqueekQuest validation and design review
+# SqueekQuest survival validation
 
-Worker checks completed on **2026-11-06**. These are actual local observations, not an independent certification. The production app is the Next.js static export in `dist/`.
+Worker validation, 2026-11-06. This report describes the current source and committed static export, not an independent certification. Earlier API evidence and old exploration screenshots retained in this repository describe the previous version only.
 
 ## Result
 
-| Area | Actual result |
+| Area | Final result |
 | --- | --- |
-| Production build | Passed: Next.js 16.4.5 generated `/` and `/404`, then exported `dist/` |
-| TypeScript | Passed: `tsc --noEmit` |
-| Unit and fixture tests | 10 passed, 0 failed |
-| Live API integration | 8 successful public requests passed application validation |
-| Chromium interactions | 16 passed, 0 failed; no page exceptions, console errors or failed resources in the main context |
-| Responsive reflow | All four views checked at 320, 390, 760, 1,024 and 1,440px; no horizontal document overflow |
-| First screen, 390×844 | Product and primary action visible; Start adventure is 167×46px, centered at y=654.86, entirely above the fold |
-| Pinned taste@1 probe | 16/16 checks passed on final export |
-| Automated accessibility | 16 view/theme/width combinations; 0 WCAG rule violations, 0 incomplete rules in the final run |
-| Static asset integrity | 20 files, 911,067 bytes; 28 local references checked; 0 missing/root-absolute assets |
-| WebKit | Not run successfully: browser runtime could not launch because required system libraries were absent |
-| Public URLs | After review/publication handoff; no public repository or deployment URL was created or claimed here |
+| Gameplay and requested local systems | Implemented; 7 priority groups covered |
+| Production build / standalone typecheck | Passed |
+| Unit tests | 24 passed, 0 failed, 0 skipped |
+| Chromium interaction walkthrough | 18 passed, 0 failed |
+| Browser script / local resource / external request errors | 0 / 0 / 0 |
+| Automated accessibility and panel overflow | 44 states checked; 0 axe violations; 0 overflow cases |
+| Pinned taste@1 probe | 16 / 16 passed |
+| Focus, rendered contrast and text enlargement | 8 / 8 checks passed |
+| Product and primary action on the first 390px screen | Yes, inspected in a rendered screenshot |
+| Share metadata | Title, description, favicon, og:title and local og:image present |
+| WebKit / Safari | Not run: browser launch refused for missing system libraries |
+| Submission budget | Passed; exact bytes in `submission-budget.json` |
 
-The static implementation is complete for the bounded repository scope. Cross-browser release verification and public URL publication remain outside this verified result. The leaderboard is intentionally and visibly local to the current browser, not a shared ranking.
+## Scope and implementation
 
-## Scope and assumptions
+This extends the existing Next.js Pages Router project. Original art, local font, themes, sound, native dialog, legacy save logic and foraging mini-game remain. The main page now composes a local survival adventure. Earlier API modules and fixtures are retained as dormant source history; the browser walkthrough observed no external request. No dependency, lockfile, build configuration, ignore file, submodule, environment file or protected repository path was changed.
 
-The review covered Adventure, Quest journal, Chain explorer (overview, settlements, events, economy and NFT lookup), the local leaderboard, profile, help, station/discovery dialogs, both color themes, loading, empty, error, successful discovery, paused play and completed play states.
+The seven requested priority groups are implemented:
 
-The inferred product direction is a relaxed woodland adventure with a field-station dashboard. No wallet or signing is necessary for the read-only product. All game points are local. Safe API records are verifiable by their provenance and explorer links; the worker did not claim independent RPC or cryptographic verification. Fixtures are used only by tests, not by the game.
+1. **Gameplay:** frame-based normalized movement, follow camera, WASD/arrows, collision-aware click paths, touch direction controls, sprint stamina, proximity gathering, healing consumables, hazards, pause and safe respawn. Collision and actual movement along paths to every resource and exit were exercised by the unit suite.
+2. **World:** Forest, Abandoned Village and Wilderness are connected by bidirectional interaction markers. Each has resource nodes, hazards and a one-time hidden cache. Water, tree trunks and ruined walls block paths. Mud slows movement; thorns deal real damage.
+3. **Inventory/crafting:** 10 stackable item types, capacity, category filtering, item selection/use/drop, exact resource deductions, axe, pickaxe, bandages, trail mix, planks and explorer pack. Tools equip once; the pack requires the home workbench.
+4. **Base:** four structures at fixed burrow sites, each with three levels and exact costs. Shelter rest and maximum-stat increases, campfire healing, shared satchel expansion and timed garden harvests have implemented effects. Unit tests cover every upgrade level; browser tests cover building, upgrading and resting.
+5. **Progression:** three daily quests, UTC rollover, single claim per quest/day, real gathering/crafting counts, XP, levels, seven achievements and the preserved playable seed-foraging mini-game. The browser completed an actual five-seed return run and saved it.
+6. **UI:** menu, Continue/New game, HUD, inventory, crafting, base, quest journal, map, help and profile. Responsive layouts, two themes, optional sound, native dialogs, visible material requirements and persistent status messages. Every enabled action is connected; unavailable recipes and rewards explain their requirements nearby.
+7. **Save:** validated local storage for world state, resources, tools, structures, cooldowns, quests, XP, statistics and preferences. Autosave, pause/page-hide save, valid version 1 migration, JSON export/import, corrupt-input recovery and denied/full-storage feedback are implemented.
 
-Development dependencies and browser engines were installed in disposable scratch directories; the source and lockfile are normal npm inputs. The production build and browser scripts ran against a source copy with the same application files. The delivered `dist/` is the copied final production export, not a development-server screenshot or a hand-built substitute. Dependencies, caches and engines are not part of the submission.
+The static export, relative assets, metadata, source, existing manifest/lockfile, README and final-source DESIGN.md are included. No required gameplay system is a placeholder. The chosen scope is a compact local game with fixed building sites and environmental hazards; it is not a shared leaderboard or competitive save system.
 
-## Commands and evidence
+## Commands and actual results
 
-| Command | Outcome / durable evidence |
+Dependencies were installed in disposable `test/scratch/build/` using exact copies of the existing manifest and lockfile, because this assignment prohibits modifying root dependency paths. Source, public assets, scripts, tests and existing configuration were copied there before build/typecheck. The resulting export was synchronized back to `dist/`, removing obsolete generated chunks. No dependency installation or browser engine is included in the submission.
+
+| Command run | Result |
 | --- | --- |
-| `npm run build` | Exit 0; compiled TypeScript, optimized the app, generated static pages and wrote the export |
-| `npm run typecheck` | Exit 0 |
-| `npm test` | Exit 0; 10 tests covering daily idempotence, progression, corrupt save recovery, movement, history archival, actual API fixtures, unsupported provenance, invalid settlement ranges and integer precision |
-| `npm run test:api` | Exit 0; [`api-check.json`](api-check.json) contains actual endpoint/version/chain results |
-| `npm run test:browser` | Exit 0; [`browser-chromium.json`](browser-chromium.json) contains 16 interaction results |
-| `npm run test:a11y` | Exit 0; [`accessibility.json`](accessibility.json) contains all 16 axe combinations |
-| `npm run check:export` | Exit 0; [`export-check.json`](export-check.json) checks document/CSS references, metadata and export size |
-| `node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste` | Exit 0; final results preserved as [`taste.json`](taste.json) |
-| `npm run test:browser -- --webkit` | Exit 1 during browser setup; [`browser-webkit.json`](browser-webkit.json) records the missing-library limitation |
+| `npm ci --prefix test/scratch/build --cache test/scratch/npm-cache --no-audit --no-fund` | Passed; existing locked dependencies installed |
+| `npm run typecheck --prefix test/scratch/build` | Passed, including final app source |
+| `npm test --prefix test/scratch/build` | 24 passed; 14 survival tests and 10 preserved legacy/API validator tests |
+| `npm run build --prefix test/scratch/build` | Passed after final app changes; static Pages Router export |
+| `node scripts/check-export.mjs` | Passed; 21 export files, 26 checked local references, no missing or root-absolute assets |
+| `npm run test:browser --prefix test/scratch/build` | Passed all 18 scenarios against the production export under `/preview/` |
+| `npm run test:a11y --prefix test/scratch/build` | Passed all 44 states in Chromium |
+| `node test/scratch/build/scripts/check-quality.mjs` | Passed 8 checks; reusable delivered source is `scripts/check-quality.mjs` |
+| `node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste` | 16/16 passed; worker supplied `IMD_PLAYWRIGHT` pointing to the scratch installation and a scratch browser-download location |
+| `npm run test:browser --prefix test/scratch/build -- --webkit` | Browser could not launch: missing GTK/GStreamer and other required system libraries. No Safari behavior claimed |
+| `git diff --check` | Passed |
+| `node scripts/check-budget.mjs` | Passed; complete file-byte accounting and critical hashes in its report |
 
-The supplied browser-tool launcher failed before navigation because of a temporary socket path-length error. A bounded foreground Playwright preview and browser were used instead. Its installed Chromium executable was selected explicitly for the local run; the pinned probe used a scratch adapter to that same engine. The normal delivered browser scripts work with a standard Playwright installation. The scripts closed their browsers and preview servers after each run.
-
-The test network required an outbound proxy. Chromium used the runner's proxy setting for real requests to the public API; no API response was replaced in the successful integration flow. The explicitly labeled outage test used a separate context with an injected HTTP 503 response. This tested recovery while keeping live verification distinct from failure injection. No paid image or external deployment request was made.
-
-### Primary interaction coverage
-
-The Chromium run loaded the export at `/preview/`, checked that the local font loaded, completed a real playable forage, used arrow-key movement and Escape/pause/resume, visited all three stations, logged a safe settlement and event, looked up real Squeek #1 with its artwork, rejected an invalid NFT ID, earned the daily challenge, and verified all four quest receipts and five unlocked achievements.
-
-It opened the discovery log, edited and validated the explorer name, sorted the run list, initiated a JSON export, reloaded to verify persistence, searched/cleared event filters, selected a category, loaded another event page, inspected a full transaction, opened block and economy views, checked the seven-day chart, switched and reloaded dark mode, and verified dialog Escape/focus return. Reduced-motion emulation reported no running animations. In an injected API outage, local play remained available while a station showed a retryable error and no chain claim button.
-
-The NFT validation and quest claims used actual official responses. The activity chart correctly showed partial historical coverage, and the provisional endpoint actually returned zero projected blocks in the recorded API checks. That zero is an observed response, not an invented fallback.
+Build/typecheck were not replaced by the design probe. The browser and accessibility commands used a locally installed Chromium through Playwright. The provided browser connector itself failed to initialize because its Chromium profile socket path was too long; direct Playwright successfully rendered and exercised the export. No live API or RPC was needed for this task.
 
 ## Better Interface coverage
 
-All six core domains of the pinned guide were read and applied during implementation. Source review alone was not treated as rendered evidence.
+Pinned Better Interface workflow and core principles in all six domains were read and applied while extending the existing design. The pinned design-critic reference and taste script were read and used. Wallet guidance is not applicable: this game has no wallet, chain or transaction flow.
 
-| Domain | Coverage | Evidence and limits |
+| Domain | Coverage and evidence | Limits |
 | --- | --- | --- |
-| Accessibility | Checked | Native links/buttons/forms/dialogs, explicit names, bound labels, invalid-input focus, keyboard game movement, dialog Escape/focus return, stable live regions, reduced motion, 3px focus styling, axe review of all four main views in both themes. No actual screen-reader or physical-device session; not a conformance claim. |
-| Layout | Checked | Shared edges and grouping, primary game before supporting data, responsive reflow in five widths, first-screen 390 screenshot and measured action bounds, flat comparable data rows, full identifiers and no horizontal overflow. Native 200% zoom, RTL mirror and pseudo-localization were not tested. |
-| Writing | Checked | Verb actions, instructions beside the game, short product title/plain explanation, truthful local XP/ranking labels, separate stale/unavailable states, retry instructions, empty-filter recovery, consistent quest/discovery vocabulary. No placeholder or fake chain claims. |
-| Typography | Checked | Local font loaded; six-size source scale, three weights, bounded measures and natural case; changing numbers use tabular figures and identifiers wrap. The final probe observed 5 total sizes at 390 and 6 at 1,440. No real OS text-enlargement session. |
-| Colors | Checked | Semantic light/dark tokens, status text alongside color, source token review, rendered solid-pair measurements, automated contrast review. Texture/illustration pixels and every possible third-party NFT image are not claimed to have fully measured contrast. |
-| UI | Checked | Ready/play/pause/complete, selected/completed/locked, hover/focus/active/disabled/loading/empty/error/success states in source and browser flows; one icon set, restrained motion, flat panels and named transition properties. No slow-motion replay in a browser Animations panel; no manual listening session for audio output. |
+| Accessibility | Checked: native buttons/inputs/dialogs; names on icon controls; keyboard movement and panels; modal focus containment, Escape and trigger restoration; visible keyboard focus screenshot; reduced-motion preference; automated axe checks on all 11 representative states at 390/1440 in both themes | No real screen-reader session, physical assistive input or full compliance claim. Native browser chrome can receive focus; background page controls stayed inert during modal tabbing |
+| Layout | Checked: 320/390/768/1440 normal layouts; 44 panel/theme/width states with no horizontal overflow; 200% text enlargement of the page and inventory at four widths; final screenshots reviewed | Text enlargement is not native browser zoom. No translated/RTL layout or physical device test |
+| Writing | Checked: verb actions, consistent gather/craft/build/claim terms, real costs, current versus next upgrade benefit, recoverable save errors, explicit local-only progression and records | Historical API documentation is clearly marked inactive rather than presented as current runtime |
+| Typography | Checked: local font loads, six defined sizes, three weights, natural case/tracking, numeric stability and enlarged-text wrapping. Probe reports one active font family and 3–4 repeated sizes per measured width | No cross-platform font rendering comparison |
+| Colors | Checked: axe and taste on actual rendered themes; eight solid-background text pairs measured per theme. Minimum measured pair is the light next-step description at 4.54:1; Start/Continue is 7.74:1 light and 8.03:1 dark | Canvas pixels and translucent/image-backed text are not certified by these measurements; taste explicitly leaves 11 such boxes unmeasured |
+| UI | Checked: primary action, pressed Sprint, disabled recipes, equipped tools, active filters, costs, claim state, storage error, modal scrolling, dark theme, loading/continue/new-game states and reduced motion. Source review confirms explicit 120ms transition properties and no endless decorative animation | No physical touch hardware or animation-panel slow replay. Sound is optional synthesized feedback; no full audio-device matrix |
 
-Wallet connectors are not applicable: the game reads public data and never requests a signature. Wallet guidance was read; no unnecessary wallet dependency, connect flow or project ID was added.
+## Findings, fixes and rechecks
 
-### Measured colors
-
-[`contrast.json`](contrast.json) records browser-computed text/background colors after exercising the actual theme control and allowing styles to settle. The WCAG sRGB luminance method was used.
-
-| Pair | Light | Dark |
+| Severity / domain | Final source location | Finding, change and evidence |
 | --- | --- | --- |
-| Page title / page | 11.76:1 | 14.13:1 |
-| Page description / page | 5.00:1 | 8.29:1 |
-| Enabled primary action text / fill | 7.74:1 | 8.03:1 |
-| Quest description / surface | 5.29:1 | 7.07:1 |
-| Daily challenge text / warm surface | 5.52:1 | 7.93:1 |
-| Map station text / opaque label | 8.27:1 | 8.27:1 |
-| Input boundary / input surface | 3.23:1 | 4.26:1 |
+| High / accessibility | `src/components/survival-map.tsx:713` | Mobile CSS hides the visible Sprint word. Axe reported an unnamed button at 390 in both themes. Added `aria-label="Sprint"` and an explanatory title. Final 44-state scan reports zero violations |
+| High / layout | `src/pages/index.tsx:1176` | The file input inherited the global input width/min-height inside the profile dialog, creating a horizontal scrollbar. Replaced the visually clipped field with a truly hidden native file input inside the dialog. Final scans have no profile overflow; a real file chooser, invalid import and valid import pass |
+| Medium / accessibility | `src/pages/index.tsx:279`, `src/components/dialog.tsx:16` | Closing every panel forced canvas focus, overriding the native dialog’s trigger restoration. Removed that override. Keyboard recheck restores the help trigger, while a canvas shortcut restores canvas focus |
+| Medium / layout and type | `src/styles/survival.css:1899` | At 200% text size the compact header/HUD/toolbar crowded or extended the 320/390 page. Added wrapping to header/HUD labels and an adaptive control grid. Recheck: document widths equal 320/390/768/1440; inventory dialogs also fit. The enlarged HUD and header screenshot was reviewed |
+| Medium / writing and UI | `src/pages/index.tsx:919`, `src/styles/survival.css:1893` | Built-structure copy showed the next level’s benefit as if already active. Current effect and “Next:” upgrade effect are now separate and costs still refer to the actual next upgrade. Browser building screenshot and cost assertions rechecked |
+| Medium / product truth | `src/pages/_document.tsx:10`, `src/pages/_document.tsx:18` | Previous metadata described a live chain-connected game. Updated the description/title/share metadata and added a local capture of the current survival product. Old integration records are labeled historical. Export metadata check passes and the runtime makes zero external requests |
 
-The probe additionally reports 13 text boxes over images/graphics as not measured by its solid-background resolver. This is retained as a limitation even though the automated axe run had no incomplete rules after the decorative map captions were removed.
+Additional source corrections keep the profile name field synchronized after importing a save (`src/pages/index.tsx:134`, `src/pages/index.tsx:1213`), give named control containers an explicit group role, and route each gathering tone through a single result handler. The final import check asserts both the stored name and the visible field value.
 
-## Consolidated findings and fixes
+Two test-harness issues were corrected without treating them as product failures: fixture saves must be installed after the outgoing page’s page-hide autosave, and theme comparisons must use the actual theme control and wait for its state to settle. Final reports refer to the corrected harness and final export. No temporary failed report is presented as a successful result.
 
-All listed findings were addressed in the final application source. The final probe has no failed checks. Repeated symptoms are grouped by their root cause.
+## Evidence
 
-1. **High, bug: exported font URL resolved under the stylesheet directory.**
-   - Source: `src/pages/_document.tsx:8`, `public/fonts/nunito.css:1`.
-   - Now: the production document loads a local font stylesheet whose WOFF2 URL is relative to its own directory.
-   - Changed from: a CSS-module asset prefix that produced a nested `_next/static/css/_next/static/media/...` 404.
-   - Why/evidence: first rendered run and probe reported a missing local font; the final browser font-load assertion passes and the final export has no missing resources.
+- `browser-chromium.json`: all 18 primary interaction checks, zero console/page/resource errors and zero external requests.
+- `accessibility.json`: all 44 final automated states and any incomplete rule IDs, retained for honest inspection.
+- `taste.json`: all 16 probe results. Probe PNGs were inspected in disposable scratch space; final product screenshots are retained below.
+- `quality.json`, `contrast.json`: focus checks, 200% text enlargement widths, and measured foreground/background pairs.
+- `unit-tests.json`, `export-check.json`, `submission-budget.json`: worker test summary, complete export references and size accounting.
+- `screenshots/chromium-survival-mobile.webp`: inspected phone entry state; product and Start are visible in the first screen.
+- `screenshots/chromium-survival-desktop.webp`, `screenshots/chromium-survival-playing.webp`, `screenshots/chromium-survival-playing-mobile.webp`: entry and active world.
+- `screenshots/chromium-crafting.webp`, `screenshots/chromium-building.webp`, `screenshots/chromium-wilderness.webp`: working recipe, base and area states.
+- `screenshots/chromium-sunflower-scramble.webp`, `screenshots/chromium-inventory-mobile-dark.webp`, `screenshots/chromium-storage-recovery.webp`: completed mini-game, dark satchel and denied-storage recovery.
+- `screenshots/chromium-keyboard-focus.webp`, `screenshots/chromium-text-200-mobile.webp`: keyboard and enlarged-text evidence.
 
-2. **High, layout: map labels overlapped at phone width.**
-   - Source: `src/components/game-map.tsx:207`, `src/styles/globals.css` `.map-welcome` phone rule.
-   - Now: the Squeek grove label uses a smaller vertical offset; the welcome message is above the station row on phones. Decorative coordinate text was removed without leaving a layout gap.
-   - Changed from: the welcome label covering the burrow and the grove label crossing coordinate text.
-   - Why/evidence: the first 390 probe reported three overlapping text boxes across 390/1,440. Final screenshots were viewed, and the final probe reports no overlap, floating obstruction or clipped text at 320/390/1,440.
+## Completion and limitations
 
-3. **Medium, writing: failed first reads could be described as stale readings.**
-   - Source: `src/components/chain-views.tsx:123` and the shared dashboard metric notes.
-   - Now: a retained prior value says “Last reading · stale”; a first-read failure says “API unavailable”. `Notice` exposes an endpoint-specific recovery action.
-   - Changed from: labeling an absent reading as a last reading.
-   - Why/evidence: source review of outage states found the distinction; the injected 503 browser flow passes and shows no chain reward action.
+**Complete for the stated local-game scope**, with the validation limits above. No known requested gameplay feature remains unfinished. All priority groups have an implementation and useful local validation. This is not a claim that every browser/device, every possible play sequence or every assistive technology has been tested.
 
-4. **Medium, accessibility: subtle separators were also used as input boundaries.**
-   - Source: `src/styles/globals.css:18`, `src/styles/globals.css:117`.
-   - Now: fields use `--control-line`, separate from decorative `--line` separators.
-   - Changed from: low-emphasis divider colors outlining blank fields.
-   - Why/evidence: fields need an identifiable boundary. Actual final rendered boundary pairs measure 3.23:1 light and 4.26:1 dark; form interaction and axe checks pass.
-
-5. **Medium, accessibility: an app update region was initially hidden from accessibility APIs.**
-   - Source: `src/pages/index.tsx:720` and `src/components/game-map.tsx:351`.
-   - Now: empty status regions remain mounted and update their text; the visual notification is separate. The sound control uses a stable accessible name and pressed state.
-   - Changed from: relying on a display-none visual notice to announce its first update and an ambiguous changing sound-toggle name.
-   - Why/evidence: source review against the pinned live-region/toggle guidance; semantic scan passes. Actual announcement behavior on a screen reader is explicitly unverified.
-
-6. **Medium, bug: bounded history could cap lifetime progression.**
-   - Source: `src/lib/game.ts:107` and `src/lib/game.ts:117`.
-   - Now: discarded old receipts contribute to archived XP, and unlocked achievement IDs persist.
-   - Changed from: deriving lifetime XP only from the retained receipt window.
-   - Why/evidence: source review found a long-term progression edge case. A meaningful rollover unit test passes alongside daily duplicate-claim and save-recovery tests.
-
-7. **Low, UI/contrast reviewability: decorative text sat directly on variable artwork.**
-   - Source: `src/components/game-map.tsx` map composition and `src/styles/globals.css` scene rules.
-   - Now: functional map labels keep opaque surfaces; decorative map-caption and coordinate overlays are removed.
-   - Changed from: extra text over trees and grass with backgrounds the automated checker could not resolve.
-   - Why/evidence: the removal exposes more artwork without moving controls. Final axe scans have zero incomplete rules in all 16 combinations, and the final screenshots were inspected.
-
-## Brief coverage
-
-| Requested requirement | Status and implemented evidence |
-| --- | --- |
-| “Interactive hamster game with movement, missions and rewards” | Implemented/tested: bounded tile movement, seed collection, return-home objective, local daily XP and discovery quests |
-| “Live blockchain missions based on verified SqueekChain events” | Implemented/tested as validated official API discoveries with safe-source checks and evidence; no independent receipt proof claimed |
-| “XP, levels, achievements and leaderboard” | Implemented/tested; leaderboard expressly ranks this device's runs |
-| “Daily challenges and progress tracking” | Implemented/tested; UTC reset/idempotence and storage behavior covered |
-| “Live statistics dashboard” | Implemented/tested with actual API reads and partial-coverage labels |
-| “Block explorer showing real blockchain data” | Implemented/tested: settlement ranges, event filtering/pagination, record details and public explorer links |
-| “Responsive design for desktop and mobile” | Implemented and Chromium-emulated at the recorded widths; physical-device validation unperformed |
-| “Next.js, TypeScript, Tailwind CSS” | Implemented; production build and standalone typecheck pass |
-| “Dark and light modes” | Implemented/tested, including persistence and automated scans |
-| “Handle unavailable API data gracefully” | Implemented/tested with real failure handling, negative schema tests and injected outage context |
-| “Public GitHub repository” / “Working deployed website” | After review/publication handoff; no public URL claimed |
-| Source, lockfile, static export, README, screenshots, test results, integrations and ecosystem explanation | Included in this repository; paths linked from README |
-| “Never fabricate … balances, rewards or transactions” | No token balance, transaction or monetary reward is invented; local game XP is explicitly separate |
-
-## Remaining limitations
-
-- WebKit could not launch due missing system libraries; no Safari/iPhone compatibility claim is made. The supplied browser tool also failed before navigation; actual rendered evidence comes from the successful local Playwright fallback.
-- No physical-device, actual screen-reader, native browser zoom, RTL/pseudo-localization, human audio-listening or network-load test was performed.
-- Automated accessibility checks cover the four main views in two themes and two widths, not every possible modal/data combination or future API content. API availability can change after these checks.
-- Leaderboard and progress are local and editable. There is no global competition, authentication or shared persistence backend.
-- API field/provenance validation is not a substitute for independent chain verification. A changed official release intentionally needs a maintainer update before its data can unlock quests.
-- Public source and website URLs belong to the publication handoff. This report does not present the private preview address as a deployment.
-
-Final screenshots are in [`screenshots/`](screenshots/). The worker viewed the mobile and desktop game, real NFT discovery and dark explorer captures. The pinned probe's scratch shots were used to confirm the overlap fix; those temporary files are not submission artifacts.
+Safari/WebKit remains untested because the browser runtime lacks required system libraries. Actual screen readers, native 200% browser zoom, physical mobile devices, RTL/localized content and long-duration save stress were not tested. Garden/cooldown timing and every structure level were checked with accelerated engine state rather than waiting for real production-length growth cycles. The autosave interval is five seconds; pause and explicit-action persistence were exercised in the browser. Offline time does not advance resource growth. The game uses editable local browser data and offers no anti-cheat or shared ranking guarantees.

@@ -1,109 +1,94 @@
 # SqueekQuest
 
-A playable hamster adventure connected to real SqueekChain Sepolia data. Explore an original illustrated valley, collect sunflower seeds, and discover real settlements, events and Genesis Squeeks at three stations.
+A 2D hamster survival adventure for desktop web. Explore a forest, an abandoned village and the wilderness; gather supplies, craft tools, and turn a burrow clearing into a home. Progress lives in this browser. The complete static site is included in **`dist/`**.
 
-The submission includes complete Next.js, TypeScript and Tailwind source, a lockfile, and the ready-to-serve static website in **`dist/`**. No server, private key, wallet, project ID, or account is required to play.
+This continues the existing Next.js/React/TypeScript project. The original hamster art, valley, fonts, dialogs, themes, sound and seed-foraging game remain. Existing version 1 profiles migrate their name, XP, achievements and foraging records. The playable site now works entirely locally: it makes no blockchain or API requests and needs no account, server or paid service. The earlier API modules and captured test fixtures remain as dormant historical source; they are not loaded by the adventure.
 
-![SqueekQuest adventure](artifacts/screenshots/chromium-adventure-desktop.webp)
+![SqueekQuest](artifacts/screenshots/chromium-survival-desktop.webp)
 
 ## Play
 
-1. Select **Start adventure**. Click the map or a seed to walk there. Arrow keys, WASD and mobile direction buttons also work.
-2. Collect at least five seeds and return to **The burrow** to save a run and earn 80 daily game XP.
-3. Visit **Wheel works**, **Signal station**, and **Squeek grove**. Inspect a real API record and select **Log discovery** to finish each chain quest.
-4. Finish a forage and a chain quest to unlock the daily challenge. Claim its 50 XP in the adventure sidebar.
+Select **Start adventure**, or **Continue adventure** to resume a saved game.
 
-Every 400 XP adds a level. Quests reset at 00:00 UTC. There are five achievements, a discovery log, and a leaderboard of your own completed foraging runs. You can pause, replay, rename your explorer, switch themes, enable optional sound, and export progress as JSON.
+- Move with **WASD / arrow keys**, or select the ground to walk. Paths go around trees, water and ruined walls. Hold **Shift**, or toggle **Sprint**, to move faster at a stamina cost.
+- Select a resource to walk over and gather, or stand beside it and press **E**. Trees, stones and plants regrow after **75 seconds of active adventure time**. An axe doubles wood yield; a pickaxe doubles stone yield and lets you mine ore.
+- Open **Inventory (I)** to inspect materials, eat berries or trail mix, use a bandage, or drop one item. Stacks combine automatically. Capacity starts at 60 items; tools do not occupy it.
+- Open **Crafting (C)** for recipes and exact costs. Crafted tools equip automatically and do not break. The explorer pack requires the workbench in the burrow clearing.
+- Open **Build (B)** in the forest burrow clearing. Structures have real costs, appear in the world, and have three levels. Rest in a shelter, heal near a campfire, expand inventory with a chest, or grow berries in a garden.
+- Follow the forest path **east** to the village, then the village path **north** to the wilderness. Open **Map (M)** to start walking toward a trail marker; press **E at the marker** to cross. Each area has resources, a hazard and a hidden cache. Violet thorns hurt; mud slows movement; water and walls block it.
+- Open **Quests (J)** to claim daily rewards, see progress and view seven achievements. Quests reset at 00:00 UTC. Every 250 XP adds a level. Fainting returns you to the forest with your supplies and costs up to 20 XP.
+- Play **Sunflower scramble**, the preserved foraging mini-game. Collect at least five seeds and return to its burrow. Records stay in your profile, seeds enter your inventory if space allows, and the daily quest awards 80 XP when claimed.
 
-**Seeds and XP are local game points with no monetary value.** The game never issues SQK, NFTs or transactions. The leaderboard and progress live in this browser, not in a shared backend or on-chain. Browser data can be edited or cleared; rankings are not competitive or tamper-proof. The most recent 50 runs and 1,000 discovery receipts are retained, with lifetime XP and unlocked achievements preserved.
+Direction buttons support narrow touch layouts. Desktop is the primary play target. **Escape** pauses the adventure. Panels and a hidden browser tab also pause world time, resource regeneration and garden growth.
 
-## Install, preview, rebuild
+| Structure | Level 1 | Level 2 | Level 3 |
+| --- | --- | --- | --- |
+| Burrow shelter | Rest restores health/stamina | +20 maximum stamina | Also +20 maximum health |
+| Campfire | Heal 2 health/second nearby | Heal 4/second | Heal 6/second |
+| Storage chest | +40 inventory capacity | +80 total capacity | +120 total capacity |
+| Berry garden | 4 berries per harvest | 8 berries | 12 berries |
 
-Use Node.js 22 or 24 and npm. Dependencies are locked; no environment file is needed.
+Gardens take 90 active seconds between harvests. Chests expand one shared satchel; building uses fixed sites in the burrow clearing. Health, stamina, resource counts, costs, timers, XP and unlocks come from actual local game state.
+
+## Saves
+
+Position, area, health, stamina, inventory, tools, buildings, resource cooldowns, hidden rewards, daily quests, XP, statistics, run records and preferences are saved under `squeekquest.survival.v2`. The app saves every five seconds, on pause/panel opening, on page hide, and after explicit inventory/crafting/building/quest actions. **Continue** restores the saved world; **New game** requires a separate confirmation before replacing it.
+
+Use **Export save** for a JSON backup and **Settings → Import save** to restore a validated backup. Import replaces the current adventure, so export first to retain both. Invalid imports keep the current adventure. Invalid stored saves show recovery guidance rather than silently overwriting the original data. If storage is denied or full, play can continue for the visit and export remains available. Clearing browser data removes the local save. Nothing is shared between browsers or visitors; there is no global leaderboard.
+
+## Install, preview and rebuild
+
+Use Node.js 22 or 24 and npm. Existing dependencies and the lockfile are unchanged. No environment file is needed.
 
 ```sh
 npm ci
 npm run preview
 ```
 
-Open **http://localhost:4173/preview/**. Preview serves the included production export under a subpath. An ordinary static web server can also serve the contents of `dist/` directly.
+Open **http://localhost:4173/preview/** to play the included export. To preview without installing packages, run `node scripts/preview.mjs` directly. The preview deliberately uses a subpath to exercise relative assets. Any ordinary static web server can serve `dist/`.
 
 ```sh
-npm run dev        # Next.js development server
-npm run build      # Next static export -> out/ -> dist/
-npm run typecheck
-npm test
-npm run check:export
+npm run dev          # development server
+npm run typecheck    # standalone TypeScript check
+npm test            # survival, legacy game and offline API validator tests
+npm run build       # Next static export -> out/ -> dist/
+npm run check:export # relative asset, metadata and export-size checks
 ```
 
-`next.config.mjs` uses `output: 'export'` and relative chunk URLs. `scripts/export.mjs` copies the generated export into `dist/` and normalizes document-owned URLs. Navigation uses URL hashes, so static hosting needs no route rewrites. Fonts, illustrations, favicon, and share image are bundled locally. API data is fetched in the browser at runtime; builds do not need a working API.
-
-Publish the **contents of `dist/`** to a static host, IPFS gateway subpath, or GitHub Pages. The contributor network receives this committed export for its publication pipeline. No public GitHub repository URL or public website URL was created during this workspace run; do not mistake the local preview address for a deployment. Public URL assignment is a publication handoff after this delivery.
-
-## Real SqueekChain integration
-
-All reads use `https://api.squeekchain.com/v1`. The supported network is **Ethereum Sepolia, chain ID 11155111**. The documented deployment is release `core-sepolia-20261103`, revision 7. The app is read-only and has no transaction flow.
-
-| Integration | Endpoint | Used for |
-| --- | --- | --- |
-| Network and wheel status | `/status` | Device freshness, wheel speed, daily distance, oracle status |
-| Settled SqueekCore state | `/core` | Settled height, work, round and block progress |
-| Provisional Squeek blocks | `/measurement/blocks` | Optimistic frontier count, separately labeled |
-| Blockchain events | `/events?limit=20` and cursor pagination | Searchable event explorer and Signal station quest |
-| Hamster measurement statistics | `/measurement/stats?range=7d` | Daily activity chart with explicit missing coverage |
-| SQK economy | `/economy/state` | Supply, mining issuance, staking, burns and collection totals |
-| Settlement history | `/settlements?range=24h` | Block range explorer and Wheel works quest |
-| Squeek NFT | `/squeeks/{tokenId}` | Validated ID lookup, owner, power, traits and on-chain artwork |
-
-Schemas validate the fields the app consumes, response versions, installation, chain, supported deployment pins and record provenance. Safe events must come from supported contracts at or below the safe frontier; settlement ranges must be internally consistent. API-provided confirmations are checked. This is validation of the official API's claims, not independent RPC verification or a cryptographic proof.
-
-See [integration details](artifacts/INTEGRATIONS.md) for addresses, quest evidence and failure behavior. The official [API documentation](https://docs.squeekchain.com/developers/api/) and [deployment documentation](https://docs.squeekchain.com/developers/) describe the upstream data.
-
-### Availability and trust
-
-- Polls every 30 seconds while the page is visible; statistics refresh every 2 minutes. Conditional ETags and local minimum cache intervals avoid needless reads.
-- Requests time out after 12 seconds. HTTP 429/503 responses respect `Retry-After`; the UI offers retry. There is no automatic rapid retry loop.
-- Unavailable, malformed, unsupported-network and unsupported-release responses cannot create quest rewards. Stale readings remain labeled, and chain claims require a recent successful read.
-- Provisional measurements never complete a blockchain quest. Real records include transaction links and safe block information.
-- Missing data is **unavailable**, not zero. Foraging remains playable during an outage. No fixture, generated number, invented player, or simulated chain event is used as a runtime fallback.
+`next.config.mjs` retains `output: 'export'` and `assetPrefix: '.'`. The existing `scripts/export.mjs` rebuilds `dist/` and converts document-owned asset URLs to relative paths. The app uses one page and local dialogs; static hosts need no server routes or rewrites. All fonts, pixel sprites, illustrations, favicon and share image are local. Deliver the **contents of `dist/`** to the static host; no publishing command is needed in this workspace.
 
 ## Validation
 
-Actual recorded results are in [artifacts/validation.md](artifacts/validation.md). The worker ran the production build, standalone TypeScript check, meaningful unit and browser tests, live API reads, the pinned design probe, and an automated accessibility review. Reports are worker observations, not an independent certification.
-
-To repeat browser checks on a machine with Playwright browsers installed:
+Run browser validation after building:
 
 ```sh
 npx playwright install chromium
 npm run test:browser
 npm run test:a11y
-npm run test:api
-# Optional second engine:
+node scripts/check-quality.mjs # focus, text enlargement, rendered contrast
+node scripts/check-budget.mjs  # complete deliverable bytes
+# Optional, on a host with WebKit system libraries:
 npx playwright install webkit
 npm run test:browser -- --webkit
 ```
 
-The browser scripts manage and close their own local static preview. They support the standard `HTTPS_PROXY` setting for test networks and an optional `SQUEEKQUEST_CHROMIUM` executable path; neither setting is bundled into the website. WebKit could not launch on the worker because system libraries were missing. Physical mobile devices, actual screen readers and browser-native zoom remain unverified.
+Browser scripts manage and close a local preview. They inspect the production export, including its `/preview/` asset paths, real controls, save failures and resource loading. Controlled saves used by the tests are never shipped as runtime fallback content. `SQUEEKQUEST_CHROMIUM` may select a local Chromium executable for the test runner; it is not used by the app.
 
-## Screenshots and design
+The worker ran the production build, standalone typecheck, 24 unit tests, the Chromium walkthrough, accessibility checks and the pinned 16-check design probe. Full commands, final results, findings and explicit limitations are in [artifacts/validation.md](artifacts/validation.md). WebKit could not launch because its required system libraries are missing. Physical devices, native browser zoom and actual screen-reader sessions remain untested. These are worker observations, not independent certification.
 
-- [Mobile first screen](artifacts/screenshots/chromium-adventure-mobile.webp)
-- [Foraging in progress](artifacts/screenshots/chromium-foraging.webp)
-- [Real event explorer](artifacts/screenshots/chromium-explorer.webp)
-- [Real Squeek NFT discovery](artifacts/screenshots/chromium-squeek-discovery.webp)
-- [Dark theme](artifacts/screenshots/chromium-dark.webp)
-- [API outage recovery](artifacts/screenshots/chromium-api-unavailable.webp)
+## Source and design
 
-[DESIGN.md](DESIGN.md) records the implemented tokens, typography, components and responsive behavior. [Attribution](artifacts/ATTRIBUTION.md) retains design-guide and font credits.
+- `src/lib/survival.ts`: world layouts, collision/pathfinding, inventory, resource costs, crafting, structures, survival, daily quests, achievements and validated saves/migration.
+- `src/components/survival-map.tsx`: pixel renderer, camera, frame-based movement, pointer/keyboard/touch controls and minimap.
+- `src/pages/index.tsx`: menu, HUD, panels, local persistence and audio.
+- `src/components/game-map.tsx` and `src/lib/game.ts`: original seed-foraging mini-game and legacy save support.
+- `src/styles/survival.css`: survival UI, built on the existing tokens and shared styles in `globals.css`.
+- `tests/survival.test.ts`: meaningful state, economy, movement and persistence checks. Existing tests remain.
 
-## Architecture and ecosystem contribution
+[DESIGN.md](DESIGN.md) describes the implemented design system. [Attribution](artifacts/ATTRIBUTION.md) retains licenses for the existing art, local font and pinned guidance. The original package description and optional API-check command remain historical because the assignment protects the dependency manifests; the current playable site has no live integration.
 
-`src/lib/api.ts` owns the public API boundary and BigInt formatting. `src/hooks/use-chain.ts` coordinates reads. `src/lib/game.ts` owns progression and persistence. The map, record views, native dialog, and icons are separate components; `src/pages/index.tsx` composes the four application views. Tests use captured real responses only as offline validation fixtures.
+No requested gameplay system is represented by a placeholder. The scope is a small local adventure with fixed building sites, regenerating resources and environmental hazards. Save integrity checks are for recovery, not anti-cheat. The latest 50 foraging records are retained; the profile displays the fastest ten.
 
-SqueekQuest gives community members a low-friction way to understand the wheel-to-chain pipeline. Each quest turns a real record into an explorable discovery with its source intact. The dashboard explains confirmed work, provisional work, missing measurements and protocol issuance without implying a token payout. The small static export can be mirrored by community hosts, and the reusable API boundary offers another reference for building read-only ecosystem tools.
+## Submission budget
 
-## Submission size
-
-Source, lockfile, runtime assets, `dist/`, documentation, screenshots and reports are included. Generated dependencies, caches, build internals, browser engines and scratch files are excluded at every nesting level. No submodule or dependency archive is included. The explicit `.gitignore` budget is **1,024 bytes**; it covers only generated/cache paths and scratch files and never excludes `dist/`. The complete allowed-file size is recorded in `artifacts/submission-budget.json` and must remain below **8,388,608 bytes**.
-
-Application code and original illustrations: MIT. Font and third-party notices retain their own licenses.
+Source, the existing manifest/lockfile, complete `dist/`, runtime assets, documentation and validation screenshots are included. Generated dependencies, browser downloads, caches, build internals and disposable `test/scratch/` files are excluded by the existing ignore rules. The ignore file was not changed (its existing path budget is 1,024 bytes). No dependency archives, registry mirrors or submodules are added. The final byte count is recorded in [artifacts/submission-budget.json](artifacts/submission-budget.json) against the **8,388,608-byte** limit.

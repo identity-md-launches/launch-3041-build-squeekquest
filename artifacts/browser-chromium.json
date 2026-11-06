@@ -1,91 +1,102 @@
 {
+  "checkedAt": "2026-11-06T12:01:25.232Z",
   "engine": "chromium",
-  "startedAt": "2026-11-06T10:08:37.428Z",
-  "finishedAt": "2026-11-06T10:08:56.556Z",
-  "scope": "Production static export at /preview/. Live API requests except explicitly injected outage scenario.",
+  "scope": "Worker browser validation of the production export. Controlled saves are test inputs only; no runtime test hook.",
   "results": [
     {
-      "name": "Production page hydrates at a static hosting subpath",
+      "name": "Production export hydrates at /preview/ with local fonts and metadata",
       "passed": true,
-      "durationMs": 140
+      "durationMs": 1403
     },
     {
-      "name": "Live API loads validated settled height and economy in the browser",
+      "name": "First screen and controls work at 320, 390, 768 and 1440 with no horizontal overflow",
       "passed": true,
-      "durationMs": 534
+      "durationMs": 1372
     },
     {
-      "name": "Product and primary action fit on the first 390px screen",
+      "name": "WASD movement is continuous and Escape freezes the world until Continue",
       "passed": true,
-      "durationMs": 101
+      "durationMs": 1052
     },
     {
-      "name": "Forage: move to five seeds, return home and save a real run",
+      "name": "Select a tree: player walks there, gathers wood, spends stamina and saves position",
       "passed": true,
-      "durationMs": 5406
+      "durationMs": 847
     },
     {
-      "name": "Keyboard movement, pause and resume work",
+      "name": "Keyboard opens crafting, recipe consumes exact costs and axe equips once",
       "passed": true,
-      "durationMs": 185
+      "durationMs": 3637
     },
     {
-      "name": "Wheel works: station visit, inspect settlement and earn local quest XP",
+      "name": "Base building and upgrades consume resources; shelter rest restores health and stamina",
       "passed": true,
-      "durationMs": 1925
+      "durationMs": 3958
     },
     {
-      "name": "Signal station: inspect safe event, log evidence and claim daily challenge",
+      "name": "Inventory filters, selecting a stack, consuming food and dropping one update counts",
       "passed": true,
-      "durationMs": 1148
+      "durationMs": 3017
     },
     {
-      "name": "Squeek grove: validate ID, load real NFT and log discovery",
+      "name": "Daily quest requires progress, claims XP once and keeps claimed state after reload",
       "passed": true,
-      "durationMs": 2824
+      "durationMs": 2948
     },
     {
-      "name": "Journal shows earned achievements and persistent evidence",
+      "name": "World map navigation walks to the village marker; E crosses and saves area",
       "passed": true,
-      "durationMs": 81
+      "durationMs": 1915
     },
     {
-      "name": "Leaderboard, profile validation, sort and export work",
+      "name": "Village north trail reaches Wilderness; ore requires a crafted pickaxe",
       "passed": true,
-      "durationMs": 661
+      "durationMs": 4666
     },
     {
-      "name": "Explorer filtering, empty state, event details and pagination work",
+      "name": "Hidden cache grants loot once; thorn damage visibly changes health",
       "passed": true,
-      "durationMs": 1290
+      "durationMs": 2100
     },
     {
-      "name": "Dark mode persists and help returns keyboard focus",
+      "name": "Original foraging mini-game completes a real five-seed run and saves records",
       "passed": true,
-      "durationMs": 486
+      "durationMs": 10524
     },
     {
-      "name": "All four pages reflow without horizontal scrolling",
+      "name": "Profile rename, save export and valid/invalid import work without losing valid data",
       "passed": true,
-      "durationMs": 1485
+      "durationMs": 2544
     },
     {
-      "name": "Reduced motion disables continuous game animations",
+      "name": "New game offers a safe cancel and only resets after its explicit confirmation",
       "passed": true,
-      "durationMs": 41
+      "durationMs": 2238
     },
     {
-      "name": "Unavailable API blocks chain discoveries while local gameplay remains usable",
+      "name": "Mobile direction controls, dark theme, dialogs and reduced motion remain usable",
       "passed": true,
-      "durationMs": 2401
+      "durationMs": 1913
     },
     {
-      "name": "No page exceptions or failed production assets",
+      "name": "Legacy profile migrates without requiring the old chain integration",
       "passed": true,
-      "durationMs": 1
+      "durationMs": 610
+    },
+    {
+      "name": "Unavailable browser storage reports export recovery; game stays playable",
+      "passed": true,
+      "durationMs": 1419
+    },
+    {
+      "name": "Offline game has no external requests, browser errors or broken local assets",
+      "passed": true,
+      "durationMs": 6
     }
   ],
   "pageErrors": [],
   "consoleErrors": [],
-  "resourceErrors": []
+  "resourceErrors": [],
+  "externalRequests": [],
+  "passed": true
 }

@@ -1,1113 +1,1338 @@
 import Head from 'next/head';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Dashboard,
-  Empty,
-  EventDetail,
-  Explorer,
-  ExplorerTab,
-  NftLookup,
-  Notice,
-  SettlementDetail,
-  Source,
-} from '../components/chain-views';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Dialog } from '../components/dialog';
 import { GameMap } from '../components/game-map';
 import { Hamster, Icon } from '../components/icons';
-import { useChain } from '../hooks/use-chain';
-import { API, ChainEvent, DataTypes, formatUint, paths, Settlement } from '../lib/api';
+import { ItemIcon } from '../components/item-icon';
+import { SurvivalMap } from '../components/survival-map';
+import { STORAGE_KEY } from '../lib/game';
 import {
-  achievements,
-  addRun,
-  award,
-  freshSave,
-  hasQuest,
-  level,
-  loadSave,
-  Quest,
-  Save,
-  Station,
-  STATIONS,
-  STORAGE_KEY,
-  today,
-  totalXp,
-  xpFor,
-} from '../lib/game';
+  AREA_HINTS,
+  AREA_NAMES,
+  BUILDINGS,
+  BURROW,
+  DAILY_QUESTS,
+  ITEMS,
+  RECIPES,
+  SAVE_KEY,
+  WORLDS,
+  afford,
+  bagCount,
+  build,
+  capacity,
+  claimQuest,
+  consume,
+  craft,
+  discard,
+  distance,
+  gather,
+  harvest,
+  maxHealth,
+  maxStamina,
+  migrateLegacy,
+  nearestNode,
+  newGame,
+  playerLevel,
+  readSave,
+  recordRun,
+  rest,
+  rollDaily,
+  survivalAchievements,
+  travel,
+  type Area,
+  type Building,
+  type Cost,
+  type Item,
+  type Result,
+  type SurvivalSave,
+  type Vec,
+} from '../lib/survival';
 
-type View = 'adventure' | 'missions' | 'explorer' | 'leaderboard';
-type Modal =
-  | { type: 'help' }
-  | { type: 'profile' }
-  | { type: 'station'; station: Station }
-  | { type: 'settlement'; record: Settlement }
-  | { type: 'event'; record: ChainEvent }
+type Panel =
+  | 'inventory'
+  | 'crafting'
+  | 'building'
+  | 'quests'
+  | 'map'
+  | 'help'
+  | 'profile'
+  | 'minigame'
+  | 'new-game'
   | null;
-const questList: {
-  id: Quest;
-  title: string;
-  description: string;
+const PANEL_NAMES: Record<NonNullable<Panel>, string> = {
+  inventory: 'Your satchel',
+  crafting: 'Crafting bench',
+  building: 'Home at the burrow',
+  quests: 'Quest journal',
+  map: 'The wider world',
+  help: 'A field guide for little paws',
+  profile: 'Explorer profile',
+  minigame: 'Sunflower scramble',
+  'new-game': 'Start a new adventure?',
+};
+const MENU = [
+  { id: 'inventory', name: 'Inventory', key: 'I', icon: 'bag' },
+  { id: 'crafting', name: 'Crafting', key: 'C', icon: 'hammer' },
+  { id: 'building', name: 'Build', key: 'B', icon: 'home' },
+  { id: 'quests', name: 'Quests', key: 'J', icon: 'book' },
+  { id: 'map', name: 'Map', key: 'M', icon: 'compass' },
+] as const;
+
+function CostLine({ cost, save }: { cost: Cost; save: SurvivalSave }) {
+  return (
+    <div className="cost-line">
+      {Object.entries(cost).map(([key, qty]) => (
+        <span
+          key={key}
+          className={save.inventory[key as Item] < qty ? 'cost-missing' : 'cost-ready'}
+        >
+          <ItemIcon item={key as Item} size={19} />
+          <span>
+            {save.inventory[key as Item]} / {qty} {ITEMS[key as Item].name.toLowerCase()}
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+}
+function Meter({
+  label,
+  value,
+  max,
+  kind,
+  icon,
+}: {
+  label: string;
+  value: number;
+  max: number;
+  kind: string;
   icon: string;
-  station?: Station;
-}[] = [
-  {
-    id: 'forage',
-    title: 'A pocketful of sunshine',
-    description: 'Collect 5 seeds and bring them back to the burrow.',
-    icon: 'seed',
-  },
-  {
-    id: 'block-scout',
-    title: 'Follow the wheel',
-    description: 'Visit Wheel works and log a settled Squeek block.',
-    icon: 'cube',
-    station: 'blocks',
-  },
-  {
-    id: 'signal-hunter',
-    title: 'A signal in the valley',
-    description: 'Visit the Signal station and inspect a safe chain event.',
-    icon: 'radio',
-    station: 'events',
-  },
-  {
-    id: 'squeek-friend',
-    title: 'Make a Squeek friend',
-    description: 'Visit Squeek grove and discover a real Genesis NFT.',
-    icon: 'leaf',
-    station: 'nft',
-  },
-];
-const views: { id: View; label: string; icon: string }[] = [
-  { id: 'adventure', label: 'Adventure', icon: 'compass' },
-  { id: 'missions', label: 'Quest journal', icon: 'book' },
-  { id: 'explorer', label: 'Chain explorer', icon: 'cube' },
-  { id: 'leaderboard', label: 'Leaderboard', icon: 'trophy' },
-];
+}) {
+  return (
+    <div className={`sq-meter ${kind}`}>
+      <div>
+        <span>
+          <Icon name={icon} size={16} />
+          {label}
+        </span>
+        <strong>
+          {Math.ceil(value)}
+          <span> / {max}</span>
+        </strong>
+      </div>
+      <meter min={0} max={max} value={value} aria-label={label} />
+    </div>
+  );
+}
+function PanelNote({ children }: { children: ReactNode }) {
+  return <p className="panel-note">{children}</p>;
+}
 
 export default function Home() {
-  const { state: chain, refresh } = useChain();
-  const [save, setSave] = useState<Save>(freshSave);
-  const [loaded, setLoaded] = useState(false);
-  const [storageError, setStorageError] = useState(false);
-  const [view, setView] = useState<View>('adventure');
-  const [explorerTab, setExplorerTab] = useState<ExplorerTab>('overview');
-  const [modal, setModal] = useState<Modal>(null);
-  const [tracked, setTracked] = useState<Quest>('forage');
-  const [visited, setVisited] = useState<Station[]>([]);
-  const [announcement, setAnnouncement] = useState('');
-  const [now, setNow] = useState(0);
-  const audio = useRef<AudioContext | null>(null);
-  const saveRef = useRef(save);
-  saveRef.current = save;
-  const questDate = today();
-  const completed = questList.filter((q) => hasQuest(save, q.id, questDate)).length;
-  const dailyReady =
-    hasQuest(save, 'forage', questDate) &&
-    ['block-scout', 'signal-hunter', 'squeek-friend'].some((q) =>
-      hasQuest(save, q as Quest, questDate),
-    );
-  const earned = achievements(save);
-
-  useEffect(() => {
-    let stored: Save;
+  const stateRef = useRef<SurvivalSave>(newGame());
+  const [save, setSave] = useState<SurvivalSave>(stateRef.current);
+  const [nameDraft, setNameDraft] = useState(stateRef.current.name);
+  useEffect(() => setNameDraft(save.name), [save.name]);
+  const [loaded, setLoaded] = useState(false),
+    [hasSave, setHasSave] = useState(false),
+    [storageError, setStorageError] = useState('');
+  const [mode, setMode] = useState<'menu' | 'playing' | 'paused'>('menu');
+  const [panel, setPanel] = useState<Panel>(null),
+    [message, setMessage] = useState('Your little corner of the wild awaits.');
+  const [selectedItem, setSelectedItem] = useState<Item>('berry'),
+    [inventoryFilter, setInventoryFilter] = useState('all');
+  const [navigateTo, setNavigateTo] = useState<Vec | null>(null),
+    [savingLabel, setSavingLabel] = useState('Saved on this device');
+  const [miniNote, setMiniNote] = useState('Collect 5 seeds, then bring them home.'),
+    [miniKey, setMiniKey] = useState(0);
+  const audio = useRef<AudioContext | null>(null),
+    started = useRef(false),
+    saveEnabled = useRef(false);
+  const importRef = useRef<HTMLInputElement>(null);
+  const snapshot = useCallback(() => setSave({ ...stateRef.current }), []);
+  const persist = useCallback(() => {
+    if (!saveEnabled.current) return;
     try {
-      stored = loadSave(localStorage.getItem(STORAGE_KEY));
+      const current = { ...rollDaily(stateRef.current), savedAt: new Date().toISOString() };
+      stateRef.current = current;
+      localStorage.setItem(SAVE_KEY, JSON.stringify(current));
+      setHasSave(true);
+      setStorageError('');
+      setSavingLabel('Saved on this device');
     } catch {
-      stored = freshSave();
-      setStorageError(true);
+      setStorageError(
+        'Storage is unavailable or full. Keep this page open and export your save to keep your progress.',
+      );
+      setSavingLabel('Save unavailable');
     }
-    setSave(stored);
-    document.documentElement.dataset.theme = stored.theme;
-    setLoaded(true);
-    setNow(Date.now());
-    const onHash = () => {
-      const [v, sub] = location.hash.slice(1).split('/');
-      if (views.some((x) => x.id === v)) setView(v as View);
-      if (['overview', 'blocks', 'events', 'economy', 'squeeks'].includes(sub))
-        setExplorerTab(sub as ExplorerTab);
-    };
-    onHash();
-    window.addEventListener('hashchange', onHash);
-    const interval = setInterval(() => setNow(Date.now()), 15000);
-    return () => {
-      window.removeEventListener('hashchange', onHash);
-      clearInterval(interval);
-    };
   }, []);
   useEffect(() => {
-    if (!loaded) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
-      setStorageError(false);
+      const raw = localStorage.getItem(SAVE_KEY),
+        stored = readSave(raw);
+      const migrated = stored ?? (!raw ? migrateLegacy(localStorage.getItem(STORAGE_KEY)) : null);
+      if (migrated) {
+        stateRef.current = migrated;
+        setSave(migrated);
+        setHasSave(true);
+        saveEnabled.current = true;
+        document.documentElement.dataset.theme = migrated.theme;
+        if (!stored)
+          setMessage('Your previous profile, XP and foraging records are ready to continue.');
+      } else if (raw)
+        setStorageError(
+          'This save could not be read. Export it before starting again, or import a valid SqueekQuest save.',
+        );
     } catch {
-      setStorageError(true);
+      setStorageError(
+        'Browser storage is unavailable. Export your save before leaving to keep your progress.',
+      );
     }
+    setLoaded(true);
+    const timer = setInterval(() => {
+      if (saveEnabled.current) {
+        const rolled = rollDaily(stateRef.current);
+        if (rolled !== stateRef.current) {
+          stateRef.current = rolled;
+          setSave(rolled);
+        }
+        persist();
+      }
+    }, 5000);
+    const hide = () => {
+      if (document.hidden) {
+        setMode((m) => (m === 'playing' ? 'paused' : m));
+        persist();
+      }
+    };
+    const leave = () => persist();
+    document.addEventListener('visibilitychange', hide);
+    window.addEventListener('pagehide', leave);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener('visibilitychange', hide);
+      window.removeEventListener('pagehide', leave);
+    };
+  }, [persist]);
+  useEffect(() => {
     const root = document.documentElement;
     root.classList.add('theme-changing');
     root.dataset.theme = save.theme;
     void root.offsetHeight;
-    requestAnimationFrame(() => root.classList.remove('theme-changing'));
-  }, [save, loaded]);
-
-  const finish = useCallback((seeds: number, seconds: number) => {
-    setSave((s) =>
-      addRun(
-        award(s, 'forage', `${seeds} seeds returned to the burrow in ${seconds} seconds`),
-        seeds,
-        seconds,
-      ),
-    );
-    setAnnouncement('Foraging run saved. Your daily forage earns 80 local XP once per UTC day.');
-  }, []);
-  const visit = useCallback((station: Station) => {
-    setVisited((s) => (s.includes(station) ? s : [...s, station]));
-    setModal({ type: 'station', station });
-  }, []);
-  const playSound = useCallback(() => {
-    if (!saveRef.current.sound || !audio.current) return;
+    const f = requestAnimationFrame(() => root.classList.remove('theme-changing'));
+    return () => cancelAnimationFrame(f);
+  }, [save.theme]);
+  useEffect(() => {
+    if (panel || mode !== 'playing') persist();
+  }, [panel, mode, persist]);
+  const sound = useCallback(() => {
+    if (!stateRef.current.sound || !audio.current) return;
     try {
-      const ctx = audio.current;
-      const osc = ctx.createOscillator(),
+      const ctx = audio.current,
+        osc = ctx.createOscillator(),
         gain = ctx.createGain();
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(720, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1080, ctx.currentTime + 0.08);
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+      osc.frequency.setValueAtTime(660, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(990, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.035, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.13);
       osc.start();
-      osc.stop(ctx.currentTime + 0.15);
+      osc.stop(ctx.currentTime + 0.14);
     } catch {
-      /* Optional sound cannot block play. */
+      /* Optional audio never blocks play. */
     }
   }, []);
-  function toggleSound() {
-    if (!save.sound) {
-      try {
-        audio.current ??= new AudioContext();
-        void audio.current
-          .resume()
-          .catch(() => setAnnouncement('Sound is unavailable in this browser.'));
-      } catch {
-        setAnnouncement('Sound is unavailable in this browser.');
-        return;
-      }
-    }
-    setSave((s) => ({ ...s, sound: !s.sound }));
-  }
-  function wakeSound() {
-    if (!saveRef.current.sound) return;
+  function wakeAudio() {
     try {
       audio.current ??= new AudioContext();
-      void audio.current.resume().catch(() => {});
+      void audio.current.resume().catch(() => setMessage('Sound is unavailable in this browser.'));
     } catch {
-      // Browser audio support never blocks an adventure.
+      setMessage('Sound is unavailable in this browser.');
     }
   }
-  function go(v: View, tab?: ExplorerTab) {
-    setView(v);
-    if (tab) setExplorerTab(tab);
-    location.hash = v + (v === 'explorer' ? `/${tab ?? explorerTab}` : '');
+  const apply = useCallback(
+    (r: Result) => {
+      stateRef.current = r.save;
+      setSave({ ...r.save });
+      if (r.message) setMessage(r.message);
+      if (r.success) sound();
+    },
+    [sound],
+  );
+  function act(fn: (s: SurvivalSave) => Result) {
+    apply(fn(stateRef.current));
+    persist();
   }
-  function track(q: Quest) {
-    setTracked(q);
-    go('adventure');
-    setAnnouncement(
-      q === 'forage'
-        ? 'Collect five seeds, then return to the burrow.'
-        : `Start exploring, then select ${questList.find((x) => x.id === q)?.station ? STATIONS[questList.find((x) => x.id === q)!.station!].name : 'a station'} on the map.`,
+  function setSetting(patch: Partial<SurvivalSave>) {
+    stateRef.current = { ...stateRef.current, ...patch };
+    snapshot();
+    if (saveEnabled.current) persist();
+  }
+  function open(p: NonNullable<Panel>) {
+    setPanel(p);
+  }
+  function focusWorld() {
+    setTimeout(() => document.querySelector<HTMLCanvasElement>('.survival-canvas')?.focus(), 0);
+  }
+  function close() {
+    setPanel(null);
+  }
+  function start(fresh = false) {
+    if (fresh) {
+      const current = stateRef.current;
+      stateRef.current = { ...newGame(current.name), sound: current.sound, theme: current.theme };
+      snapshot();
+      setNavigateTo(null);
+    }
+    started.current = true;
+    saveEnabled.current = true;
+    setHasSave(true);
+    setMode('playing');
+    setPanel(null);
+    setMessage(
+      fresh || !hasSave
+        ? 'Gather wood, stone and fiber near the burrow. An axe is a good first craft.'
+        : 'Welcome back. Your adventure is right where you left it.',
     );
+    if (stateRef.current.sound) wakeAudio();
+    persist();
+    focusWorld();
   }
-  function healthy(key: 'events' | 'settlements' | 'economy' | 'core') {
-    const r = chain[key];
-    return !!r.data && !r.error && !!r.checkedAt && Date.now() - r.checkedAt < 90000;
-  }
-  function claim(quest: Quest, evidence: string) {
-    if (hasQuest(save, quest)) {
-      setAnnouncement('This quest is already complete for today. Come back after 00:00 UTC.');
+  function interact() {
+    const s = stateRef.current,
+      e = WORLDS[s.area].exits.find((e) => distance(s.position, e) < 65);
+    if (e) {
+      apply(travel(s, e));
+      persist();
       return;
     }
-    setSave((s) => award(s, quest, evidence));
-    setAnnouncement(`Quest complete. ${xpFor[quest]} local XP added to your journal.`);
-    setModal(null);
-  }
-  function claimSettlement(record: Settlement) {
-    if (
-      !visited.includes('blocks') ||
-      !healthy('settlements') ||
-      !chain.settlements.data?.recentSettlements.some(
-        (s) => s.transactionHash === record.transactionHash && s.logIndex === record.logIndex,
-      )
-    ) {
-      setAnnouncement('Visit Wheel works and refresh a validated settlement before claiming.');
+    const n = nearestNode(s);
+    if (n && distance(s.position, n) < 58) {
+      act((s) => gather(s, n.id));
       return;
     }
-    claim(
-      'block-scout',
-      `${record.transactionHash} · log ${record.logIndex} · Squeek blocks ${record.firstCompletedBlock}-${record.lastCompletedBlock}`,
-    );
-  }
-  function claimEvent(event: ChainEvent) {
-    if (
-      !visited.includes('events') ||
-      !healthy('events') ||
-      !chain.events.data?.events.some((e) => e.id === event.id)
-    ) {
-      setAnnouncement('Visit the Signal station and refresh a validated event before claiming.');
+    if (s.area === 'forest' && distance(s.position, BURROW) < 115) {
+      open('building');
       return;
     }
-    claim(
-      'signal-hunter',
-      `${event.source.transactionHash} · log ${event.source.logIndex} · ${event.type}`,
-    );
+    setMessage('Walk beside a tree, rock or plant. Press E or select it to gather.');
   }
-  function observeNft(nft: DataTypes['nft']) {
-    if (!visited.includes('nft') || Date.now() - Date.parse(nft.generatedAt) > 90000) {
-      setAnnouncement('Visit Squeek grove and look up a fresh NFT record to complete this quest.');
+  function exportSave() {
+    const data = saveEnabled.current ? stateRef.current : null;
+    if (!data) {
+      let raw: string | null = null;
+      try {
+        raw = localStorage.getItem(SAVE_KEY);
+      } catch {
+        /* Storage may be denied. */
+      }
+      if (raw) {
+        download(raw, 'squeekquest-unreadable-save.json');
+        return;
+      }
+      setMessage('Start an adventure to create a save first.');
       return;
     }
-    claim(
-      'squeek-friend',
-      `Squeek #${nft.tokenId} · safe Ethereum block ${nft.chain.safeThroughBlock} · ${nft.custody.owner}`,
+    download(
+      JSON.stringify({ ...data, savedAt: new Date().toISOString() }, null, 2),
+      'squeekquest-save.json',
     );
+    setMessage('Save exported. Keep the file to restore your adventure.');
   }
-  const networkFresh =
-    !!chain.status.data &&
-    !chain.status.error &&
-    !!chain.status.checkedAt &&
-    now - chain.status.checkedAt < 90000;
-  const measurementFresh =
-    networkFresh &&
-    chain.status.data?.measurement?.freshness === 'online' &&
-    now - Date.parse(chain.status.data.measurement.receivedAt) <=
-      chain.status.data.measurement.staleAfterSeconds * 1000;
-
-  const titles: Record<View, [string, string]> = {
-    adventure: [
-      'Small paws. Big discoveries.',
-      'A hamster adventure connected to the real SqueekChain.',
-    ],
-    missions: [
-      'Every discovery tells a story.',
-      'Explore the valley and collect evidence in your quest journal.',
-    ],
-    explorer: ['Curiosity, meet the chain.', 'Real SqueekChain data, with a trail you can follow.'],
-    leaderboard: [
-      'A place for your best runs.',
-      'Your foraging records, saved right here on this device.',
-    ],
-  };
+  function download(text: string, name: string) {
+    const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  async function importSave(file?: File) {
+    if (!file) return;
+    if (file.size > 250000) {
+      setMessage('Choose a SqueekQuest JSON save smaller than 250 KB.');
+      return;
+    }
+    try {
+      const text = await file.text(),
+        s = readSave(text) ?? migrateLegacy(text);
+      if (!s) {
+        setMessage('This file is not a valid SqueekQuest save. Your current progress is safe.');
+        return;
+      }
+      stateRef.current = s;
+      snapshot();
+      saveEnabled.current = true;
+      setHasSave(true);
+      setMode('paused');
+      persist();
+      setMessage('Adventure imported. Continue when you are ready.');
+    } catch {
+      setMessage('Could not read that file. Choose a SqueekQuest JSON save.');
+    }
+    if (importRef.current) importRef.current.value = '';
+  }
+  const earned = survivalAchievements(save),
+    currentLevel = playerLevel(save),
+    atHome = save.area === 'forest' && distance(save.position, BURROW) < 170;
+  const running = mode === 'playing' && !panel;
+  const firstQuest =
+    DAILY_QUESTS.find((q) => !save.daily.claimed.includes(q.id)) ?? DAILY_QUESTS[0];
+  const allItems = (Object.keys(ITEMS) as Item[]).filter(
+    (i) =>
+      inventoryFilter === 'all' ||
+      (inventoryFilter === 'supplies'
+        ? ['berry', 'bandage', 'mix'].includes(i)
+        : !['berry', 'bandage', 'mix'].includes(i)),
+  );
+  const ownedTools = (['axe', 'pickaxe', 'backpack'] as const).filter((k) => save.tools[k]);
   return (
-    <>
+    <div className="quest-app">
       <Head>
-        <title>SqueekQuest | A little hamster adventure</title>
+        <title>SqueekQuest | Small paws. Wild world.</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <a className="skip-link" href="#main">
-        Skip to game and content
+        Skip to adventure
       </a>
-      <header className="site-header">
-        <div className="header-inner">
+      <header className="sq-header">
+        <div className="sq-header-inner">
           <a
-            className="brand"
             href="#adventure"
-            onClick={() => go('adventure')}
+            className="sq-brand"
+            onClick={(e) => {
+              e.preventDefault();
+              setPanel(null);
+              setMode(started.current ? 'paused' : 'menu');
+            }}
             aria-label="SqueekQuest home"
           >
-            <span className="brand-icon">
+            <span className="sq-brand-mark">
               <Hamster face />
             </span>
             <span>
-              Squeek<span className="brand-quest">Quest</span>
-              <span className="brand-period">.</span>
+              Squeek<span>Quest</span>
+              <i>.</i>
             </span>
           </a>
-          <nav aria-label="Main navigation" className="main-nav">
-            {views.map((v) => (
-              <a
-                href={`#${v.id}`}
-                className={view === v.id ? 'active' : ''}
-                aria-current={view === v.id ? 'page' : undefined}
-                onClick={() => go(v.id)}
-                key={v.id}
-              >
-                <Icon name={v.icon} size={17} />
-                {v.label}
-              </a>
-            ))}
-          </nav>
-          <div className="header-tools">
+          <span className="sq-header-caption">A little life in the wild.</span>
+          <div className="sq-utilities">
             <button
-              className="icon-button"
-              onClick={() => setModal({ type: 'help' })}
+              className="sq-icon-button"
               aria-label="How to play"
+              title="How to play"
+              onClick={() => open('help')}
             >
               <Icon name="help" />
             </button>
             <button
-              className="icon-button"
-              onClick={toggleSound}
+              className="sq-icon-button"
               aria-label="Game sound"
-              title={save.sound ? 'Mute game sound' : 'Enable game sound'}
               aria-pressed={save.sound}
+              title={save.sound ? 'Mute sound' : 'Enable sound'}
+              onClick={() => {
+                if (!save.sound) wakeAudio();
+                setSetting({ sound: !save.sound });
+              }}
             >
               <Icon name={save.sound ? 'sound' : 'mute'} />
             </button>
             <button
-              className="icon-button"
-              onClick={() =>
-                setSave((s) => ({ ...s, theme: s.theme === 'light' ? 'dark' : 'light' }))
-              }
+              className="sq-icon-button"
               aria-label={save.theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+              title="Change theme"
+              onClick={() => setSetting({ theme: save.theme === 'light' ? 'dark' : 'light' })}
             >
               <Icon name={save.theme === 'light' ? 'moon' : 'sun'} />
             </button>
             <button
-              className="profile-button"
-              onClick={() => setModal({ type: 'profile' })}
-              aria-label={`Explorer profile, level ${level(save)}`}
+              className="sq-profile"
+              onClick={() => open('profile')}
+              aria-label={`Explorer profile, level ${currentLevel}`}
             >
-              <span className="avatar">
-                <Hamster face />
-              </span>
-              <span>Level {level(save)}</span>
+              <Hamster face />
+              <span>Level {currentLevel}</span>
               <Icon name="chevron" size={14} />
             </button>
           </div>
         </div>
       </header>
-      <main id="main" className="page-wrap" tabIndex={-1}>
-        <div className="page-intro">
+      <main className="sq-page" id="main" tabIndex={-1}>
+        <div className="sq-intro">
           <div>
-            <h1>{titles[view][0]}</h1>
-            <p>{titles[view][1]}</p>
+            <h1>Small paws. Wild world.</h1>
+            <p>A hamster survival adventure. Make yourself at home.</p>
           </div>
-          <div className={`network-badge ${measurementFresh ? 'online' : ''}`}>
-            <span className="status-dot" />
-            <span>
-              {chain.status.loading && !chain.status.data
-                ? 'Connecting to SqueekChain'
-                : measurementFresh
-                  ? 'SqueekChain connected'
-                  : networkFresh
-                    ? 'Device reading stale'
-                    : 'Chain data unavailable'}
-            </span>
-            <span className="network-chain">Sepolia</span>
-          </div>
+          <span className={`sq-save-state ${storageError ? 'save-error' : ''}`}>
+            <Icon name={storageError ? 'help' : 'check'} size={16} />
+            {storageError
+              ? 'Export to keep progress'
+              : hasSave
+                ? savingLabel
+                : 'An adventure of your own'}
+          </span>
         </div>
         {storageError && (
-          <div className="data-notice" role="status">
-            <Icon name="help" />
-            <p>
-              Browser storage is unavailable. You can play, but progress will last only for this
-              visit.
-            </p>
+          <div className="sq-warning" role="status">
+            <p>{storageError}</p>
+            <button className="sq-button" onClick={exportSave}>
+              Export save
+            </button>
           </div>
         )}
-        <div className="mobile-nav" role="group" aria-label="Game sections">
-          {views.map((v) => (
-            <button
-              key={v.id}
-              className={view === v.id ? 'active' : ''}
-              onClick={() => go(v.id)}
-              aria-pressed={view === v.id}
-            >
-              <Icon name={v.icon} size={17} />
-              <span>
-                {v.id === 'missions' ? 'Quests' : v.id === 'explorer' ? 'Explorer' : v.label}
-              </span>
-            </button>
-          ))}
-        </div>
-        <div hidden={view !== 'adventure'}>
-          <div className="adventure-layout">
-            <div className="adventure-main">
-              <GameMap
-                onFinish={finish}
-                onStation={visit}
-                onSound={playSound}
-                onStart={wakeSound}
-                active={view === 'adventure' && !modal}
+        <div className="adventure-layout">
+          <section className="adventure-main" aria-label="Survival adventure">
+            <div className="survival-hud">
+              <Meter
+                label="Health"
+                value={save.health}
+                max={maxHealth(save)}
+                kind="health"
+                icon="heart"
               />
-              <div className="world-note">
-                <span className="world-note-icon">
-                  <Icon name="leaf" size={22} />
+              <Meter
+                label="Stamina"
+                value={save.stamina}
+                max={maxStamina(save)}
+                kind="stamina"
+                icon="bolt"
+              />
+              <div className="sq-xp">
+                <span>
+                  <Icon name="star" size={16} />
+                  Level {currentLevel}
                 </span>
-                <div>
-                  <strong>A little play. A real connection.</strong>
-                  <p>The valley is imaginary. The SqueekChain discoveries are real.</p>
-                </div>
-                <a
-                  href="#explorer/overview"
-                  onClick={() => go('explorer', 'overview')}
-                  className="inline-link"
-                >
-                  Explore the chain
-                  <Icon name="arrow" size={16} />
-                </a>
+                <strong>{save.xp % 250} / 250 XP</strong>
+                <progress max={250} value={save.xp % 250} aria-label="XP to next level" />
               </div>
+              <button
+                className="sq-icon-button pause-control"
+                aria-label={mode === 'playing' ? 'Pause adventure' : 'Open adventure menu'}
+                title={mode === 'playing' ? 'Pause' : 'Adventure menu'}
+                onClick={() => setMode((m) => (m === 'playing' ? 'paused' : 'menu'))}
+              >
+                <Icon name={mode === 'playing' ? 'pause' : 'home'} />
+              </button>
             </div>
-            <aside className="quest-sidebar">
-              <section className="quest-panel">
-                <div className="section-title">
-                  <h2>Today&apos;s quests</h2>
-                  <span className="quest-count">{completed}/4</span>
-                </div>
-                <p className="muted small">A fresh adventure every day at 00:00 UTC.</p>
-                <div className="quest-list">
-                  {questList.map((q) => (
+            <div className="sq-world">
+              <SurvivalMap
+                stateRef={stateRef}
+                running={running}
+                onSnapshot={snapshot}
+                onResult={apply}
+                onPause={() => setMode('paused')}
+                onPanel={open}
+                onInteract={interact}
+                navigateTo={navigateTo}
+              />
+              {mode !== 'playing' && (
+                <div className="adventure-overlay">
+                  <div className="adventure-menu">
+                    <div className="menu-hamster">
+                      <Hamster />
+                    </div>
+                    <h2>
+                      {mode === 'paused'
+                        ? 'A little breather.'
+                        : hasSave
+                          ? 'Your burrow is waiting.'
+                          : 'A small adventure awaits.'}
+                    </h2>
+                    <p>
+                      {mode === 'paused'
+                        ? 'Your progress is safe. The wild can wait.'
+                        : 'Explore. Gather. Build a place to belong.'}
+                    </p>
                     <button
-                      className={`quest-row ${tracked === q.id ? 'tracked' : ''} ${hasQuest(save, q.id) ? 'is-complete' : ''}`}
-                      key={q.id}
-                      onClick={() => track(q.id)}
-                      aria-label={`Track ${q.title}${hasQuest(save, q.id) ? ', completed' : ''}`}
+                      className="sq-button sq-primary sq-start"
+                      disabled={!loaded}
+                      onClick={() => start(false)}
                     >
-                      <span className={`quest-icon ${hasQuest(save, q.id) ? 'complete-icon' : ''}`}>
-                        <Icon name={hasQuest(save, q.id) ? 'check' : q.icon} size={21} />
-                      </span>
-                      <span className="quest-row-copy">
-                        <strong>{q.title}</strong>
-                        <span className="small muted">
-                          {hasQuest(save, q.id)
-                            ? 'Completed today'
-                            : q.station
-                              ? STATIONS[q.station].name
-                              : 'Collect 5 seeds'}
-                        </span>
-                      </span>
-                      <span className="quest-xp">
-                        +{xpFor[q.id]}
-                        <span>XP</span>
-                      </span>
+                      <Icon name="play" size={17} />
+                      {!loaded
+                        ? 'Loading save…'
+                        : hasSave
+                          ? 'Continue adventure'
+                          : 'Start adventure'}
+                      <Icon name="arrow" size={17} />
+                    </button>
+                    {hasSave && (
+                      <button className="sq-menu-link" onClick={() => open('new-game')}>
+                        New game
+                      </button>
+                    )}
+                    <span className="menu-save-hint">
+                      {hasSave
+                        ? `${save.name} · ${AREA_NAMES[save.area]} · Level ${currentLevel}`
+                        : 'Saved in your browser · Play at your pace'}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+            <nav className="sq-toolbar" aria-label="Adventure panels">
+              {MENU.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => open(m.id)}
+                  aria-label={`Open ${m.name.toLowerCase()}`}
+                >
+                  <Icon name={m.icon} size={19} />
+                  <span>{m.name}</span>
+                  <kbd>{m.key}</kbd>
+                </button>
+              ))}
+            </nav>
+            <div className="sq-game-footer">
+              <p>
+                <span className="desktop-directions">
+                  <kbd>W</kbd>
+                  <kbd>A</kbd>
+                  <kbd>S</kbd>
+                  <kbd>D</kbd> move <span>·</span> <kbd>Shift</kbd> sprint <span>·</span>{' '}
+                </span>
+                Select the ground to walk.
+              </p>
+              <button onClick={() => open('help')} className="sq-text-button">
+                Field guide <Icon name="arrow" size={14} />
+              </button>
+            </div>
+            <p className="adventure-message" role="status">
+              <Icon name="leaf" size={17} />
+              <span>{message}</span>
+            </p>
+          </section>
+          <aside className="adventure-sidebar" aria-label="Adventure overview">
+            <section className="sq-sidebar-section next-step">
+              <div className="sidebar-title">
+                <Icon name="flag" size={19} />
+                <h2>Your next little step</h2>
+              </div>
+              <h3>
+                {!save.tools.axe
+                  ? 'Tools make light work.'
+                  : !save.buildings.shelter
+                    ? 'A place to call home.'
+                    : save.visited.length < 3
+                      ? 'Follow the trail.'
+                      : 'Make your burrow thrive.'}
+              </h3>
+              <p>
+                {!save.tools.axe
+                  ? 'Gather wood, stone and fiber, then craft your first axe.'
+                  : !save.buildings.shelter
+                    ? 'Build a shelter in the forest clearing to rest and recover.'
+                    : save.visited.length < 3
+                      ? 'The path east leads to an abandoned village. The wilderness lies north of it.'
+                      : 'Upgrade your structures, find hidden caches, and finish your daily quests.'}
+              </p>
+              <button
+                className="sq-button"
+                onClick={() =>
+                  open(!save.tools.axe ? 'crafting' : !save.buildings.shelter ? 'building' : 'map')
+                }
+              >
+                {!save.tools.axe
+                  ? 'See the axe recipe'
+                  : !save.buildings.shelter
+                    ? 'Plan your shelter'
+                    : 'Open world map'}
+                <Icon name="arrow" size={15} />
+              </button>
+            </section>
+            <section className="sq-sidebar-section">
+              <div className="sidebar-title">
+                <Icon name="bag" size={19} />
+                <h2>In your satchel</h2>
+                <span>
+                  {bagCount(save)} / {capacity(save)}
+                </span>
+              </div>
+              <div className="satchel-preview">
+                {(['wood', 'stone', 'fiber', 'berry', 'seed', 'ore'] as const).map((i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setSelectedItem(i);
+                      open('inventory');
+                    }}
+                    aria-label={`${ITEMS[i].name}, ${save.inventory[i]}. Open inventory.`}
+                  >
+                    <ItemIcon item={i} />
+                    <strong>{save.inventory[i]}</strong>
+                    <span>{ITEMS[i].name}</span>
+                  </button>
+                ))}
+              </div>
+              <button className="sq-text-button" onClick={() => open('inventory')}>
+                Manage inventory
+                <Icon name="arrow" size={14} />
+              </button>
+            </section>
+            <section className="sq-sidebar-section daily-preview">
+              <div className="sidebar-title">
+                <Icon name="book" size={19} />
+                <h2>A daily discovery</h2>
+                <span>{save.daily.claimed.length} / 3</span>
+              </div>
+              <h3>{firstQuest.name}</h3>
+              <p>{firstQuest.detail}</p>
+              <div className="quest-progress-row">
+                <progress
+                  max={firstQuest.target}
+                  value={Math.min(save.daily[firstQuest.field], firstQuest.target)}
+                  aria-label={firstQuest.name}
+                />
+                <span>
+                  {Math.min(save.daily[firstQuest.field], firstQuest.target)} / {firstQuest.target}
+                </span>
+              </div>
+              <button className="sq-text-button" onClick={() => open('quests')}>
+                Open quest journal
+                <Icon name="arrow" size={14} />
+              </button>
+            </section>
+            <section className="mini-teaser">
+              <Icon name="seed" size={24} />
+              <div>
+                <h2>A pocketful of sunshine</h2>
+                <p>A little seed-collecting detour.</p>
+                <button
+                  className="sq-text-button"
+                  onClick={() => {
+                    setMiniKey((k) => k + 1);
+                    open('minigame');
+                  }}
+                >
+                  Play Sunflower scramble
+                  <Icon name="arrow" size={14} />
+                </button>
+              </div>
+            </section>
+          </aside>
+        </div>
+        <footer className="sq-footer">
+          <span>
+            <Icon name="home" size={15} />
+            Made for small adventures. Progress stays in this browser.
+          </span>
+          <div>
+            <button onClick={exportSave}>
+              Export save
+              <Icon name="download" size={14} />
+            </button>
+            <button onClick={() => open('profile')}>
+              Settings
+              <Icon name="chevron" size={14} />
+            </button>
+          </div>
+        </footer>
+      </main>
+      {panel && (
+        <Dialog
+          title={PANEL_NAMES[panel]}
+          onClose={close}
+          wide={['inventory', 'crafting', 'building', 'quests', 'minigame', 'map'].includes(panel)}
+        >
+          <div className={`sq-panel panel-${panel}`}>
+            {panel === 'inventory' && (
+              <>
+                <div className="panel-summary">
+                  <p>Every little thing has a use.</p>
+                  <span>
+                    {bagCount(save)} / {capacity(save)} carried
+                  </span>
+                </div>
+                <div className="sq-segmented" role="group" aria-label="Inventory filter">
+                  {[
+                    ['all', 'All items'],
+                    ['materials', 'Materials'],
+                    ['supplies', 'Supplies'],
+                  ].map(([id, label]) => (
+                    <button
+                      key={id}
+                      aria-pressed={inventoryFilter === id}
+                      onClick={() => setInventoryFilter(id)}
+                    >
+                      {label}
                     </button>
                   ))}
                 </div>
-                <div className="tracked-quest">
-                  <Icon name="flag" size={16} />
-                  <p>{questList.find((q) => q.id === tracked)?.description}</p>
-                </div>
-                <button className="text-button journal-link" onClick={() => go('missions')}>
-                  Open quest journal <Icon name="arrow" size={17} />
-                </button>
-              </section>
-              <section className="daily-panel">
-                <span className="daily-icon">
-                  <Icon name="sun" size={25} />
-                </span>
-                <div>
-                  <h3>A balanced little day</h3>
-                  <p>Finish a forage and one chain quest.</p>
-                  <div className="daily-bottom">
-                    <span className="small">Daily challenge · +50 XP</span>
-                    {hasQuest(save, 'daily') ? (
-                      <span className="daily-done">
-                        <Icon name="check" size={16} />
-                        Done
-                      </span>
-                    ) : (
+                <div className="inventory-layout">
+                  <div className="inventory-grid">
+                    {allItems.map((i) => (
                       <button
-                        className="text-button"
-                        disabled={!dailyReady}
-                        onClick={() => claim('daily', 'Daily forage and chain discovery completed')}
+                        key={i}
+                        className={`inventory-slot ${selectedItem === i ? 'selected' : ''} ${!save.inventory[i] ? 'empty' : ''}`}
+                        aria-pressed={selectedItem === i}
+                        aria-label={`${ITEMS[i].name}, ${save.inventory[i]}`}
+                        onClick={() => setSelectedItem(i)}
                       >
-                        {dailyReady ? 'Claim XP' : 'In progress'}
-                        {dailyReady && <Icon name="arrow" size={14} />}
+                        <ItemIcon item={i} size={36} />
+                        <strong>{save.inventory[i]}</strong>
+                        <span>{ITEMS[i].name}</span>
                       </button>
-                    )}
-                  </div>
-                </div>
-              </section>
-              <div className="player-progress">
-                <span className="small">
-                  Level {level(save)} · {level(save) < 3 ? 'Valley explorer' : 'Seasoned explorer'}
-                </span>
-                <strong>{totalXp(save) % 400} / 400 XP</strong>
-                <progress max={400} value={totalXp(save) % 400} />
-                <span className="small muted">XP and progress are saved on this device.</span>
-              </div>
-            </aside>
-          </div>
-          <div className="section-title live-section-heading">
-            <h2>Meanwhile, on SqueekChain</h2>
-            <button
-              className="text-button"
-              onClick={() => void refresh()}
-              disabled={Object.values(chain).some((x) => x.loading)}
-            >
-              <Icon name="refresh" size={15} />
-              Refresh data
-            </button>
-          </div>
-          <Dashboard chain={chain} go={(t) => go('explorer', t as ExplorerTab)} />
-          <div className="chain-footnote">
-            <span>
-              <Icon name="shield" size={14} />
-              Official API · 12-block confirmation delay
-            </span>
-            <a
-              className="inline-link"
-              href="#explorer/overview"
-              onClick={() => go('explorer', 'overview')}
-            >
-              See sources & status <Icon name="arrow" size={15} />
-            </a>
-          </div>
-        </div>
-        {view === 'missions' && (
-          <>
-            <div className="journal-overview">
-              <div>
-                <Icon name="book" size={28} />
-                <strong>{completed} of 4 quests complete</strong>
-                <span className="muted">{questDate} · UTC</span>
-              </div>
-              <p>
-                Quests award local game XP once a day. No SQK, NFT, or blockchain transaction is
-                created.
-              </p>
-            </div>
-            <div className="mission-grid">
-              {questList.map((q, i) => (
-                <article
-                  className={`mission-card ${hasQuest(save, q.id) ? 'is-complete' : ''}`}
-                  key={q.id}
-                >
-                  <div className="mission-card-heading">
-                    <span className="quest-icon">
-                      <Icon name={q.icon} size={27} />
-                    </span>
-                    <span className="quest-xp">+{xpFor[q.id]} XP</span>
-                  </div>
-                  <h2>{q.title}</h2>
-                  <p>{q.description}</p>
-                  <ol>
-                    {q.id === 'forage' ? (
-                      <>
-                        <li>Start an adventure in Squeek valley.</li>
-                        <li>Collect at least five sunflower seeds.</li>
-                        <li>Return to the burrow to save your run.</li>
-                      </>
-                    ) : (
-                      <>
-                        <li>
-                          Start an adventure and visit{' '}
-                          {q.station ? STATIONS[q.station].name : 'a station'}.
-                        </li>
-                        <li>
-                          {q.id === 'squeek-friend'
-                            ? 'Look up a Squeek ID from the official API.'
-                            : 'Inspect a validated, safe blockchain record.'}
-                        </li>
-                        <li>Log the evidence to complete the quest.</li>
-                      </>
-                    )}
-                  </ol>
-                  <div className="mission-card-footer">
-                    <span className="small muted">
-                      {q.id === 'forage' ? 'Play quest' : 'Chain discovery quest'}
-                    </span>
-                    {hasQuest(save, q.id) ? (
-                      <span className="status-tag">
-                        <Icon name="check" size={14} />
-                        Completed
-                      </span>
-                    ) : (
-                      <button
-                        className={i === 0 ? 'button primary' : 'button secondary'}
-                        onClick={() => track(q.id)}
-                      >
-                        Track quest <Icon name="arrow" size={16} />
-                      </button>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
-            <section className="achievements-section">
-              <div className="section-title">
-                <h2>A few proud little moments</h2>
-                <span className="small muted">
-                  {earned.filter((a) => a.earned).length} of {earned.length} achievements
-                </span>
-              </div>
-              <div className="achievement-list">
-                {earned.map((a) => (
-                  <div className={`achievement ${a.earned ? 'earned' : ''}`} key={a.id}>
-                    <span className="achievement-icon">
-                      <Icon name={a.icon} size={25} />
-                    </span>
-                    <div>
-                      <strong>{a.name}</strong>
-                      <p>{a.description}</p>
-                    </div>
-                    <span className="small muted">{a.earned ? 'Unlocked' : 'Locked'}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-            <section className="evidence-section">
-              <h2>Discovery log</h2>
-              <p className="muted">
-                Your completed quests and the evidence behind them. Saved on this device.
-              </p>
-              {save.receipts.length ? (
-                <div className="receipt-list">
-                  {[...save.receipts]
-                    .reverse()
-                    .slice(0, 30)
-                    .map((r) => (
-                      <details key={r.date + r.quest}>
-                        <summary>
-                          <span>
-                            {questList.find((q) => q.id === r.quest)?.title ??
-                              'A balanced little day'}
-                          </span>
-                          <span className="small muted">
-                            {r.date} · +{xpFor[r.quest]} XP
-                          </span>
-                        </summary>
-                        <p className="receipt-evidence">{r.evidence}</p>
-                      </details>
                     ))}
+                  </div>
+                  <div className="item-detail">
+                    <ItemIcon item={selectedItem} size={48} />
+                    <h3>{ITEMS[selectedItem].name}</h3>
+                    <p>{ITEMS[selectedItem].detail}</p>
+                    <strong>{save.inventory[selectedItem]} in your satchel</strong>
+                    <div className="item-actions">
+                      {['berry', 'bandage', 'mix'].includes(selectedItem) && (
+                        <button
+                          className="sq-button sq-primary"
+                          disabled={!save.inventory[selectedItem]}
+                          onClick={() => act((s) => consume(s, selectedItem))}
+                        >
+                          {selectedItem === 'bandage'
+                            ? 'Use bandage'
+                            : selectedItem === 'berry'
+                              ? 'Eat berries'
+                              : 'Eat trail mix'}
+                        </button>
+                      )}
+                      <button
+                        className="sq-button"
+                        disabled={!save.inventory[selectedItem]}
+                        onClick={() => act((s) => discard(s, selectedItem))}
+                      >
+                        Drop one
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <Empty
-                  icon="book"
-                  title="Your story starts in the valley"
-                  text="Complete a quest to add your first entry."
-                  action={
-                    <button className="button secondary" onClick={() => go('adventure')}>
-                      Explore the valley <Icon name="arrow" size={17} />
+                <div className="tools-row">
+                  <strong>Tools</strong>
+                  {ownedTools.length ? (
+                    ownedTools.map((k) => (
+                      <span key={k}>
+                        <ItemIcon item={k} size={23} />
+                        {k === 'axe'
+                          ? 'Woodland axe'
+                          : k === 'pickaxe'
+                            ? 'Stone pickaxe'
+                            : 'Explorer pack'}
+                        <Icon name="check" size={14} />
+                      </span>
+                    ))
+                  ) : (
+                    <span>Craft an axe or pickaxe to gather more.</span>
+                  )}
+                </div>
+                <PanelNote>
+                  Stacks combine automatically. Tools stay with you. Build a chest or craft a pack
+                  for more space.
+                </PanelNote>
+              </>
+            )}
+            {panel === 'crafting' && (
+              <>
+                <PanelNote>
+                  Craft tools once; they stay equipped. Recipes consume the materials shown. The
+                  explorer pack needs the burrow workbench.
+                </PanelNote>
+                <div className="recipe-list">
+                  {RECIPES.map((r) => {
+                    const owned = 'tool' in r && r.tool ? save.tools[r.tool] : false;
+                    const blocked = 'workbench' in r && r.workbench && !atHome;
+                    return (
+                      <article className="recipe-row" key={r.id}>
+                        <span className="recipe-sprite">
+                          <ItemIcon
+                            item={r.id as Item | 'axe' | 'pickaxe' | 'backpack'}
+                            size={36}
+                          />
+                        </span>
+                        <div className="recipe-copy">
+                          <h3>
+                            {r.name}
+                            {'amount' in r && (r.amount ?? 0) > 1 ? (
+                              <span> ×{r.amount}</span>
+                            ) : null}
+                          </h3>
+                          <p>{r.detail}</p>
+                          <CostLine cost={r.cost} save={save} />
+                          {blocked && <small>At the burrow workbench</small>}
+                        </div>
+                        <button
+                          className={`sq-button ${!owned && afford(save, r.cost) && !blocked ? 'sq-primary' : ''}`}
+                          disabled={!!owned || !afford(save, r.cost) || !!blocked}
+                          onClick={() => act((s) => craft(s, r.id))}
+                        >
+                          {owned ? (
+                            <>
+                              <Icon name="check" size={15} />
+                              Equipped
+                            </>
+                          ) : (
+                            'Craft'
+                          )}
+                        </button>
+                      </article>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+            {panel === 'building' && (
+              <>
+                <div className="panel-summary">
+                  <p>
+                    {atHome
+                      ? 'You are in the burrow clearing.'
+                      : 'Build and upgrade in the forest burrow clearing.'}
+                  </p>
+                  <span>{Object.values(save.buildings).filter((v) => v > 0).length} / 4 built</span>
+                </div>
+                {!atHome && (
+                  <button
+                    className="sq-button"
+                    onClick={() => {
+                      setNavigateTo(
+                        save.area === 'forest'
+                          ? { x: BURROW.x + 70, y: BURROW.y + 40 }
+                          : WORLDS[save.area].exits.find((e) => e.to !== 'wilderness')!,
+                      );
+                      close();
+                      if (mode !== 'playing') setMode('playing');
+                    }}
+                  >
+                    Walk toward home
+                    <Icon name="arrow" size={16} />
+                  </button>
+                )}
+                <div className="building-grid">
+                  {(Object.keys(BUILDINGS) as Building[]).map((k) => {
+                    const b = BUILDINGS[k],
+                      lv = save.buildings[k];
+                    return (
+                      <article className="building-card" key={k}>
+                        <div className="building-heading">
+                          <Icon name={b.icon} size={26} />
+                          <span>{lv ? `Level ${lv} / 3` : 'Not built'}</span>
+                        </div>
+                        <h3>{b.name}</h3>
+                        <p>{b.detail[Math.max(0, lv - 1)]}</p>
+                        {lv > 0 && lv < 3 && <p className="next-upgrade">Next: {b.detail[lv]}</p>}
+                        {lv < 3 && <CostLine cost={b.costs[lv]} save={save} />}
+                        <button
+                          className="sq-button"
+                          disabled={lv >= 3 || !atHome || !afford(save, b.costs[lv])}
+                          onClick={() => act((s) => build(s, k))}
+                        >
+                          {lv >= 3 ? 'Fully upgraded' : lv ? 'Upgrade' : 'Build'}
+                        </button>
+                        {k === 'shelter' && lv > 0 && (
+                          <button
+                            className="sq-text-button"
+                            disabled={!atHome}
+                            onClick={() => act(rest)}
+                          >
+                            Rest and recover
+                            <Icon name="moon" size={14} />
+                          </button>
+                        )}
+                        {k === 'garden' && lv > 0 && (
+                          <button
+                            className="sq-text-button"
+                            disabled={!atHome}
+                            onClick={() => act(harvest)}
+                          >
+                            Harvest berries
+                            <Icon name="leaf" size={14} />
+                          </button>
+                        )}
+                      </article>
+                    );
+                  })}
+                </div>
+                <PanelNote>
+                  Built structures appear in the world. Chests expand your shared satchel; the
+                  campfire heals within its clearing. Garden growth counts active adventure time.
+                </PanelNote>
+              </>
+            )}
+            {panel === 'quests' && (
+              <>
+                <div className="panel-summary">
+                  <p>New little goals every day. Resets at 00:00 UTC.</p>
+                  <span>{save.daily.date}</span>
+                </div>
+                <div className="journal-list">
+                  {DAILY_QUESTS.map((q) => {
+                    const claimed = save.daily.claimed.includes(q.id),
+                      count = Math.min(save.daily[q.field], q.target);
+                    return (
+                      <article className="journal-quest" key={q.id}>
+                        <span className="journal-icon">
+                          <Icon
+                            name={q.id === 'gather' ? 'leaf' : q.id === 'craft' ? 'hammer' : 'seed'}
+                            size={24}
+                          />
+                        </span>
+                        <div>
+                          <h3>{q.name}</h3>
+                          <p>{q.detail}</p>
+                          <div className="quest-progress-row">
+                            <progress max={q.target} value={count} aria-label={q.name} />
+                            <span>
+                              {count} / {q.target}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="journal-reward">
+                          <strong>+{q.xp} XP</strong>
+                          {q.id === 'run' && count === 0 ? (
+                            <button
+                              className="sq-button"
+                              onClick={() => {
+                                setMiniKey((k) => k + 1);
+                                open('minigame');
+                              }}
+                            >
+                              Play
+                            </button>
+                          ) : (
+                            <button
+                              className="sq-button"
+                              disabled={claimed || count < q.target}
+                              onClick={() => act((s) => claimQuest(s, q.id))}
+                            >
+                              {claimed ? 'Claimed' : 'Claim XP'}
+                            </button>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+                <div className="section-divider">
+                  <h3>Little milestones</h3>
+                  <span>
+                    {earned.filter((a) => a.earned).length} / {earned.length} unlocked
+                  </span>
+                </div>
+                <div className="milestone-list">
+                  {earned.map((a) => (
+                    <div key={a.name} className={a.earned ? 'is-earned' : ''}>
+                      <Icon name={a.earned ? 'check' : 'trophy'} size={22} />
+                      <div>
+                        <strong>{a.name}</strong>
+                        <p>{a.detail}</p>
+                      </div>
+                      <span>{a.earned ? 'Unlocked' : 'Locked'}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+            {panel === 'map' && (
+              <>
+                <PanelNote>
+                  The forest trail leads east to the village. Follow the village trail north to the
+                  wilderness. Walk to a marker and interact to cross.
+                </PanelNote>
+                <div className="world-map-cards">
+                  {(['forest', 'village', 'wilderness'] as Area[]).map((a, i) => (
+                    <article
+                      key={a}
+                      className={`area-card area-${a} ${a === save.area ? 'current-area' : ''}`}
+                    >
+                      <div className="area-pixel-scene" aria-hidden="true">
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                        <i>{i + 1}</i>
+                      </div>
+                      <div>
+                        <h3>{AREA_NAMES[a]}</h3>
+                        <span>
+                          {a === save.area
+                            ? 'You are here'
+                            : save.visited.includes(a)
+                              ? 'Explored'
+                              : 'Unexplored'}
+                        </span>
+                        <p>{AREA_HINTS[a]}</p>
+                        <p className="area-materials">
+                          {a === 'forest'
+                            ? 'Wood · berries · fiber'
+                            : a === 'village'
+                              ? 'Stone · herbs · old ruins'
+                              : 'Iron ore · herbs · thorns'}
+                        </p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+                <div className="travel-actions">
+                  {WORLDS[save.area].exits.map((e) => (
+                    <button
+                      key={e.to}
+                      className="sq-button"
+                      onClick={() => {
+                        setNavigateTo({ ...e });
+                        close();
+                        if (mode !== 'playing') start(false);
+                        setMessage(
+                          `Following the trail to ${AREA_NAMES[e.to]}. Interact at the marker to cross.`,
+                        );
+                      }}
+                    >
+                      Walk {e.to === 'wilderness' ? 'north' : 'the trail'} to {AREA_NAMES[e.to]}
+                      <Icon name="arrow" size={15} />
                     </button>
+                  ))}
+                </div>
+                <PanelNote>
+                  Violet thorn patches hurt. Dark mud slows you. Water and ruined walls block your
+                  path. Hidden caches reveal themselves when you get close.
+                </PanelNote>
+              </>
+            )}
+            {panel === 'help' && (
+              <>
+                <div className="help-intro">
+                  <Hamster />
+                  <p>
+                    Leave the burrow with empty paws. Come home with a story, a few berries, and
+                    enough wood for a roof.
+                  </p>
+                </div>
+                <dl className="control-list">
+                  <div>
+                    <dt>Move</dt>
+                    <dd>
+                      WASD, arrow keys, or select a place on the ground. On a phone, use the
+                      direction buttons.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Gather & interact</dt>
+                    <dd>
+                      Stand beside a resource and press E, or select it to walk over and gather. Let
+                      patches regrow for 75 active seconds.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Sprint</dt>
+                    <dd>
+                      Hold Shift or turn Sprint on. It spends stamina; standing still restores it.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Craft & build</dt>
+                    <dd>
+                      I opens your satchel, C crafting, B building, J quests, and M the map. Build
+                      in the forest burrow clearing.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Stay well</dt>
+                    <dd>
+                      Eat berries or trail mix from your inventory. Use bandages, rest in a shelter,
+                      or warm up by a campfire. Thorns cost 12 health each second.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Explore</dt>
+                    <dd>
+                      Follow the path east to the village, then north to the wilderness. Press E at
+                      a trail marker to cross. Fainting returns you home and costs up to 20 XP;
+                      supplies are kept.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Save & pause</dt>
+                    <dd>
+                      Escape pauses. Progress saves every 5 seconds and when you pause or leave.
+                      Export a save for a backup. Clearing browser data removes local progress.
+                    </dd>
+                  </div>
+                </dl>
+                <button
+                  className="sq-button sq-primary"
+                  onClick={() => {
+                    close();
+                    if (mode !== 'playing') start(false);
+                  }}
+                >
+                  Back to adventure
+                  <Icon name="arrow" size={16} />
+                </button>
+              </>
+            )}
+            {panel === 'profile' && (
+              <>
+                <input
+                  ref={importRef}
+                  type="file"
+                  accept=".json,application/json"
+                  hidden
+                  tabIndex={-1}
+                  aria-label="Import SqueekQuest save"
+                  onChange={(e) => void importSave(e.target.files?.[0])}
+                />
+
+                <div className="profile-summary">
+                  <Hamster face />
+                  <div>
+                    <strong>Level {currentLevel} explorer</strong>
+                    <p>
+                      {save.xp} total XP · {Math.floor(save.playSeconds / 60)} minutes exploring
+                    </p>
+                  </div>
+                </div>
+                <form
+                  className="rename-form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const name = String(new FormData(e.currentTarget).get('name') ?? '').trim();
+                    if (!name) {
+                      setMessage('Enter an explorer name between 1 and 24 characters.');
+                      return;
+                    }
+                    setSetting({ name: name.slice(0, 24) });
+                    setMessage('Explorer name saved.');
+                  }}
+                >
+                  <label htmlFor="explorer-name">Explorer name</label>
+                  <div>
+                    <input
+                      id="explorer-name"
+                      name="name"
+                      autoComplete="nickname"
+                      required
+                      minLength={1}
+                      maxLength={24}
+                      value={nameDraft}
+                      onChange={(e) => setNameDraft(e.target.value)}
+                    />
+                    <button className="sq-button" type="submit">
+                      Save name
+                    </button>
+                  </div>
+                </form>
+                <div className="save-actions">
+                  <button className="sq-button" onClick={exportSave}>
+                    <Icon name="download" size={17} />
+                    Export save
+                  </button>
+                  <button className="sq-button" onClick={() => importRef.current?.click()}>
+                    Import save
+                  </button>
+                </div>
+                <PanelNote>
+                  Import replaces this browser’s adventure after the file is validated. Export first
+                  if you want to keep both. Previous version profiles are also supported.
+                </PanelNote>
+                {save.legacyAchievements.length > 0 && (
+                  <p className="legacy-note">
+                    Your {save.legacyAchievements.length} legacy discovery achievements are
+                    preserved in your save.
+                  </p>
+                )}
+                <div className="section-divider">
+                  <h3>Your foraging records</h3>
+                  <span>{save.runs.length} / 50 saved</span>
+                </div>
+                {save.runs.length ? (
+                  <ol className="run-list">
+                    {[...save.runs]
+                      .sort((a, b) => a.seconds - b.seconds)
+                      .slice(0, 10)
+                      .map((r, i) => (
+                        <li key={r.id}>
+                          <span>{i + 1}</span>
+                          <strong>{r.name}</strong>
+                          <span>
+                            {r.seeds} seeds · {r.seconds}s
+                          </span>
+                        </li>
+                      ))}
+                  </ol>
+                ) : (
+                  <p className="panel-note">
+                    Finish Sunflower scramble to save your first run here.
+                  </p>
+                )}
+                <button className="sq-text-button danger-link" onClick={() => open('new-game')}>
+                  Start a new game
+                  <Icon name="refresh" size={15} />
+                </button>
+              </>
+            )}
+            {panel === 'minigame' && (
+              <>
+                <PanelNote>
+                  Collect at least five sunflower seeds and return to the burrow. Seeds go into your
+                  satchel if there is room; daily XP is claimed in your journal.
+                </PanelNote>
+                <GameMap
+                  key={miniKey}
+                  active={panel === 'minigame'}
+                  onStart={() => {
+                    if (!saveEnabled.current) {
+                      saveEnabled.current = true;
+                      setHasSave(true);
+                    }
+                    if (save.sound) wakeAudio();
+                  }}
+                  onSound={sound}
+                  onFinish={(seeds, seconds) => {
+                    act((s) => recordRun(s, seeds, seconds));
+                    setMiniNote(`Home with ${seeds} seeds in ${seconds} seconds. Run saved.`);
+                  }}
+                  onStation={(station) =>
+                    setMiniNote(
+                      station === 'blocks'
+                        ? 'The old wheel creaks in the breeze. More seeds await.'
+                        : station === 'events'
+                          ? 'Birdsong carries across the valley. Keep foraging.'
+                          : 'A quiet grove. A good place to fill your cheeks.',
+                    )
                   }
                 />
-              )}
-            </section>
-          </>
-        )}
-        {view === 'explorer' && (
-          <>
-            <div className="explorer-toolbar">
-              <span className="small muted">Sepolia testnet · Read-only exploration</span>
-              <button
-                className="button secondary"
-                onClick={() => void refresh()}
-                disabled={Object.values(chain).some((x) => x.loading)}
-              >
-                <Icon name="refresh" size={16} />
-                {Object.values(chain).some((x) => x.loading) ? 'Refreshing…' : 'Refresh data'}
-              </button>
-            </div>
-            <Explorer
-              chain={chain}
-              tab={explorerTab}
-              setTab={(t) => go('explorer', t)}
-              refresh={refresh}
-              inspectSettlement={(record) => setModal({ type: 'settlement', record })}
-              inspectEvent={(record) => setModal({ type: 'event', record })}
-            />
-          </>
-        )}
-        {view === 'leaderboard' && (
-          <Leaderboard
-            save={save}
-            go={() => go('adventure')}
-            edit={() => setModal({ type: 'profile' })}
-          />
-        )}
-        <div className="sr-only" role="status">
-          {announcement}
-        </div>
-        <div className={`announcement ${announcement ? 'visible' : ''}`}>
-          {announcement && (
-            <>
-              <Icon name="check" size={18} />
-              <span>{announcement}</span>
-              <button
-                className="icon-button"
-                onClick={() => setAnnouncement('')}
-                aria-label="Dismiss update"
-              >
-                <Icon name="close" size={16} />
-              </button>
-            </>
-          )}
-        </div>
-      </main>
-      <footer className="site-footer">
-        <span className="footer-brand">
-          <Icon name="leaf" size={17} />
-          Made for curious paws.
-        </span>
-        <span className="footer-disclaimer">Independent community project · Sepolia testnet</span>
-        <div>
-          <a href="https://squeekchain.com/" target="_blank" rel="noreferrer">
-            SqueekChain <Icon name="external" size={13} />
-          </a>
-          <a href="https://docs.squeekchain.com/" target="_blank" rel="noreferrer">
-            Documentation <Icon name="external" size={13} />
-          </a>
-        </div>
-      </footer>
-      {modal?.type === 'help' && (
-        <Dialog title="A little guide to the valley" onClose={() => setModal(null)}>
-          <div className="help-intro">
-            <span className="help-hamster">
-              <Hamster />
-            </span>
-            <p>
-              You&apos;re a curious hamster in a valley with a real connection to SqueekChain.
-              Explore at your own pace.
-            </p>
-          </div>
-          <ol className="help-steps">
-            <li>
-              <strong>Fill your cheeks.</strong>
-              <span>
-                Start an adventure, collect 5 seeds, then return to the burrow. Click a seed to walk
-                to it, use arrow keys or WASD, or use the touch direction buttons.
-              </span>
-            </li>
-            <li>
-              <strong>Follow your curiosity.</strong>
-              <span>
-                Select a station to walk there. At Wheel works, the Signal station, and Squeek
-                grove, inspect real API records and log a discovery.
-              </span>
-            </li>
-            <li>
-              <strong>Grow as an explorer.</strong>
-              <span>
-                Finish quests for local XP and achievements. Quests reset at 00:00 UTC. Every 400 XP
-                adds a level.
-              </span>
-            </li>
-          </ol>
-          <div className="info-block">
-            <Icon name="shield" />
-            <p>
-              No wallet or funds needed. Game seeds and XP have no monetary value. All progress and
-              leaderboard runs stay in this browser; they are not shared or secured on-chain.
-            </p>
-          </div>
-          <button className="button primary" onClick={() => setModal(null)}>
-            Back to exploring <Icon name="arrow" size={17} />
-          </button>
-        </Dialog>
-      )}
-      {modal?.type === 'profile' && (
-        <Profile
-          save={save}
-          onClose={() => setModal(null)}
-          onSave={(name) => {
-            setSave((s) => ({ ...s, name }));
-            setAnnouncement('Explorer name saved on this device.');
-            setModal(null);
-          }}
-        />
-      )}
-      {modal?.type === 'station' && (
-        <Dialog title={STATIONS[modal.station].name} onClose={() => setModal(null)} wide>
-          {modal.station === 'blocks' && (
-            <>
-              <p className="dialog-lead">
-                Follow the wheel&apos;s work into a settled Squeek block. Log a real settlement to
-                complete your discovery.
-              </p>
-              <Notice resource={chain.settlements} onRetry={() => void refresh(['settlements'])} />
-              {chain.settlements.data?.recentSettlements[0] ? (
-                <>
-                  <SettlementDetail record={chain.settlements.data.recentSettlements[0]} />
-                  <Source
-                    path={paths.settlements}
-                    checkedAt={chain.settlements.checkedAt}
-                    safeBlock={chain.settlements.data.chain.safeThroughBlock}
-                  />
-                  <button
-                    className="button primary claim-button"
-                    disabled={!healthy('settlements') || hasQuest(save, 'block-scout')}
-                    onClick={() => claimSettlement(chain.settlements.data!.recentSettlements[0])}
-                  >
-                    {hasQuest(save, 'block-scout') ? 'Logged for today' : 'Log discovery · +120 XP'}
-                    <Icon name="check" size={17} />
-                  </button>
-                </>
-              ) : (
-                !chain.settlements.loading &&
-                !chain.settlements.error && (
-                  <Empty
-                    icon="cube"
-                    title="Waiting for settled work"
-                    text="No completed Squeek blocks in this 24-hour response. Check back after the wheel runs."
-                  />
-                )
-              )}
-            </>
-          )}
-          {modal.station === 'events' && (
-            <>
-              <p className="dialog-lead">
-                The valley is full of signals. Choose a real, safe event and inspect the record
-                behind it.
-              </p>
-              <Notice resource={chain.events} onRetry={() => void refresh(['events'])} />
-              <div className="event-list station-events">
-                {chain.events.data?.events.slice(0, 5).map((e) => (
-                  <button
-                    className="event-row"
-                    key={e.id}
-                    onClick={() => setModal({ type: 'event', record: e })}
-                  >
-                    <span className="row-icon">
-                      <Icon name="radio" />
-                    </span>
-                    <span className="event-row-main">
-                      <strong>{e.type.replaceAll('_', ' ').replace('.', ' · ')}</strong>
-                      <span className="small muted">
-                        Ethereum block #{formatUint(e.source.blockNumber)}
-                      </span>
-                    </span>
-                    <Icon name="chevron" size={17} />
-                  </button>
-                ))}
-              </div>
-              {chain.events.data && !chain.events.data.events.length && (
-                <Empty
-                  icon="radio"
-                  title="No safe events in this response"
-                  text="Refresh later to discover new SqueekChain activity."
-                />
-              )}
-              <Source
-                path={paths.events}
-                checkedAt={chain.events.checkedAt}
-                safeBlock={chain.events.data?.chain.safeThroughBlock}
-              />
-            </>
-          )}
-          {modal.station === 'nft' && (
-            <>
-              <p className="dialog-lead">
-                Meet a real Genesis NFT. Choose an ID, inspect its identity, then log your new
-                friend.
-              </p>
-              <NftLookup onObserve={hasQuest(save, 'squeek-friend') ? undefined : observeNft} />
-              {hasQuest(save, 'squeek-friend') && (
-                <p className="status-tag">
-                  <Icon name="check" size={15} />
-                  Squeek friend quest completed today.
+                <p className="mini-status" role="status">
+                  {miniNote}
                 </p>
-              )}
-            </>
-          )}
-        </Dialog>
-      )}
-      {modal?.type === 'settlement' && (
-        <Dialog title="A block discovery" onClose={() => setModal(null)} wide>
-          <SettlementDetail record={modal.record} />
-          {visited.includes('blocks') ? (
-            <button
-              className="button primary claim-button"
-              onClick={() => claimSettlement(modal.record)}
-              disabled={!healthy('settlements') || hasQuest(save, 'block-scout')}
-            >
-              {hasQuest(save, 'block-scout') ? 'Logged for today' : 'Log discovery · +120 XP'}
-              <Icon name="check" size={17} />
-            </button>
-          ) : (
-            <p className="info-block">
-              <Icon name="compass" />
-              Visit Wheel works in the adventure to log this discovery as a quest.
+                <button className="sq-text-button" onClick={() => open('quests')}>
+                  See daily foraging quest
+                  <Icon name="arrow" size={15} />
+                </button>
+              </>
+            )}
+            {panel === 'new-game' && (
+              <>
+                <p className="new-game-copy">
+                  This replaces the adventure saved in this browser, including your inventory,
+                  buildings, quests and XP. Export your save first if you want to keep it.
+                </p>
+                <div className="save-actions">
+                  <button className="sq-button" onClick={exportSave}>
+                    Export current save
+                    <Icon name="download" size={16} />
+                  </button>
+                  <button className="sq-button" onClick={close}>
+                    Keep playing
+                  </button>
+                  <button className="sq-button sq-danger" onClick={() => start(true)}>
+                    Start new game
+                  </button>
+                </div>
+              </>
+            )}
+            <p className="panel-feedback" role="status">
+              {message}
             </p>
-          )}
-        </Dialog>
-      )}
-      {modal?.type === 'event' && (
-        <Dialog title="A signal worth following" onClose={() => setModal(null)} wide>
-          <EventDetail event={modal.record} />
-          {visited.includes('events') ? (
-            <button
-              className="button primary claim-button"
-              onClick={() => claimEvent(modal.record)}
-              disabled={!healthy('events') || hasQuest(save, 'signal-hunter')}
-            >
-              {hasQuest(save, 'signal-hunter') ? 'Logged for today' : 'Log discovery · +150 XP'}
-              <Icon name="check" size={17} />
-            </button>
-          ) : (
-            <p className="info-block">
-              <Icon name="compass" />
-              Visit the Signal station in the adventure to log this event as a quest.
-            </p>
-          )}
-        </Dialog>
-      )}
-    </>
-  );
-}
-
-function Profile({
-  save,
-  onSave,
-  onClose,
-}: {
-  save: Save;
-  onSave: (name: string) => void;
-  onClose: () => void;
-}) {
-  const [name, setName] = useState(save.name);
-  const [error, setError] = useState('');
-  return (
-    <Dialog title="Your explorer profile" onClose={onClose}>
-      <div className="profile-summary">
-        <Hamster />
-        <div>
-          <h3>{save.name}</h3>
-          <p>
-            Level {level(save)} · {totalXp(save)} local XP
-          </p>
-        </div>
-      </div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const n = name.trim();
-          if (!n || n.length > 24) {
-            setError('Choose a name between 1 and 24 characters.');
-            (e.currentTarget.querySelector('input') as HTMLInputElement)?.focus();
-            return;
-          }
-          onSave(n);
-        }}
-      >
-        <label className="form-label" htmlFor="explorer-name">
-          Explorer name
-        </label>
-        <input
-          id="explorer-name"
-          name="nickname"
-          autoComplete="nickname"
-          maxLength={24}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          aria-invalid={!!error}
-          aria-describedby={error ? 'name-error' : 'name-hint'}
-        />
-        {error && (
-          <p className="error-text" id="name-error" role="alert">
-            {error}
-          </p>
-        )}
-        <p id="name-hint" className="small muted">
-          Stored only in this browser. You can change it any time.
-        </p>
-        <button className="button primary" type="submit">
-          Save explorer name <Icon name="check" size={17} />
-        </button>
-      </form>
-    </Dialog>
-  );
-}
-function Leaderboard({ save, go, edit }: { save: Save; go: () => void; edit: () => void }) {
-  const [sort, setSort] = useState('fastest');
-  const runs = [...save.runs].sort((a, b) =>
-    sort === 'fastest'
-      ? a.seconds - b.seconds || b.seeds - a.seeds
-      : Date.parse(b.date) - Date.parse(a.date),
-  );
-  function download() {
-    const b = new Blob(
-      [
-        JSON.stringify(
-          {
-            game: 'SqueekQuest',
-            scope: 'This device only',
-            exportedAt: new Date().toISOString(),
-            ...save,
-          },
-          null,
-          2,
-        ),
-      ],
-      { type: 'application/json' },
-    );
-    const u = URL.createObjectURL(b);
-    const a = document.createElement('a');
-    a.href = u;
-    a.download = 'squeekquest-progress.json';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(u), 1000);
-  }
-  return (
-    <section className="leaderboard-section">
-      <div className="leaderboard-banner">
-        <span className="trophy-art">
-          <Icon name="trophy" size={44} />
-        </span>
-        <div>
-          <h2>Little legends, local to you.</h2>
-          <p>
-            This leaderboard ranks your completed runs on this device. There is no shared or global
-            ranking.
-          </p>
-        </div>
-        <button className="button secondary" onClick={edit}>
-          <Icon name="edit" size={16} />
-          Edit name
-        </button>
-      </div>
-      <div className="filter-row">
-        <label className="select-field">
-          <span>Sort runs</span>
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
-            <option value="fastest">Fastest first</option>
-            <option value="recent">Most recent</option>
-          </select>
-        </label>
-        <button className="text-button" onClick={download}>
-          <Icon name="download" size={17} />
-          Export progress
-        </button>
-      </div>
-      {runs.length ? (
-        <div className="leaderboard-table">
-          <div className="leaderboard-head">
-            <span>Rank</span>
-            <span>Explorer</span>
-            <span>Seeds</span>
-            <span>Time</span>
-            <span>Completed</span>
           </div>
-          {runs.map((r, i) => (
-            <div className="leaderboard-row" key={r.id}>
-              <span className={i === 0 ? 'rank-first' : ''}>
-                {i === 0 ? <Icon name="trophy" size={19} /> : i + 1}
-              </span>
-              <strong>{r.name}</strong>
-              <span>{r.seeds}</span>
-              <span>{r.seconds}s</span>
-              <span className="small muted">{new Date(r.date).toLocaleDateString()}</span>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <Empty
-          icon="trophy"
-          title="Your first adventure belongs here"
-          text="Finish a foraging run to set a record. Find five seeds and return to the burrow."
-          action={
-            <button className="button primary" onClick={go}>
-              Start exploring <Icon name="arrow" size={17} />
-            </button>
-          }
-        />
+        </Dialog>
       )}
-      <p className="small muted">
-        Up to 50 completed runs are saved. Daily foraging XP is awarded once per UTC day; replaying
-        improves your run records.
-      </p>
-    </section>
+    </div>
   );
 }

@@ -1,3 +1,5 @@
+> Historical integration record from the first SqueekQuest version. The current survival adventure makes no API or blockchain requests. These modules and fixtures are retained as source history only; this document does not describe active runtime behavior. See the root README and current validation report.
+
 # SqueekChain integration record
 
 All production reads use the official [API](https://api.squeekchain.com/v1/status). No RPC or signing call is made. The app follows the [published deployment](https://docs.squeekchain.com/developers/) on Ethereum Sepolia (11155111), release `core-sepolia-20261103`, revision 7, protocol `staged-launch-1`, reward model `funded-stream-q128-1`.
