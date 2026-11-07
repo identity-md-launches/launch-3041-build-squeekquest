@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-07T05:17:18.838Z",
+  "results": [
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "httpStatus": 200,
+      "allowOrigin": "*",
+      "exposeHeaders": "ETag,X-Squeek-Settlement-Source,X-Squeek-Settlement-Fallback-Reason,Retry-After,X-Request-Id"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/transactions/0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+      "httpStatus": 200,
+      "allowOrigin": "*",
+      "exposeHeaders": "bypass-429-option,x-ratelimit-reset,x-ratelimit-limit,x-ratelimit-remaining,api-v2-temp-token"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "OPTIONS",
+      "httpStatus": 204,
+      "allowOrigin": "*",
+      "allowHeaders": "if-none-match"
+    }
+  ],
+  "limitation": "HTTP header verification only. Direct browser API networking in this sandbox remains unavailable; browser interaction reports identify their test-only transport."
+}

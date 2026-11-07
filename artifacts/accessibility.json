@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-07T03:29:00.040Z",
+  "checkedAt": "2026-11-07T05:13:41.730Z",
   "scope": "Automated axe WCAG checks in two themes and two widths across menu, game and ten panels; not a screen-reader session or compliance certification.",
   "results": [
     {
@@ -218,7 +218,7 @@
       "theme": "light",
       "width": 1440,
       "view": "profile",
-      "passes": 19,
+      "passes": 20,
       "overflow": false,
       "violations": [],
       "incomplete": []
@@ -448,7 +448,7 @@
       "theme": "dark",
       "width": 1440,
       "view": "profile",
-      "passes": 19,
+      "passes": 20,
       "overflow": false,
       "violations": [],
       "incomplete": []

@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 
 const paths: Record<string, string> = {
+  wallet: 'M3 6h16v15H3V6Zm0 0V3h14v3m-2 6h6v5h-6v-5Zm3 2.5h.01',
   bolt: 'm13 2-9 12h7l-1 8 10-12h-7Z',
   heart:
     'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z',

@@ -1,0 +1,1986 @@
+{
+  "tx": {
+    "hash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+    "block_number": 12081156,
+    "confirmations": 179,
+    "status": "ok",
+    "result": "success",
+    "timestamp": "2026-11-07T04:00:36.000000Z",
+    "from": {
+      "ens_domain_name": null,
+      "hash": "0x4c63E6365DF8471f4f45f1A9614b51b633b9B5a7",
+      "implementations": [],
+      "is_contract": false,
+      "is_scam": false,
+      "is_verified": false,
+      "metadata": null,
+      "name": null,
+      "private_tags": [],
+      "proxy_type": null,
+      "public_tags": [],
+      "reputation": "ok",
+      "watchlist_names": []
+    },
+    "to": {
+      "ens_domain_name": null,
+      "hash": "0xFD6C166D4B8E2962E65746a13e5a0797CD4dE0c4",
+      "implementations": [
+        {
+          "address_hash": "0x6869D6102696243Fd17013ab955d99CD0c522ad3",
+          "name": "SqueekCore"
+        }
+      ],
+      "is_contract": true,
+      "is_scam": false,
+      "is_verified": true,
+      "metadata": null,
+      "name": "SqueekProxy",
+      "private_tags": [],
+      "proxy_type": "eip1967",
+      "public_tags": [],
+      "reputation": "ok",
+      "watchlist_names": []
+    }
+  },
+  "block": {
+    "hash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a",
+    "height": 12081156,
+    "timestamp": "2026-11-07T04:00:36.000000Z",
+    "type": "block"
+  },
+  "logs": {
+    "items": [
+      {
+        "address": {
+          "ens_domain_name": null,
+          "hash": "0xFD6C166D4B8E2962E65746a13e5a0797CD4dE0c4",
+          "implementations": [
+            {
+              "address_hash": "0x6869D6102696243Fd17013ab955d99CD0c522ad3",
+              "name": "SqueekCore"
+            }
+          ],
+          "is_contract": true,
+          "is_scam": false,
+          "is_verified": true,
+          "metadata": null,
+          "name": "SqueekProxy",
+          "private_tags": [],
+          "proxy_type": "eip1967",
+          "public_tags": [],
+          "reputation": "ok",
+          "watchlist_names": []
+        },
+        "block_hash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a",
+        "block_number": 12081156,
+        "transaction_hash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+        "data": "0x00000000000000000000000000000000000000000000000000000000000001610000000000000000000000000000000000000000000000000000000000002fa30000000000000000000000000000000000000000000000000000012725a195df000000000000000000000000000000000000000000000000000000000000235d96c9673bee39367184913acea4cb32f52fafb8e5bcff6dc2b231c90514e70aed",
+        "topics": [
+          "0x6f7efb5b00900843c192802a77e52da9f18fee1daa04089fc4bf159963c7968c",
+          "0x00000000000000000000000000000000000000000000000000000000000001e1",
+          null,
+          null
+        ],
+        "index": 294
+      },
+      {
+        "address": {
+          "ens_domain_name": null,
+          "hash": "0xFD6C166D4B8E2962E65746a13e5a0797CD4dE0c4",
+          "implementations": [
+            {
+              "address_hash": "0x6869D6102696243Fd17013ab955d99CD0c522ad3",
+              "name": "SqueekCore"
+            }
+          ],
+          "is_contract": true,
+          "is_scam": false,
+          "is_verified": true,
+          "metadata": null,
+          "name": "SqueekProxy",
+          "private_tags": [],
+          "proxy_type": "eip1967",
+          "public_tags": [],
+          "reputation": "ok",
+          "watchlist_names": []
+        },
+        "block_hash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a",
+        "block_number": 12081156,
+        "transaction_hash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+        "data": "0x000000000000000000000000000000000000000000000000000000000000012700000000000000000000000000000000000000000000000000000000000001e000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000002fa30000000000000000000000000000000000000000000000000000012725a195df",
+        "topics": [
+          "0x66d3b3a53f97d0ca9c3e3df2d021d50358ee2110678472c2dd7ebd9e2834634d",
+          "0x1b2427c7ea6c9b58fcf8ffe16c6f6cd873bf25cb0193cb605baaa0e9fd074df2",
+          "0x00000000000000000000000071f47c02431e6995cf6f757c14bc6bfa443d0a86",
+          "0x00000000000000000000000000000000000000000000000000000000000001e1"
+        ],
+        "index": 295
+      }
+    ],
+    "next_page_params": null
+  },
+  "core": {
+    "schemaVersion": 1,
+    "installationId": "sepolia-core-sepolia-20261103",
+    "status": "available",
+    "chain": {
+      "target": "sepolia",
+      "chainId": "11155111",
+      "confirmations": "12",
+      "deploymentBlock": "12057556",
+      "indexedThroughBlock": "12081191",
+      "safeThroughBlock": "12081180"
+    },
+    "identities": {
+      "factory": "0xfb659c3580bed5426b855c76c34cfb8450511dbc",
+      "core": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+      "proxyAdmin": "0x21b3cb8f00d0d47b246a57d04152d6e11d24abb3",
+      "proxyAdminOwner": "0xaa2e9621de9ac23cbb36d1a1bac4c8b0694cc30d",
+      "operatorTimelock": "0xaa2e9621de9ac23cbb36d1a1bac4c8b0694cc30d",
+      "operatorProposer": "0x3a83a80b9249eca85a9540ec878bd968f13cb676",
+      "proxyImplementation": "0x6869d6102696243fd17013ab955d99cd0c522ad3",
+      "proxyAdminSlot": "0x21b3cb8f00d0d47b246a57d04152d6e11d24abb3"
+    },
+    "configuration": {
+      "streamId": "0xa78faebd5aad38b4f90c7f61b9c5c10e8d9b9afe74ebfc2e82ca98b7e57ed562",
+      "genesisTimestamp": "1793735400",
+      "roundDuration": "600",
+      "maxWorkPerRound": "10000",
+      "maxRoundsPerBatch": "16",
+      "guardian": "0xb2826926ef5cffebef86037c27b48ce345ed691f",
+      "reporter": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86",
+      "initialWorkPerThousandBlocks": "10875",
+      "targetBlocksPerActiveRound": "40",
+      "difficultySmoothingRounds": "30",
+      "blockUnitsPerBlock": "1000000000"
+    },
+    "core": {
+      "cumulativeWork": "12195",
+      "cumulativeBlockUnits": "1267646698975",
+      "blockHeight": "1267",
+      "blockProgress": "646698975",
+      "workPerThousandBlocks": "9053",
+      "settledThroughRound": "481",
+      "authorizationNonce": "296",
+      "paused": false
+    },
+    "implementation": {
+      "codeAddress": "0x6869d6102696243fd17013ab955d99cd0c522ad3",
+      "codeVersion": "3",
+      "storageLayoutDigest": "0x9a9c008e029460808209571703fbf2679785874e0e6d3232f16a864d12abcb20",
+      "runtimeHash": "0x65b5780a4fccafedeca1260806364d2bb512b4501c097253f792ae2839565a9c"
+    },
+    "governance": {
+      "operationId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "operationKind": "None",
+      "operationState": "None"
+    },
+    "source": {
+      "eventName": "BatchSettled",
+      "blockNumber": "12081156",
+      "blockHash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a",
+      "blockTimestamp": "1794024036",
+      "transactionHash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+      "transactionIndex": "170",
+      "logIndex": "295"
+    },
+    "events": [
+      {
+        "id": "179402403600000000111551110000000012081156000000000000017050000000000000295",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12081156",
+        "blockHash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a",
+        "blockTimestamp": "1794024036",
+        "transactionHash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+        "transactionIndex": "170",
+        "logIndex": "295",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x1b2427c7ea6c9b58fcf8ffe16c6f6cd873bf25cb0193cb605baaa0e9fd074df2"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "481"
+          },
+          {
+            "name": "nonce",
+            "value": "295"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "480"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "1"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "12195"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1267646698975"
+          }
+        ]
+      },
+      {
+        "id": "179402403600000000111551110000000012081156000000000000017050000000000000294",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "RoundRecorded",
+        "blockNumber": "12081156",
+        "blockHash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a",
+        "blockTimestamp": "1794024036",
+        "transactionHash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+        "transactionIndex": "170",
+        "logIndex": "294",
+        "arguments": [
+          {
+            "name": "roundId",
+            "value": "481"
+          },
+          {
+            "name": "work",
+            "value": "353"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "12195"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1267646698975"
+          },
+          {
+            "name": "workPerThousandBlocks",
+            "value": "9053"
+          },
+          {
+            "name": "dataHash",
+            "value": "0x96c9673bee39367184913acea4cb32f52fafb8e5bcff6dc2b231c90514e70aed"
+          }
+        ]
+      },
+      {
+        "id": "179402343600000000111551110000000012081106000000000000005750000000000000081",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12081106",
+        "blockHash": "0x888b62ae0dea6c5a66f681be5d4a283897abde11eb3b1f1d86b2d8d4ec843779",
+        "blockTimestamp": "1794023436",
+        "transactionHash": "0x12f9d3d8e1e93f68ebf128c09f44e8fcc1ac61c1ea74490053d651230bb52926",
+        "transactionIndex": "57",
+        "logIndex": "81",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xc72878b746cc8c689aa627ea0554aa196a9833b9cbe976530b87face6b81ae28"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "480"
+          },
+          {
+            "name": "nonce",
+            "value": "294"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "479"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "1"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11842"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1228688526588"
+          }
+        ]
+      },
+      {
+        "id": "179402343600000000111551110000000012081106000000000000005750000000000000080",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "RoundRecorded",
+        "blockNumber": "12081106",
+        "blockHash": "0x888b62ae0dea6c5a66f681be5d4a283897abde11eb3b1f1d86b2d8d4ec843779",
+        "blockTimestamp": "1794023436",
+        "transactionHash": "0x12f9d3d8e1e93f68ebf128c09f44e8fcc1ac61c1ea74490053d651230bb52926",
+        "transactionIndex": "57",
+        "logIndex": "80",
+        "arguments": [
+          {
+            "name": "roundId",
+            "value": "480"
+          },
+          {
+            "name": "work",
+            "value": "389"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11842"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1228688526588"
+          },
+          {
+            "name": "workPerThousandBlocks",
+            "value": "9061"
+          },
+          {
+            "name": "dataHash",
+            "value": "0xcfef719c1e9827efc3dce5b1363b13924e32e009289ff59ff4af4c8f4947cebb"
+          }
+        ]
+      },
+      {
+        "id": "179402283600000000111551110000000012081057000000000000008350000000000000088",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12081057",
+        "blockHash": "0xd687ea91af3d285a49c5b0097a25b2107c040e685d80320e7b1b88fea2b10b3a",
+        "blockTimestamp": "1794022836",
+        "transactionHash": "0x2b96d183738c77e7d9870e1afe1a4e0dd301853cd74dc348f1715d6f5a5d4273",
+        "transactionIndex": "83",
+        "logIndex": "88",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xc22869ab7cdd745c831283202d55ccbf35152a0a364db00c6673a0b56f579532"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "479"
+          },
+          {
+            "name": "nonce",
+            "value": "293"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "478"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "1"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11453"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1185652792547"
+          }
+        ]
+      },
+      {
+        "id": "179402283600000000111551110000000012081057000000000000008350000000000000087",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "RoundRecorded",
+        "blockNumber": "12081057",
+        "blockHash": "0xd687ea91af3d285a49c5b0097a25b2107c040e685d80320e7b1b88fea2b10b3a",
+        "blockTimestamp": "1794022836",
+        "transactionHash": "0x2b96d183738c77e7d9870e1afe1a4e0dd301853cd74dc348f1715d6f5a5d4273",
+        "transactionIndex": "83",
+        "logIndex": "87",
+        "arguments": [
+          {
+            "name": "roundId",
+            "value": "479"
+          },
+          {
+            "name": "work",
+            "value": "405"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11453"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1185652792547"
+          },
+          {
+            "name": "workPerThousandBlocks",
+            "value": "9039"
+          },
+          {
+            "name": "dataHash",
+            "value": "0x9db7f44e3eb267e62295a4473167218f461f9f5a95ec9a60fd9bff483be3ed4b"
+          }
+        ]
+      },
+      {
+        "id": "179402223600000000111551110000000012081008000000000000008650000000000000160",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12081008",
+        "blockHash": "0x427c767b8659ede7128c02bc70857950b2d1b3aee6993ebf77f612483c86592a",
+        "blockTimestamp": "1794022236",
+        "transactionHash": "0x94b4391fe7c52e008c5ff6192f85bc2c9ca71347aa031594926b55d8c86ef46f",
+        "transactionIndex": "86",
+        "logIndex": "160",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x08a5827622aa76c6cdb84c08a568ee781f1d4e9f17901eb30af5e3c0f9892ae0"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "478"
+          },
+          {
+            "name": "nonce",
+            "value": "292"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "477"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179402164800000000111551110000000012080960000000000000004450000000000000107",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080960",
+        "blockHash": "0x9a677d67e7f93f06d8debbe952810fcd000a0ee0ba7e2563640feec824057d9f",
+        "blockTimestamp": "1794021648",
+        "transactionHash": "0x9518e2795e4200a27bdd1993e16158aee26430d06462e7ddeb586fb762b007ae",
+        "transactionIndex": "44",
+        "logIndex": "107",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xc920aa720c29c277732d292d1fa8b37d38ec70845087afa7722d4b9e7b73b6e0"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "477"
+          },
+          {
+            "name": "nonce",
+            "value": "291"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "476"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179402103600000000111551110000000012080910000000000000007450000000000000119",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080910",
+        "blockHash": "0x73bee39525a21b7930a886f668ddc80ab43bf1c93d69263637815ce3fe11d113",
+        "blockTimestamp": "1794021036",
+        "transactionHash": "0x75e303259186596df216918d21c8028499830333a3b0731fd5332da9a537c324",
+        "transactionIndex": "74",
+        "logIndex": "119",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x102ee310407a75a790cd7d7f9773e736fca3c969490f87081a5693016ff77da9"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "476"
+          },
+          {
+            "name": "nonce",
+            "value": "290"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "475"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179402043600000000111551110000000012080862000000000000011650000000000000173",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080862",
+        "blockHash": "0xdba9bf015da9da64c42dc23a188ee6135541795d4c312918484d50a68d09fd8e",
+        "blockTimestamp": "1794020436",
+        "transactionHash": "0x6bd4d7614777bb23b1ae5600b3a24d46211fd671f85c96f4cb31294ac4530a80",
+        "transactionIndex": "116",
+        "logIndex": "173",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xd85252b6f1d3728a00406bbe9c305dc9e1ebe992441b1a0f83c031c201af8cb6"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "475"
+          },
+          {
+            "name": "nonce",
+            "value": "289"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "474"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401983600000000111551110000000012080813000000000000009550000000000000192",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080813",
+        "blockHash": "0x318a7b8e58dfd5619fb23f30e62624d2d920431f18b1862102131a3d26b8400f",
+        "blockTimestamp": "1794019836",
+        "transactionHash": "0x76c76f2214b468b157642756ba33e0f90c1b6bd0e74c5d5ab0ee849597900426",
+        "transactionIndex": "95",
+        "logIndex": "192",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xd0abb0f50461b208a2bf7b2da172442b29ecc41a03df22369b96005e4da579b0"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "474"
+          },
+          {
+            "name": "nonce",
+            "value": "288"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "473"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401923600000000111551110000000012080763000000000000009250000000000000108",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080763",
+        "blockHash": "0x1794834bd446530e29253e249b57cfbf1b9e1031d3054684e229ec631a22ebdf",
+        "blockTimestamp": "1794019236",
+        "transactionHash": "0xff0fff10db5c35e30aa36b6bfd5a6d4ccc53c8414152f8ea2aed7e265967b4b9",
+        "transactionIndex": "92",
+        "logIndex": "108",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x58ebab929af6883be7ae6f57fd1d289322b63fbde76412d59d5d8586996e352f"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "473"
+          },
+          {
+            "name": "nonce",
+            "value": "287"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "472"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401864800000000111551110000000012080714000000000000006550000000000000119",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080714",
+        "blockHash": "0xe64a3df6c61942dfb12585b33edfe687eec3ac7ad12029f20f584a244f82243a",
+        "blockTimestamp": "1794018648",
+        "transactionHash": "0xbfc444ed6ec5d465c67a8912bbd2f7c99bb24e0f8eecdec9810f2cdffc0c9ff9",
+        "transactionIndex": "65",
+        "logIndex": "119",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xdd2cf2e861e12dedf463073503d834aa8c7661e53a167888d698c8a083a17f96"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "472"
+          },
+          {
+            "name": "nonce",
+            "value": "286"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "471"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401803600000000111551110000000012080664000000000000014350000000000000352",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080664",
+        "blockHash": "0x1cf48da6d918bd75324a82aeb98b7572fdaf1d5e2b4aedd473e1f9e661f06b3e",
+        "blockTimestamp": "1794018036",
+        "transactionHash": "0x1a87bab115cf0e709db462a20e3c9e5651f56905fe0dc78647c2fd8817a2f670",
+        "transactionIndex": "143",
+        "logIndex": "352",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xe75527f0ad57c9e72fe90e73082a4ebdcf76f786489b48da59cdc4312f18bc5f"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "471"
+          },
+          {
+            "name": "nonce",
+            "value": "285"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "470"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401743600000000111551110000000012080615000000000000005850000000000000149",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080615",
+        "blockHash": "0xf13b613ff8095f12e7a0a9b9e87b137188c0f616bf273df1e515520d16ae4de9",
+        "blockTimestamp": "1794017436",
+        "transactionHash": "0x6fb0a001b3729703521ef6a7941c28fd63b1599ef31dc33e2a59af4e00da3b42",
+        "transactionIndex": "58",
+        "logIndex": "149",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x7bd8c3d203d500ab5f52c28942777dd0527939fee55719cad11694ced58bb098"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "470"
+          },
+          {
+            "name": "nonce",
+            "value": "284"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "469"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401683600000000111551110000000012080566000000000000018450000000000000393",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080566",
+        "blockHash": "0x5da05c58fea0a29115cfdefd96cd5a961eeae1b5ac98f33ac302a2f201369e84",
+        "blockTimestamp": "1794016836",
+        "transactionHash": "0xb4a589aa489e13b963c503da95118f3b8da3f3ad648b6caca21a1b09ca6f6d54",
+        "transactionIndex": "184",
+        "logIndex": "393",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x918d1d8c0da0df22806ee7c44dda1da73b67f1e472dfa74c4a5dcd7126e1aa53"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "469"
+          },
+          {
+            "name": "nonce",
+            "value": "283"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "468"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401623600000000111551110000000012080516000000000000012150000000000000285",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080516",
+        "blockHash": "0x2f9e606384bc45b730c394efe8d08154f78815625b202592b8a8683acd42acc5",
+        "blockTimestamp": "1794016236",
+        "transactionHash": "0x1a209590fbedf1e6f293f3237bf4b5d4e35e42ca5f705354efb74d8efc455b49",
+        "transactionIndex": "121",
+        "logIndex": "285",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x6b6ff509f14ef0ecb62bbee77b2926232dfd651d4a05df5c24c8b5d9b025f82a"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "468"
+          },
+          {
+            "name": "nonce",
+            "value": "282"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "467"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401563600000000111551110000000012080466000000000000008650000000000000172",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080466",
+        "blockHash": "0xb966b43b99e9a81295766ee612d93ee6a895fb59d4300170968c3f365fa8274c",
+        "blockTimestamp": "1794015636",
+        "transactionHash": "0xbd2bc53cc519daa9fc32f0be0ed671f29beb53592237a0d9a44f923a34d642c9",
+        "transactionIndex": "86",
+        "logIndex": "172",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x148b49d4ca0873d366c4d5cd1d0e584728a8eb37a8981b4bec3d1d556e4e411c"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "467"
+          },
+          {
+            "name": "nonce",
+            "value": "281"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "466"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401503600000000111551110000000012080417000000000000009250000000000000185",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080417",
+        "blockHash": "0xe644d39623ea9c3a341a7ee6cb584e81882ab76d02ba5cd488c547813b18266c",
+        "blockTimestamp": "1794015036",
+        "transactionHash": "0x703551a71d06ba7d8230cc541b297c7114a5663b77ec1c3da50df05d2adf7069",
+        "transactionIndex": "92",
+        "logIndex": "185",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x2960274890e4de94c108c2fa605815403e05a3a49b82c1d2e010ea44beb786a0"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "466"
+          },
+          {
+            "name": "nonce",
+            "value": "280"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "465"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401443600000000111551110000000012080367000000000000017950000000000000297",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080367",
+        "blockHash": "0xc90631c8b0a8e8e36484a3f21f189400d0f5295c141c142b64f64bce898d2348",
+        "blockTimestamp": "1794014436",
+        "transactionHash": "0x01d8d8cdf4a24e6fed66b118ca37e05a7f4b33b5a6b77aed3c8132f69f979091",
+        "transactionIndex": "179",
+        "logIndex": "297",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x08f5439d0352da22fbc8050a36a5ae29057e5feeca11771c472e669590775665"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "465"
+          },
+          {
+            "name": "nonce",
+            "value": "279"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "464"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401383600000000111551110000000012080317000000000000005350000000000000090",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080317",
+        "blockHash": "0x17056288061bd386b539050c34200848dcaf6c0c2931dba4e248902fd1188521",
+        "blockTimestamp": "1794013836",
+        "transactionHash": "0xde3088825e8e3269870c529cc00762444dc332bfa5508daf1df07553c814b1a6",
+        "transactionIndex": "53",
+        "logIndex": "90",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x48fd0511618033c32465471ee08887e6e52315e23e4d5ed0281e823fb9b59d80"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "464"
+          },
+          {
+            "name": "nonce",
+            "value": "278"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "463"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401323600000000111551110000000012080267000000000000006350000000000000132",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080267",
+        "blockHash": "0x643acda06fb9934f69a4ec441ffe35739b293d9985cba2bee33443203fa328ca",
+        "blockTimestamp": "1794013236",
+        "transactionHash": "0x167dc17f79380e0ab2af6c92cf27987d8d4a1ac9fd28171c1eb29968d0fff168",
+        "transactionIndex": "63",
+        "logIndex": "132",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x73bfc8a00e10bdc0079fece396a23cc14d9f3074ba9a1bca5e7fd696fff10d85"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "463"
+          },
+          {
+            "name": "nonce",
+            "value": "277"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "462"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401263600000000111551110000000012080217000000000000012650000000000000261",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080217",
+        "blockHash": "0x5fdac58e74e15a3324d1dd7fedbb74bf1e3e4b57f14a3691edc6279951500525",
+        "blockTimestamp": "1794012636",
+        "transactionHash": "0x6a7ded1154fdb7eb35f5a68400c6bd7884d07ef54c00f6780a50d639079a7ad0",
+        "transactionIndex": "126",
+        "logIndex": "261",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0xcd40011adb9b57022ea6774abeeb01629d17d5b9ff18f67838f55bae2f4ab3c4"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "462"
+          },
+          {
+            "name": "nonce",
+            "value": "276"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "461"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401203600000000111551110000000012080169000000000000005850000000000000102",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080169",
+        "blockHash": "0x529ee21e16dd5af6470e8ab1cdaeb1b8a811ee0819f388e386cc19e3506a72b0",
+        "blockTimestamp": "1794012036",
+        "transactionHash": "0x35338ad1c7972731d819eed5a2063bf3cc532926c9fda7928673290d24eecc82",
+        "transactionIndex": "58",
+        "logIndex": "102",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x82e6a00af1bb68b8440dcde39bf13dc81b0bef724b7c646bfb314df0ef807fbf"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "461"
+          },
+          {
+            "name": "nonce",
+            "value": "275"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "460"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      },
+      {
+        "id": "179401146000000000111551110000000012080121000000000000017250000000000000505",
+        "contractKind": "core",
+        "contractAddress": "0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4",
+        "eventName": "BatchSettled",
+        "blockNumber": "12080121",
+        "blockHash": "0xd464a21ed1ec1b5929e492417b7486d4d647cb34f343d627063357004d9600fb",
+        "blockTimestamp": "1794011460",
+        "transactionHash": "0x2751b0975d7a61c221846289bbd1799c6e3ba92f31b482912281a0f23b58988a",
+        "transactionIndex": "172",
+        "logIndex": "505",
+        "arguments": [
+          {
+            "name": "digest",
+            "value": "0x344ac95be581dabac8eb51048fa617208ee4aab7bfe29ab9e4fe47dbcd5e07b0"
+          },
+          {
+            "name": "reporter",
+            "value": "0x71f47c02431e6995cf6f757c14bc6bfa443d0a86"
+          },
+          {
+            "name": "settledThroughRound",
+            "value": "460"
+          },
+          {
+            "name": "nonce",
+            "value": "274"
+          },
+          {
+            "name": "previousSettledThroughRound",
+            "value": "459"
+          },
+          {
+            "name": "activeRoundCount",
+            "value": "0"
+          },
+          {
+            "name": "cumulativeWork",
+            "value": "11048"
+          },
+          {
+            "name": "cumulativeBlockUnits",
+            "value": "1140662790326"
+          }
+        ]
+      }
+    ]
+  },
+  "settlements": {
+    "schemaVersion": 3,
+    "installationId": "sepolia-core-sepolia-20261103",
+    "status": "available",
+    "range": "7d",
+    "generatedAt": "2026-11-07T04:07:51.242Z",
+    "chain": {
+      "target": "sepolia",
+      "chainId": "11155111",
+      "confirmations": "12",
+      "deploymentBlock": "12057556",
+      "indexedThroughBlock": "12081192",
+      "safeThroughBlock": "12081181"
+    },
+    "window": {
+      "startAt": "2026-10-31T12:00:00.000Z",
+      "endAt": "2026-11-07T12:00:00.000Z",
+      "bucketSeconds": 21600
+    },
+    "summary": {
+      "settlementCount": "295",
+      "activeRoundCount": "39",
+      "workAdded": "12195",
+      "completedBlockCount": "1267",
+      "archivedSettlementCount": "285"
+    },
+    "recentSettlements": [
+      {
+        "transactionHash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+        "previousSettledThroughRound": "480",
+        "settledThroughRound": "481",
+        "activeRoundCount": "1",
+        "workAdded": "353",
+        "cumulativeWork": "12195",
+        "cumulativeBlockUnits": "1267646698975",
+        "firstCompletedBlock": "1229",
+        "lastCompletedBlock": "1267",
+        "completedBlockCount": "39",
+        "blockHeight": "1267",
+        "ethereumBlockNumber": "12081156",
+        "blockTimestamp": "2026-11-07T04:00:36.000Z",
+        "logIndex": "295",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "143308257300429511779772"
+      },
+      {
+        "transactionHash": "0x12f9d3d8e1e93f68ebf128c09f44e8fcc1ac61c1ea74490053d651230bb52926",
+        "previousSettledThroughRound": "479",
+        "settledThroughRound": "480",
+        "activeRoundCount": "1",
+        "workAdded": "389",
+        "cumulativeWork": "11842",
+        "cumulativeBlockUnits": "1228688526588",
+        "firstCompletedBlock": "1186",
+        "lastCompletedBlock": "1228",
+        "completedBlockCount": "43",
+        "blockHeight": "1228",
+        "ethereumBlockNumber": "12081106",
+        "blockTimestamp": "2026-11-07T03:50:36.000Z",
+        "logIndex": "81",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "158006540100473564270005"
+      },
+      {
+        "transactionHash": "0x2b96d183738c77e7d9870e1afe1a4e0dd301853cd74dc348f1715d6f5a5d4273",
+        "previousSettledThroughRound": "478",
+        "settledThroughRound": "479",
+        "activeRoundCount": "1",
+        "workAdded": "405",
+        "cumulativeWork": "11453",
+        "cumulativeBlockUnits": "1185652792547",
+        "firstCompletedBlock": "1141",
+        "lastCompletedBlock": "1185",
+        "completedBlockCount": "45",
+        "blockHeight": "1185",
+        "ethereumBlockNumber": "12081057",
+        "blockTimestamp": "2026-11-07T03:40:36.000Z",
+        "logIndex": "88",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "165355681500495590515121"
+      },
+      {
+        "transactionHash": "0x6e6315104c9e1e29670a376ef9a59534ab699e673f3959a62f5abe936d9d15ab",
+        "previousSettledThroughRound": "357",
+        "settledThroughRound": "358",
+        "activeRoundCount": "1",
+        "workAdded": "18",
+        "cumulativeWork": "11048",
+        "cumulativeBlockUnits": "1140662790326",
+        "firstCompletedBlock": "1139",
+        "lastCompletedBlock": "1140",
+        "completedBlockCount": "2",
+        "blockHeight": "1140",
+        "ethereumBlockNumber": "12075103",
+        "blockTimestamp": "2026-11-06T07:30:36.000Z",
+        "logIndex": "216",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "7349141400022026245117"
+      },
+      {
+        "transactionHash": "0xaafaf47f8f929338c2d93287591ebb2a4fec4ce15ecfde73853e6f2484bfff6b",
+        "previousSettledThroughRound": "356",
+        "settledThroughRound": "357",
+        "activeRoundCount": "1",
+        "workAdded": "427",
+        "cumulativeWork": "11030",
+        "cumulativeBlockUnits": "1138663234672",
+        "firstCompletedBlock": "1091",
+        "lastCompletedBlock": "1138",
+        "completedBlockCount": "48",
+        "blockHeight": "1138",
+        "ethereumBlockNumber": "12075054",
+        "blockTimestamp": "2026-11-06T07:20:36.000Z",
+        "logIndex": "237",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "176379393600528629882796"
+      },
+      {
+        "transactionHash": "0x3eed52c685135018774c4782562f16abacae4150ea6f3f2b1d44bbe63c665314",
+        "previousSettledThroughRound": "355",
+        "settledThroughRound": "356",
+        "activeRoundCount": "1",
+        "workAdded": "81",
+        "cumulativeWork": "10603",
+        "cumulativeBlockUnits": "1090927069217",
+        "firstCompletedBlock": "1083",
+        "lastCompletedBlock": "1090",
+        "completedBlockCount": "8",
+        "blockHeight": "1090",
+        "ethereumBlockNumber": "12075005",
+        "blockTimestamp": "2026-11-06T07:10:36.000Z",
+        "logIndex": "904",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "29396565600088104980466"
+      },
+      {
+        "transactionHash": "0xcb5115322c7db72c7b0373c5fda09f31f1b631cba33aff026889fd9282bd1cf3",
+        "previousSettledThroughRound": "354",
+        "settledThroughRound": "355",
+        "activeRoundCount": "1",
+        "workAdded": "448",
+        "cumulativeWork": "10522",
+        "cumulativeBlockUnits": "1082107382806",
+        "firstCompletedBlock": "1033",
+        "lastCompletedBlock": "1082",
+        "completedBlockCount": "50",
+        "blockHeight": "1082",
+        "ethereumBlockNumber": "12074956",
+        "blockTimestamp": "2026-11-06T07:00:36.000Z",
+        "logIndex": "162",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "183728535000550656127912"
+      },
+      {
+        "transactionHash": "0x7e0b7cae3e83ce3f291afb143cba67d07f59e2af07d9ffb48d7bd9dcbdae80c4",
+        "previousSettledThroughRound": "353",
+        "settledThroughRound": "354",
+        "activeRoundCount": "1",
+        "workAdded": "304",
+        "cumulativeWork": "10074",
+        "cumulativeBlockUnits": "1032957629652",
+        "firstCompletedBlock": "1000",
+        "lastCompletedBlock": "1032",
+        "completedBlockCount": "33",
+        "blockHeight": "1032",
+        "ethereumBlockNumber": "12074906",
+        "blockTimestamp": "2026-11-06T06:50:36.000Z",
+        "logIndex": "353",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "121260833100363433044423"
+      },
+      {
+        "transactionHash": "0xfc6662c551e020c4aed64286b05a77613cff90fecbf3219fc05f15a37a571cf8",
+        "previousSettledThroughRound": "352",
+        "settledThroughRound": "353",
+        "activeRoundCount": "1",
+        "workAdded": "244",
+        "cumulativeWork": "9770",
+        "cumulativeBlockUnits": "999798816389",
+        "firstCompletedBlock": "974",
+        "lastCompletedBlock": "999",
+        "completedBlockCount": "26",
+        "blockHeight": "999",
+        "ethereumBlockNumber": "12074859",
+        "blockTimestamp": "2026-11-06T06:40:36.000Z",
+        "logIndex": "212",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "95538838200286341186514"
+      },
+      {
+        "transactionHash": "0x62d3e2d0d71077f50524b186a49f904559b191eb907a80945a0333f824d9f691",
+        "previousSettledThroughRound": "351",
+        "settledThroughRound": "352",
+        "activeRoundCount": "1",
+        "workAdded": "349",
+        "cumulativeWork": "9526",
+        "cumulativeBlockUnits": "973488702091",
+        "firstCompletedBlock": "936",
+        "lastCompletedBlock": "973",
+        "completedBlockCount": "38",
+        "blockHeight": "973",
+        "ethereumBlockNumber": "12074809",
+        "blockTimestamp": "2026-11-06T06:30:36.000Z",
+        "logIndex": "196",
+        "confirmationStatus": "safe",
+        "sqkMintedBaseUnits": "139633686600418498657214"
+      }
+    ],
+    "buckets": [
+      {
+        "startAt": "2026-10-31T12:00:00.000Z",
+        "endAt": "2026-10-31T18:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-10-31T18:00:00.000Z",
+        "endAt": "2026-11-01T00:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-01T00:00:00.000Z",
+        "endAt": "2026-11-01T06:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-01T06:00:00.000Z",
+        "endAt": "2026-11-01T12:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-01T12:00:00.000Z",
+        "endAt": "2026-11-01T18:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-01T18:00:00.000Z",
+        "endAt": "2026-11-02T00:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-02T00:00:00.000Z",
+        "endAt": "2026-11-02T06:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-02T06:00:00.000Z",
+        "endAt": "2026-11-02T12:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-02T12:00:00.000Z",
+        "endAt": "2026-11-02T18:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-02T18:00:00.000Z",
+        "endAt": "2026-11-03T00:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-03T00:00:00.000Z",
+        "endAt": "2026-11-03T06:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-03T06:00:00.000Z",
+        "endAt": "2026-11-03T12:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-03T12:00:00.000Z",
+        "endAt": "2026-11-03T18:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-03T18:00:00.000Z",
+        "endAt": "2026-11-04T00:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-04T00:00:00.000Z",
+        "endAt": "2026-11-04T06:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-04T06:00:00.000Z",
+        "endAt": "2026-11-04T12:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-04T12:00:00.000Z",
+        "endAt": "2026-11-04T18:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-04T18:00:00.000Z",
+        "endAt": "2026-11-05T00:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-05T00:00:00.000Z",
+        "endAt": "2026-11-05T06:00:00.000Z",
+        "settlementCount": "18",
+        "activeRoundCount": "11",
+        "workAdded": "3150",
+        "completedBlockCount": "299",
+        "sqkMintedBaseUnits": "1098696639303292923644917"
+      },
+      {
+        "startAt": "2026-11-05T06:00:00.000Z",
+        "endAt": "2026-11-05T12:00:00.000Z",
+        "settlementCount": "36",
+        "activeRoundCount": "3",
+        "workAdded": "667",
+        "completedBlockCount": "67",
+        "sqkMintedBaseUnits": "246196236900737879211402"
+      },
+      {
+        "startAt": "2026-11-05T12:00:00.000Z",
+        "endAt": "2026-11-05T18:00:00.000Z",
+        "settlementCount": "36",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-05T18:00:00.000Z",
+        "endAt": "2026-11-06T00:00:00.000Z",
+        "settlementCount": "36",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-06T00:00:00.000Z",
+        "endAt": "2026-11-06T06:00:00.000Z",
+        "settlementCount": "36",
+        "activeRoundCount": "12",
+        "workAdded": "4375",
+        "completedBlockCount": "463",
+        "sqkMintedBaseUnits": "1550668835404647537719582"
+      },
+      {
+        "startAt": "2026-11-06T06:00:00.000Z",
+        "endAt": "2026-11-06T12:00:00.000Z",
+        "settlementCount": "36",
+        "activeRoundCount": "10",
+        "workAdded": "2856",
+        "completedBlockCount": "311",
+        "sqkMintedBaseUnits": "1293448886403876619140505"
+      },
+      {
+        "startAt": "2026-11-06T12:00:00.000Z",
+        "endAt": "2026-11-06T18:00:00.000Z",
+        "settlementCount": "36",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-06T18:00:00.000Z",
+        "endAt": "2026-11-07T00:00:00.000Z",
+        "settlementCount": "36",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      },
+      {
+        "startAt": "2026-11-07T00:00:00.000Z",
+        "endAt": "2026-11-07T06:00:00.000Z",
+        "settlementCount": "25",
+        "activeRoundCount": "3",
+        "workAdded": "1147",
+        "completedBlockCount": "127",
+        "sqkMintedBaseUnits": "466670478901398666564898"
+      },
+      {
+        "startAt": "2026-11-07T06:00:00.000Z",
+        "endAt": "2026-11-07T12:00:00.000Z",
+        "settlementCount": "0",
+        "activeRoundCount": "0",
+        "workAdded": "0",
+        "completedBlockCount": "0",
+        "sqkMintedBaseUnits": "0"
+      }
+    ],
+    "mining": {
+      "status": "available",
+      "economy": {
+        "releaseId": "core-sepolia-20261103",
+        "mining": "0x2dccb11fcc2defdd188555e45acb52231e82e218",
+        "token": "0xd78a3956cf63164d1fa1c622ad3c66623162fa1e",
+        "symbol": "SQK",
+        "decimals": 18
+      },
+      "supplyCap": "2100000000000000000000000000",
+      "premintBaseUnits": "210000000000000000000000000",
+      "schedule": {
+        "allowanceBaseUnits": "1890000000000000000000000000",
+        "launchBonusBaseUnits": "105000000000000000000000000",
+        "bonusBlocks": "97020",
+        "halvingBlocks": "393470",
+        "firstPeriodRateBaseUnits": "2592319617759930871476"
+      },
+      "startRound": "17",
+      "startHeight": "0",
+      "miningMintedBaseUnits": "4655681076913953626281304",
+      "unmintedCapacityBaseUnits": "1885344318923086046373718696",
+      "processedThroughRound": "481",
+      "rangeMintedBaseUnits": "4655681076913953626281304",
+      "rangeCheckpointCount": "291",
+      "nextRound": {
+        "state": "accruing",
+        "round": "482",
+        "countedThroughRound": "481",
+        "startsAt": "2026-11-07T04:00:00.000Z",
+        "endsAt": "2026-11-07T04:10:00.000Z",
+        "previousCumulativeBlockUnits": "1267646698975",
+        "cumulativeBlockUnits": "1267646698975",
+        "completedBlockCount": "0",
+        "amountBaseUnits": "0"
+      },
+      "recentCheckpoints": [
+        {
+          "afterRound": "480",
+          "throughRound": "481",
+          "completedBlockCount": "39",
+          "cumulativeWork": "12195",
+          "cumulativeBlockUnits": "1267646698975",
+          "amountBaseUnits": "143308257300429511779772",
+          "miningMintedBaseUnits": "4655681076913953626281304",
+          "transactionHash": "0x1209ae212e7b64542f1a94d1dd72827af6075903bf792a86276843064ed1f523",
+          "ethereumBlockNumber": "12081180",
+          "blockTimestamp": "2026-11-07T04:05:24.000Z",
+          "logIndex": "235",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "479",
+          "throughRound": "480",
+          "completedBlockCount": "43",
+          "cumulativeWork": "11842",
+          "cumulativeBlockUnits": "1228688526588",
+          "amountBaseUnits": "158006540100473564270005",
+          "miningMintedBaseUnits": "4512372819613524114501532",
+          "transactionHash": "0xaca89538d0c878eb35039af05154bc95b7222f309fd93a5be26c22f421b00c4b",
+          "ethereumBlockNumber": "12081130",
+          "blockTimestamp": "2026-11-07T03:55:24.000Z",
+          "logIndex": "254",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "478",
+          "throughRound": "479",
+          "completedBlockCount": "45",
+          "cumulativeWork": "11453",
+          "cumulativeBlockUnits": "1185652792547",
+          "amountBaseUnits": "165355681500495590515121",
+          "miningMintedBaseUnits": "4354366279513050550231527",
+          "transactionHash": "0xbc93647c4213e7359140c96373ed3331bbe46ebed9e1a02b89b68446d37c5be5",
+          "ethereumBlockNumber": "12081082",
+          "blockTimestamp": "2026-11-07T03:45:48.000Z",
+          "logIndex": "89",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "477",
+          "throughRound": "478",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0x650cf1627235945bbd57a0bce12627e6a4ea81986ae27935108cd46541707cdb",
+          "ethereumBlockNumber": "12081032",
+          "blockTimestamp": "2026-11-07T03:35:24.000Z",
+          "logIndex": "179",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "476",
+          "throughRound": "477",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0x1ddfc6267bcba684f15956525bdaa57ee2c35c1943c8969b0bec098fa3b440e4",
+          "ethereumBlockNumber": "12080982",
+          "blockTimestamp": "2026-11-07T03:25:24.000Z",
+          "logIndex": "163",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "475",
+          "throughRound": "476",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0xca19273022d3a399671b6bffeae303b99462783f6efd71bbc4a092a127ca67bb",
+          "ethereumBlockNumber": "12080934",
+          "blockTimestamp": "2026-11-07T03:15:24.000Z",
+          "logIndex": "264",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "474",
+          "throughRound": "475",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0x5033a59f3f828b75454f2158467befeb55a39e0500a2370668b4fa3108a23a59",
+          "ethereumBlockNumber": "12080885",
+          "blockTimestamp": "2026-11-07T03:05:24.000Z",
+          "logIndex": "219",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "473",
+          "throughRound": "474",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0x0f14b5eec0bf8d656739c356951f5aeb83cbff13232b70ee265fd0f644814d66",
+          "ethereumBlockNumber": "12080837",
+          "blockTimestamp": "2026-11-07T02:55:24.000Z",
+          "logIndex": "254",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "472",
+          "throughRound": "473",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0xc34ac9df6c2509e8ecb6086dcf1df5a6a5e16338cea5d59663f0ed2f1ba7d7ab",
+          "ethereumBlockNumber": "12080787",
+          "blockTimestamp": "2026-11-07T02:45:24.000Z",
+          "logIndex": "166",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "471",
+          "throughRound": "472",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0x48cb8241c6d32a5c6ccd87a03be36fc93096bded163cc8f90bbc8c4f9f428eec",
+          "ethereumBlockNumber": "12080737",
+          "blockTimestamp": "2026-11-07T02:35:24.000Z",
+          "logIndex": "252",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "470",
+          "throughRound": "471",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0xdf151c5f71c3b9eafdb8d15e329d357e121909d9e0bea6f852b11f71cefbb302",
+          "ethereumBlockNumber": "12080688",
+          "blockTimestamp": "2026-11-07T02:25:24.000Z",
+          "logIndex": "221",
+          "confirmationStatus": "safe"
+        },
+        {
+          "afterRound": "469",
+          "throughRound": "470",
+          "completedBlockCount": "0",
+          "cumulativeWork": "11048",
+          "cumulativeBlockUnits": "1140662790326",
+          "amountBaseUnits": "0",
+          "miningMintedBaseUnits": "4189010598012554959716406",
+          "transactionHash": "0xe3de1a0ed69fbfa41a5bad151a5cdc833e99e12ba69db803d885c8cac1d7e649",
+          "ethereumBlockNumber": "12080639",
+          "blockTimestamp": "2026-11-07T02:15:36.000Z",
+          "logIndex": "277",
+          "confirmationStatus": "safe"
+        }
+      ]
+    }
+  }
+}

@@ -1,114 +1,127 @@
-# SqueekQuest validation and design review
+# SqueekQuest Web3 validation
 
-Worker observations for the delivered production export; these are not independent certification. The existing project was extended, with its original architecture, assets, gathering/building systems, minigame and save migration retained. No paid service, wallet, backend or on-chain deployment was used.
+Worker review completed 2026-11-07. This is a record of local checks, not an independent certification. The existing game was extended directly. The final production export is `dist/`; publication is performed by the assignment's publisher after submission. No site-publish command or blockchain deployment was run.
 
-| Area | Final result |
+## Result
+
+| Area | Actual result |
 | --- | --- |
-| Playable implementation | Four areas; survival, combat/boss, crafting/building, progression, saves and Chain Pulse implemented |
-| Production build / standalone typecheck | Passed, exit 0 |
-| Domain/unit tests | 38 passed, 0 failed |
-| Chromium interaction report | 19 successful entries; 0 page errors; 0 missing local resources |
-| Official API | All 5 required endpoints parsed; all 9 existing API adapters passed actual HTTP checks |
-| Accessibility automation | 48 theme/width/view combinations; 0 axe violations; no overflow |
-| Pinned taste@1 | 16 / 16 passed |
-| Additional quality checks | 9 / 9 passed, including 200% text enlargement at 320px |
-| First screen at 390px | Product and Start adventure visible |
-| Share metadata | Title, favicon, description, og:title and local og:image present |
-| Fabricated live behavior | None; controlled transitions and actual responses are explicitly separated |
-| Verification gaps | Direct browser API transport, WebKit, physical devices, native zoom, screen reader, natural new settlement |
+| Existing game | Preserved; 19/19 interaction scenarios in Chromium and 19/19 in WebKit |
+| Web3 interactions | 9/9 in Chromium and 9/9 in WebKit |
+| Unit/security checks | 68/68 passed |
+| Live official API schemas | 9/9 passed, HTTP 200 |
+| Static export | 44 files, 2,389,314 bytes; 28 document/CSS references checked; no missing or root-absolute assets |
+| Pinned taste probe | 16/16 passed |
+| Automated accessibility | 48 existing-game views + 28 wallet/Web3 views; zero reported WCAG violations or overflow |
+| Focus, font, contrast, text reflow | 9/9 quality checks passed; 200% text enlargement at 320, 390, 768 and 1440 |
+| SDK rebuild | Exact dependency graph rebuilt successfully; runtime assets byte-identical |
+| Delivery size | Below 8,388,608 bytes; exact final count in `submission-budget.json` |
 
-## Scope, design idea and assumptions
+No fabricated players, chain activity, NFT ownership, transaction confirmation, token reward or eligibility result is shipped. Controlled transport/provider scenarios are explicitly test-only. The site offers a real public on-chain activity leaderboard; global game-score rankings and several requested attribution/eligibility features are unavailable from the official services.
 
-A cozy hamster adventure carried by warm, readable interface surfaces and crisp forest pixels. Existing forest/oat colors, rounded Nunito Sans, hamster art and static Next export remain the design authority.
+## Scope and implementation decisions
 
-Ancient Ruins continues the old village map and save ID. Wilderness stays as an extra map; Underground Cave adds a new gated area and Root Warden. Buildings keep fixed sites and real resource costs. Rewards are local game XP/items. The first verified core height is a baseline, not a retrospective reward source. One active adventure tab is the supported save-editing model; reward claims also use Web Locks where available.
+The existing Next.js/React/TypeScript project, top-down pixel renderer, Forest, Ancient Ruins, Wilderness, Underground Cave, combat, Root Warden, resource gathering, crafting, building, daily/story quests, skills, minigame, migration and local saves remain. The world/physics/progression implementations were not replaced. The API adapter changed only to accept a documented optional issuance field on confirmed settlements.
 
-The worker read the pinned Better Interface workflow, core principles for accessibility/layout/writing/typography/colors/UI, the documentation method and design-critic thresholds. The guide was applied while implementing and reviewing, with source fixes followed by export/browser rechecks. `DESIGN.md` describes the final source, including the text-responsive Pulse grid and explicit wheel-age label.
+Official Squeekchain documentation and deployment/API/ABI records were inspected before implementation. The supported release is Sepolia chain 11155111, `core-sepolia-20261103`, revision 7. References and contract pins are in `INTEGRATIONS-WEB3.md`; public examples and read results are in `VERIFIED-EXAMPLES.md` and `web3-live-examples.json`.
 
-## Commands and actual outcomes
+The protected root package manifest, lockfile and existing build configuration were left unchanged. Dependencies were installed in a disposable mirror under `test/scratch/build`; the existing typecheck/build commands ran there, and its final clean export was copied to `dist/`. Source equality and hashes are recorded in `build-check.json`. Wallet SDK assets have a separate reproducible browser build and exact dependency graph, without a vendored registry or dependency archive. No root `node_modules`, private configuration, service credential, submodule or ignore-file change is delivered.
 
-The assignment protected root dependency paths. An isolated build copy and dependencies were therefore placed under disposable `test/scratch/build/`; source, unchanged manifest/lockfile/configuration and existing scripts were copied there. Its completed export was copied exactly into root `dist/`, replacing stale chunks. No scratch files or dependency downloads are delivered.
+## Requirement coverage
 
-| Command | Result / evidence |
+| Brief requirement | Implemented result / honest boundary |
 | --- | --- |
-| `npm ci` in the isolated build copy | Installed the existing locked dependencies; root manifests and dependency directory unchanged |
-| `npm run typecheck` | Exit 0; strict TypeScript check |
-| `node scripts/check-unit.mjs` | Exit 0; 38 / 38; `unit-tests.json` |
-| `npm run build` | Exit 0 after final source correction; Next TypeScript + webpack compilation + static export |
-| `node scripts/check-export.mjs` | Exit 0; 21 export files, 26 local references checked; `export-check.json` |
-| `npm run test:api` | Exit 0; actual public responses validated for all 9 adapters, including the required 5; `api-check.json` |
-| `node scripts/check-browser.mjs` | Exit 0 in Chromium; gameplay, persistence, offline/rate-limit and real-response rendering checks; `browser-chromium.json` |
-| `node scripts/check-browser.mjs --webkit` | Could not launch; required browser runtime libraries unavailable; `browser-webkit.json` |
-| `node scripts/check-accessibility.mjs` | Exit 0; 48 scans across light/dark, 390/1440 and 12 states; `accessibility.json` |
-| `node scripts/check-quality.mjs` | Exit 0; font loading, keyboard/focus, 16 contrast pairs and 200% text reflow; `quality.json`, `contrast.json` |
-| `node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste` | Exit 0 from repository root; local Playwright module selected explicitly; all 16 checks passed; `taste.json` |
-| `node scripts/check-budget.mjs` | Whole delivered-tree result in `submission-budget.json`; unchanged ignore file budget 1,024 bytes |
+| Connect / disconnect wallet | EIP-6963 discovery, generic browser fallback, phone app links, Coinbase SDK and passkey option; connection/address/status, rejection recovery and reconnect |
+| Network detection and switching | Sepolia mismatch state; switch request and add-chain fallback with published RPC/explorer metadata |
+| Ownership verification | Explicit origin/path-bound message, random nonce, chain, issue/expiry times; ten-minute in-memory proof, cleared on address/network changes or reload |
+| Real hamster status and sensors | Existing validated telemetry, freshness and provenance preserved; Unknown on missing/stale/error; no optimistic projection rewards |
+| Settlements and transaction evidence | Safe official settlement history, canonical receipts, typed official event decoding, complete parties/block/time/hash and explorer links |
+| Player profile | Wallet, hamster avatar, local name/level/XP/game achievements/story quests, verified field notes, public history and real NFT counts; another wallet's private game progress is unavailable |
+| Global leaderboard | Public safe account actions and unique transactions; daily UTC, Monday-based weekly and available all-time windows; ranks, avatars, short addresses, profile links and minute refreshes; partial scan coverage disclosed |
+| XP / level / quest / run / settlement game rankings | No official shared game-score authority or player ownership of hamster work. Game view shows only the local record and explains the unavailable global rankings |
+| Transaction checker | Hash and wallet search; Pending, Confirmed, Failed and Not found; 12-confirmation gate; canonical block identity; event details; pending refresh; independent reward recheck |
+| Duplicate reward protection | Separate durable hash journal, global across wallets on this device; Web Locks when available; survives new games/imported older game saves; no score from this journal enters on-chain rankings |
+| Quest categories and achievements | Game, Hamster and On-chain journal entries; real evidence links; once-per-receipt local XP/stamina; settlement/active-round badges |
+| Official quest transactions or token rewards | No official SqueekQuest quest contract exists. No token reward, NFT mint or new contract is invented or deployed |
+| NFTs | Official account custody pagination and Squeek metadata; wallet and Staking custody distinguished |
+| Genesis eligibility | Requires the official authenticated Community account; game score/signature cannot establish it. Official Genesis link provided; no eligibility certificate or authorization fabricated |
+| Desktop/mobile UI | Original visual identity retained; first-screen game and Start/Connect actions at 390; responsive tools, hash profile routes and native modals |
+| Security | Public reads and voluntary message signing only. No private-key/seed inputs, stored signatures, token approvals or transaction broadcast; no paid services or upgrades |
+| Public delivery | Complete relative static export ready for the publisher; this session did not change the hosted version itself |
 
-The probe measures 320/390/1440 and reduced motion. Its retained screenshots are `screenshots/probe-390.png` and `probe-1440.png`. Browser interaction viewports also include 768px. The source inspection, typecheck and production build are distinct from rendered interaction observations.
+## Commands and evidence
 
-## Eleven acceptance checks
+Final production-source changes were followed by `npm run typecheck` and `npm run build` in the isolated build mirror: both exited 0. The production build also ran Next's TypeScript check and completed static page export. `node scripts/check-export.mjs` exited 0 against the final root export.
 
-| Requested check | Actual verification |
-| --- | --- |
-| 1. Game starts and can be played | Chromium Start/Continue, actual canvas and player coordinates; mobile first action visible |
-| 2. Movement, collision and combat | Keyboard motion, water collision, attacks/dodge and kill/drop pickup; unit paths reach every resource/exit in all four areas |
-| 3. Enemies and boss can be defeated | Normal weapon attacks defeat slime and full-health 420 HP Root Warden; XP and final quest checked |
-| 4. Gathering, inventory, crafting and building | Real stacks, discard, material costs, equipment changes, buildings, upgrades and benefits checked |
-| 5. Quests, XP, levels and unlocks | Daily/story claims, skill spending, actual damage/health changes and cave level/tool gates checked |
-| 6. Save/load after refresh | XP/resources persist; export, validated import, malformed-file rejection, restart and denied-storage recovery checked |
-| 7. Official API parsed when available | Actual Node requests passed schemas; unchanged real responses rendered in Chromium through a test-only transport adapter; direct browser transport limitation below |
-| 8. New confirmed block triggers exactly once | Explicitly synthetic 1140→1141 transition gives one event; first baseline and larger optimistic projection give none. No natural new settlement was observed |
-| 9. Duplicates give no duplicate reward | Repeated poll, repeat interaction, refresh, older import, retired-journal merge, measurement receipt and queued-height regression tests pass |
-| 10. Offline mode | Normal play, movement, menus, export and recovery remain available. Live fields show Unknown; no fake response or zero fallback. 429/reconnect behavior checked |
-| 11. Controls / critical errors | Inventory, equipment, crafting, building, home path from cave, quests, map, help, minigame, profile/name, themes, sound, pause, restart, import/export and Pulse actions exercised; no critical page/local-resource errors |
-
-Controlled saves accelerate particular scenarios and are not runtime game content. Controlled API height changes test transition logic and are not presented as real settlements. Actual-response evidence is recorded separately in the browser report.
-
-## Six-domain coverage
-
-| Domain | Coverage and evidence | Limits |
+| Command | Evidence | Outcome |
 | --- | --- | --- |
-| Accessibility — Checked | Native controls and labeled meters; canvas controls; modal trap/Escape/focus return; light/dark axe scans; reduced-motion path; visible focus screenshot | No screen-reader session, physical-device test or full accessibility-conformance claim |
-| Layout — Checked | First screen at 390; 320/390/768/1440 document bounds; 48 panel/theme scans; 200% text widths 320/390/768/1440; exact static subpath | Native browser zoom and localized RTL mirror unperformed |
-| Writing — Checked | Action labels match handlers; material/unlock requirements remain visible; local rewards distinguished; unknown/stale/retry copy; wheel-data age separated from settlement time | API enum/receipt IDs remain data; no claim of exhaustive localization |
-| Typography — Checked | Actual Nunito Sans WOFF2 loaded, declared 400–800; rendered 400/600/800; six-size scale; long IDs wrap; 200% text test passes | Font fallback across other operating systems unverified |
-| Colors — Checked | Both themes; 16 actual opaque foreground/background pairs; probe solid-background checks | Canvas pixels, alpha compositing, APCA, HDR/forced-colors rendering not certified |
-| UI — Checked | Loading/unknown/reconnect, empty encounters, claim/crafted/pressed/disabled states, capacity/cost errors, save failure/export; actual simulation, feedback and pause | WebKit and slow-motion animation-panel inspection unavailable/unperformed |
+| `node scripts/check-unit.mjs` | `unit-tests.json` | 68 tests, no failures |
+| `npm run test:api` | `api-check.json` | All nine official endpoint validators passed |
+| `node scripts/check-browser.mjs` | `browser-chromium.json` | 19/19, no page errors or missing local resources |
+| `node scripts/check-browser.mjs --webkit` | `browser-webkit.json` | 19/19, no page errors or missing local resources |
+| `node scripts/check-web3.mjs` | `web3-chromium.json` | 9/9; real safe settlement reward and reload deduplication, NFT custody, rankings, adverse states and simulated wallet flows |
+| `node scripts/check-web3.mjs --webkit` | `web3-webkit.json` | 9/9 against the same production export |
+| `node scripts/check-accessibility.mjs` | `accessibility.json` | 48 views, zero violations/overflow |
+| `node scripts/check-web3-accessibility.mjs` | `web3-accessibility.json` | 28 views, zero violations/overflow |
+| `node scripts/check-quality.mjs` | `quality.json`, `contrast.json` | Font, keyboard/modal focus, 16 measured color pairs and four text-enlargement widths passed |
+| `node .imd/reads/skills/design-critic/scripts/taste.mjs --out test/scratch/taste` | `taste.json` | All 16 checks passed |
+| `node scripts/rebuild-wallet.mjs` | `wallet-rebuild.json` | Exit 0; byte-identical SDK runtime |
+| `node scripts/check-budget.mjs` | `submission-budget.json` | Complete deliverable below 8 MiB; no archives, generated dependency directories or symlinks |
 
-The minimum measured normal-text pair was muted text on the next-step surface: **4.54:1** in light mode; its dark pair was **4.95:1**. The primary button pairs were **7.74:1** light and **8.03:1** dark. Scene label text on its opaque background measured **9.21:1**. These are measured pairs, not estimates or certification of arbitrary game art. The design probe leaves 11 boxes over canvas/images/gradients unmeasured, and reports 16 controls below the comfortable 44px size; its 24px/spacing threshold passes.
+Compatible locally installed browser executables/modules were selected for this machine. The supplied browser connector could not initialize because its Chrome distribution was absent. Standalone Playwright Chromium and WebKit supplied the actual rendering and interaction evidence. Required WebKit runtime libraries were extracted only into disposable scratch space; no system/repository dependency configuration was changed.
 
-## Findings, fixes and rechecks
+The game browser suite exercises movement, collision, resource use/discard, crafting, equipment, all four structures, combat, boss defeat, quests/skills, cave return navigation, recovery, rename, sound/theme, map, minigame, import/export/reload/restart, storage denial, rate limits, Pulse provenance and deduplication. Chromium uses real browser time. WebKit combat advances the browser clock through full attack cooldowns because capped simulation time progresses more slowly under software rendering; game state, damage, kill and XP assertions are unchanged. This is not a physical-device performance test. Canceled document/HEAD availability requests during teardown are recorded separately from genuine missing local assets.
 
-All source citations below refer to the final implementation. Each finding describes the earlier problem and its implemented correction; there are no observed unresolved critical gameplay findings.
+The Web3 suite uses unchanged responses from the real official services for settlements, explorer receipts, profiles, NFTs and rankings. Its adverse-state cases deliberately alter captured RPC responses and are labeled controlled. Its EIP-6963 provider and signer are test-only: the signer is generated in memory, no private key is written, and no real transaction is submitted. Connect rejection, chain add/switch, proof signing/recovery, account-change invalidation, disconnect, phone link rows, Escape/focus return and pending auto-refresh are exercised. A backend, relay, test-response adapter or fixture is not included in the runtime export.
 
-| Severity / kind | Source and original behavior | Correction, reason and recheck |
+## Better Interface review
+
+Visual idea: a pixel-art hamster survival world, with the existing forest-and-oat controls carrying both the adventure and verifiable public wheel evidence.
+
+The pinned workflow and the core principles of all six domains were applied during implementation. The review used the final source, the served production export at `/preview/`, screenshots, actual interactions and the pinned measurements.
+
+| Domain | Coverage | Limits |
 | --- | --- | --- |
-| High — missing gameplay | `src/lib/adventure.ts:52`, `:155`; the prior world had environmental hazards but no combat/boss loop | Added attack, AI telegraphs, damage, dodge, drops, armor, defeat/recovery and Warden. Required playable survival/combat; unit and real browser defeat checks pass |
-| High — save compatibility | `src/lib/survival.ts:93`; new required fields could invalidate older saves | Defaulted new validated adventure/Pulse/tool fields. Older v2 saves keep XP/materials/buildings; legacy profiles migrate; round-trip/import tests pass |
-| High — data integrity | `src/lib/chain-pulse.ts:44`; projections must never grant confirmed-block rewards | Only validated safe core heights advance a monotonic cursor; first connection is baseline; projections are informational. Synthetic projection/duplicate/unsafe/stale/regression checks pass |
-| High — duplicate reward | `src/lib/chain-pulse.ts:18`; an old import could resurrect a completed event after short journal pruning | A missing retired event below the durable cursor remains resolved; receipt claims merge across saves. Dedicated pruning/import test and refresh/repeat interaction checks pass |
-| Medium — narrow controls | `src/styles/survival.css:2220`; added action buttons left Sprint on an orphan row | Reused the existing controls in a compact two-row grid. Main actions remain native targets. 390 screenshot and all probe layout/target checks pass |
-| Medium — repeated layout | `src/pages/index.tsx:752`; a duplicate Pulse sidebar summary left an empty phone grid cell | Removed the redundant summary; the compact live control stays above the world and next-step content moves up. Final 390 and desktop screenshots inspected |
-| Medium — text reflow | `src/styles/survival.css:2262`; 200% text produced 331px document width at a 320px viewport | Changed fixed columns to auto-fit columns with a text-relative 6rem minimum and wrapping. Recheck: document width 320px; dialog width/scroll width both 296px; all four enlargement widths pass |
-| Medium — misleading age | `src/components/chain-pulse.tsx:45`; “Settled · Ns ago” used telemetry age and could imply a recent settlement | Height now says “settled”; freshness explicitly says “Wheel data Ns old”. Unmodified real-response screenshot verifies the final wording; no settlement time is invented |
-| Medium — navigation | `src/pages/index.tsx:1122`; cave home guidance selected an absent non-wilderness exit | Uses the area's first return trail. Browser test verifies the canvas moves toward the cave exit when Walk toward home is selected |
-| Medium — equipment wording | `src/pages/index.tsx:1085`; an owned blade could say Equipped after switching to another weapon | Crafting says Crafted; Inventory shows actual equipped/pressed state. Craft/equip toggle checks pass |
+| Accessibility | Checked: native controls/dialogs, unique heading IDs, visible form labels, announced errors/status, keyboard flow, Escape/focus return, reduced motion, 76 axe views | No screen-reader session, physical touch-device session or accessibility certification |
+| Layout | Checked: first 390 screen, 320/390/768/1440 reflow, wide/mobile tools, long addresses/hashes, pending/error/empty/success states, 200% text enlargement | Not native browser zoom or localized RTL |
+| Writing | Checked: actions name their purpose, unknown/pending/confirmed distinctions, local reward labels, partial ranking coverage, honest missing-service states, official source labels | Vendor wallet popup copy is outside this app |
+| Typography | Checked: locally loaded Nunito Sans, six existing size tokens, weights 400/600/800, numeric stability, wrapping data; probe passed | No added localization/font variants |
+| Colors | Checked: existing semantic tokens, light/dark views, 16 computed solid-background text pairs; measured minimum 4.54:1 among those pairs | Canvas/image/gradient pixels are not universally measured; probe reports 11 such first-screen text boxes unmeasured |
+| UI | Checked: shared surfaces/icons/buttons, first-screen actions, responsive wallet sheet, selected/disabled/loading/empty/error/success states and reduced motion | Hover/pressed rules were source-reviewed; no slow-motion animation-panel review or native wallet/passkey enrollment |
 
-## Retained screenshot evidence
+The first 390 screenshot visibly contains the product, the game scene, Start adventure and Connect wallet. The final probe measured 23 first-screen prose words, no horizontal overflow or text overlap at 320/390/1440, no clipped text, no failing target-spacing check, and complete share metadata. Six sizes and three weights remain in the established system. Sixteen targets are below the comfortable 44px size but meet the probe's WCAG baseline/spacing test; they are not reported as 44px targets.
 
-- `screenshots/probe-390.png`, `probe-1440.png`: pinned probe entry screens; product and main action verified at 390.
-- `screenshots/chromium-complete-mobile.jpg`, `chromium-complete-desktop.jpg`, `chromium-playing-mobile.jpg`: menu and responsive gameplay.
-- `screenshots/chromium-combat.jpg`, `chromium-cave-boss.jpg`, `chromium-building-complete.jpg`, `chromium-skills.jpg`: controlled local scenarios, actual game renderer and controls.
-- `screenshots/chromium-chain-pulse.jpg`: controlled API/receipt scenario, not a live settlement claim.
-- `screenshots/chromium-live-api.jpg`: actual unchanged official responses through the test-only Node transport adapter; exact observation time and values are in the browser report.
-- `screenshots/chromium-offline.jpg`, `chromium-keyboard-focus.png`, `chromium-text-200-mobile.png`: offline state, keyboard focus and text enlargement.
+### Findings fixed
 
-## Exact limitations and completion boundary
+| Severity / source | Before / impact | Fix and recheck |
+| --- | --- | --- |
+| High functional bug · `src/pages/_document.tsx:7`, `src/web3/runtime.ts:40` | Next normalized away the static subpath's trailing slash; lazy wallet imports reached HTML at the wrong directory | Capture the initial document directory in a base element before hydration. Wallet tools load at `/preview/`; both browser suites and export/probe checks pass |
+| High integration bug · `scripts/rebuild-wallet.mjs:10`, `src/web3/sdk-entry.mjs:31` | Coinbase's connector has an optional SDK peer; installing only the connector left that path unresolved | Explicit Coinbase Wallet SDK 4.4.0, full local bundle and exact dependency graph. Browser rows load; reproducible rebuild is byte-identical. Native passkey enrollment remains untested |
+| High data bug · `src/lib/api.ts:225` | A real safe settlement omitted issuance enrichment while Mining caught up, causing the whole history to fail validation | `sqkMintedBaseUnits` is optional/nullable. All safety/range checks remain. Actual capture retained in `settlement-before-issuance.json`; unit regression, nine live endpoint checks and live settlement rewards now pass |
+| Medium layout bug · `src/styles/web3.css:12` | At 768px with 200% text, the new header expanded the document to 1031px | Allow natural header wrapping and mobile utility rows. Recheck measures document width 768px; 320/390/1440 and the final probe also pass |
+| Medium accessibility/label bug · `src/components/web3-hub.tsx:854` | Wrapping select labels included option text in their accessible name | Explicit `for`/ID pairs for Period and Rank by. Both browser filter flows and axe views pass |
+| Anti-cheat hardening · `src/web3/service.ts:529` | Hexadecimal casing could give the same log/transaction more than one deduplication key | Normalize hash identity before counting. Duplicate and mixed-case log fixtures count once; client XP/measurement/unsafe/wrong-snapshot cases are rejected |
 
-At **2026-11-07T03:26:49.853Z**, direct Chromium requests to the five official URLs returned **`net::ERR_EMPTY_RESPONSE`**. The game displayed Unknown and continued normally. At **03:26:50Z**, real Node requests to all five URLs returned **HTTP 200**, were forwarded unchanged into a separate browser context and rendered correctly. `browser-chromium.json` records each exact URL, time, status and the observed panel. `api-check.json` independently records the actual parser checks. This is a client-transport limitation here, not evidence that the API is down. Direct end-user browser transport remains unverified.
+Native dialogs also use `useId` and retain focus handling; wallet mobile entry preserves a legacy injected provider inside wallet browsers. These integration adaptations reuse the original components and tokens. No unrelated redesign or gameplay replacement was made.
 
-The supplied browser connector failed to initialize with **“Socket path too long”**. Standalone Playwright Chromium supplied the actual interaction and visual evidence. WebKit could not launch because its required runtime libraries were unavailable. No privileged system change was attempted. Screen-reader sessions, physical devices, native 200% browser zoom, RTL localization, APCA and animation-panel slow playback were not performed.
+### Selected rendered evidence
 
-No organically occurring new settled block was observed during the verification window. New-block behavior is established by clearly synthetic transition tests; actual API reachability/parsing/rendering is separately established using genuine responses. There is no mock API fallback or transport adapter in the production export.
+- `screenshots/probe-390.png`, `screenshots/probe-1440.png`: final first-screen composition.
+- `screenshots/chromium-complete-desktop.jpg`, `screenshots/chromium-complete-mobile.jpg`, `screenshots/chromium-combat.jpg`, `screenshots/chromium-building-complete.jpg`: preserved gameplay.
+- `screenshots/web3-chromium-wallet-phone.jpg`, `screenshots/web3-webkit-wallet-phone.jpg`: actual phone picker layouts, not native-app handoff proof.
+- `screenshots/web3-chromium-real-settlement.jpg`, `screenshots/web3-webkit-real-settlement.jpg`: real current safe receipts.
+- `screenshots/web3-chromium-nft-inventory.jpg`, `screenshots/web3-webkit-leaderboard.jpg`: actual official NFT/ranking data.
+- `screenshots/web3-chromium-checker-dark-mobile.jpg`, `screenshots/chromium-keyboard-focus.png`, `screenshots/chromium-text-200-mobile.png`: dark state, visible focus and text enlargement.
 
-**Delivered:** a complete playable static implementation, source, existing manifests/lockfile, design documentation and actual check reports. **Verification remains partial for the specific environment-dependent cases above.** Nothing was fabricated to fill those gaps; no transaction, live measurement, API response or blockchain reward is invented.
+The harness generates additional screenshots when rerun. The bundle keeps selected current evidence and the supplied earlier artifacts within the required byte budget; no required runtime asset, source, lockfile, license, export or report is omitted.
+
+## Remaining limits
+
+1. The public explorer RPC returned **HTTP 429**. Its explicitly labeled REST interface remained available, with real confirmed examples. RPC verification checks historical implementation storage/code; REST verification instead requires matching safe Squeekchain history and current pinned Core identity. Historical proxy storage is not verified on that alternate path. Its recent-history limit can make an older settlement ineligible for a local field-note reward while its transaction remains visibly confirmed.
+2. Direct browser API networking here returned `net::ERR_EMPTY_RESPONSE`. The live browser suites forward unchanged public response bodies through Node only in tests. HTTP checks independently confirmed `Access-Control-Allow-Origin: *` for Squeekchain and explorer reads and a 204 preflight allowing If-None-Match (`web3-cors.json`). Direct end-user browser transport is not claimed as observed in this sandbox.
+3. No physical wallet extension/app, real passkey enrollment, contract-wallet signature round trip, phone universal-link handoff, screen reader, native zoom or real-device performance session was available. Simulated wallet success is labeled as such; the actual connector and official SDK are bundled.
+4. Global Game XP/level/quest rankings, private cross-device game profiles, player-owned physical hamster runs/settlements, official SqueekQuest quest transactions and authenticated Genesis eligibility cannot be supplied by the documented public services. They are explained in the product and references instead of fabricated. On-chain rankings are bounded public-event rankings, not a complete game database.
+5. Browser saves and local badges/XP are editable and can be cleared. The separate journal prevents normal replay on this device; it is not a global anti-cheat authority and is not included in the original game-save export. Play one active adventure tab. Only official safe source events enter on-chain ranking totals.
+6. The published deployment is staging Sepolia. Future API/deployment revisions may require updating pins/ABIs. No mainnet claim, new contract, token reward, transaction submission, paid service or eligibility authorization is part of this delivery.
+
+Complete for the technically supported implementation and static-export scope, with the unavailable services and unperformed native checks above. The complete requested global game/eligibility system is not claimed to exist. Publication follows the assignment workflow. The archived game-only report is `validation-game.md`.

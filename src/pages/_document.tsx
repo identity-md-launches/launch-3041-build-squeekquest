@@ -4,6 +4,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <base href="./" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(()=>{const p=location.pathname;const u=new URL(p.endsWith('/')||p.endsWith('.html')?'./':p+'/',location.href);document.querySelector('base').href=u.href})()`,
+          }}
+        />
         <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
         <link rel="stylesheet" href="./fonts/nunito.css" />
         <meta

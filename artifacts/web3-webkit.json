@@ -1,0 +1,728 @@
+{
+  "checkedAt": "2026-11-07T05:15:37.542Z",
+  "engine": "webkit",
+  "scope": "Production export at /preview/. Real responses and clearly isolated controlled transport/provider cases.",
+  "results": [
+    {
+      "name": "static subpath loads wallet modules and connect sheet without a wallet",
+      "passed": true
+    },
+    {
+      "name": "mobile first screen, wallet deep links, bottom sheet and keyboard focus",
+      "passed": true
+    },
+    {
+      "name": "real canonical receipt decodes official events and earns one durable local reward",
+      "passed": true
+    },
+    {
+      "name": "real wallet search loads account history and real NFT ownership",
+      "passed": true
+    },
+    {
+      "name": "community rankings use real safe events, filters and public profile links",
+      "passed": true
+    },
+    {
+      "name": "pending refresh, failed, missing, reorg and offline states never grant rewards (controlled RPC)",
+      "passed": true
+    },
+    {
+      "name": "quest categories preserve game quests and link evidence journals",
+      "passed": true
+    },
+    {
+      "name": "reflow, light/dark, reduced motion and local resource integrity",
+      "passed": true
+    },
+    {
+      "name": "EIP-6963 discovery, rejection, network add/switch, message proof, account change and disconnect (simulated wallet)",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "localFailures": [],
+  "liveReads": [
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3293,
+      "at": "2026-11-07T05:13:31.638Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 35733,
+      "at": "2026-11-07T05:13:31.657Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "method": "GET",
+      "status": 200,
+      "bytes": 36328,
+      "at": "2026-11-07T05:13:31.686Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:13:31.696Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/blocks",
+      "method": "GET",
+      "status": 200,
+      "bytes": 6037,
+      "at": "2026-11-07T05:13:31.721Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3294,
+      "at": "2026-11-07T05:13:36.292Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:13:36.316Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "method": "GET",
+      "status": 200,
+      "bytes": 36328,
+      "at": "2026-11-07T05:13:36.334Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 35733,
+      "at": "2026-11-07T05:13:36.421Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/blocks",
+      "method": "GET",
+      "status": 200,
+      "bytes": 6038,
+      "at": "2026-11-07T05:13:36.450Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 35733,
+      "at": "2026-11-07T05:13:39.846Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3294,
+      "at": "2026-11-07T05:13:39.858Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:13:39.878Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "method": "GET",
+      "status": 200,
+      "bytes": 36328,
+      "at": "2026-11-07T05:13:39.923Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/blocks",
+      "method": "GET",
+      "status": 200,
+      "bytes": 6141,
+      "at": "2026-11-07T05:13:39.960Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/eth-rpc",
+      "method": "eth_chainId",
+      "status": 429,
+      "bytes": 109,
+      "at": "2026-11-07T05:13:42.126Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/transactions/0xd2f15dd7fa56beb572fb61722ad8af095eca95bbf689600fd2d070ec300b1806",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3082,
+      "at": "2026-11-07T05:13:42.574Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/blocks/12081503",
+      "method": "GET",
+      "status": 200,
+      "bytes": 1264,
+      "at": "2026-11-07T05:13:42.767Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/transactions/0xd2f15dd7fa56beb572fb61722ad8af095eca95bbf689600fd2d070ec300b1806/logs",
+      "method": "GET",
+      "status": 200,
+      "bytes": 5984,
+      "at": "2026-11-07T05:13:42.980Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:13:43.078Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/settlements?range=30d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 17844,
+      "at": "2026-11-07T05:13:43.283Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/blocks/12081503",
+      "method": "GET",
+      "status": 200,
+      "bytes": 1264,
+      "at": "2026-11-07T05:13:43.486Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/transactions/0xd2f15dd7fa56beb572fb61722ad8af095eca95bbf689600fd2d070ec300b1806",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3082,
+      "at": "2026-11-07T05:13:46.250Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/blocks/12081503",
+      "method": "GET",
+      "status": 200,
+      "bytes": 1264,
+      "at": "2026-11-07T05:13:46.403Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/transactions/0xd2f15dd7fa56beb572fb61722ad8af095eca95bbf689600fd2d070ec300b1806/logs",
+      "method": "GET",
+      "status": 200,
+      "bytes": 5984,
+      "at": "2026-11-07T05:13:46.625Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/settlements?range=30d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 17844,
+      "at": "2026-11-07T05:13:46.683Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:13:46.717Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/blocks/12081503",
+      "method": "GET",
+      "status": 200,
+      "bytes": 1264,
+      "at": "2026-11-07T05:13:46.920Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3294,
+      "at": "2026-11-07T05:13:49.159Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:13:49.201Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 35733,
+      "at": "2026-11-07T05:13:49.203Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "method": "GET",
+      "status": 200,
+      "bytes": 36328,
+      "at": "2026-11-07T05:13:49.323Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/blocks",
+      "method": "GET",
+      "status": 200,
+      "bytes": 6244,
+      "at": "2026-11-07T05:13:49.361Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/eth-rpc",
+      "method": "eth_chainId",
+      "status": 429,
+      "bytes": 109,
+      "at": "2026-11-07T05:13:51.800Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/transactions/0xd2f15dd7fa56beb572fb61722ad8af095eca95bbf689600fd2d070ec300b1806",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3082,
+      "at": "2026-11-07T05:13:52.020Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/blocks/12081503",
+      "method": "GET",
+      "status": 200,
+      "bytes": 1264,
+      "at": "2026-11-07T05:13:52.192Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/transactions/0xd2f15dd7fa56beb572fb61722ad8af095eca95bbf689600fd2d070ec300b1806/logs",
+      "method": "GET",
+      "status": 200,
+      "bytes": 5984,
+      "at": "2026-11-07T05:13:52.447Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:13:52.581Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/settlements?range=30d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 17844,
+      "at": "2026-11-07T05:13:52.583Z"
+    },
+    {
+      "url": "https://eth-sepolia.blockscout.com/api/v2/blocks/12081503",
+      "method": "GET",
+      "status": 200,
+      "bytes": 1264,
+      "at": "2026-11-07T05:13:52.779Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x35d5fd8a9e4402d0e04457e081d1f00fe26c38c1/activity?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 22802,
+      "at": "2026-11-07T05:13:54.764Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x35d5fd8a9e4402d0e04457e081d1f00fe26c38c1?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 22727,
+      "at": "2026-11-07T05:13:54.778Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x35d5fd8a9e4402d0e04457e081d1f00fe26c38c1?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 22727,
+      "at": "2026-11-07T05:13:56.786Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/squeeks/8768",
+      "method": "GET",
+      "status": 200,
+      "bytes": 107858,
+      "at": "2026-11-07T05:13:57.991Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118445,
+      "at": "2026-11-07T05:14:09.756Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MTM0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiI3OCIsImxvZ0luZGV4IjoiMTYxIn0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118531,
+      "at": "2026-11-07T05:14:10.088Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MTE0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiIzNyIsImxvZ0luZGV4IjoiOTkifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114615,
+      "at": "2026-11-07T05:14:10.378Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MDg0OSIsInRyYW5zYWN0aW9uSW5kZXgiOiI3IiwibG9nSW5kZXgiOiI2In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114525,
+      "at": "2026-11-07T05:14:10.659Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MDQzNSIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDAiLCJsb2dJbmRleCI6IjE4MyJ9",
+      "method": "GET",
+      "status": 200,
+      "bytes": 116466,
+      "at": "2026-11-07T05:14:10.865Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MDA4MiIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDMiLCJsb2dJbmRleCI6Ijg3In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 112785,
+      "at": "2026-11-07T05:14:11.220Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118445,
+      "at": "2026-11-07T05:14:12.552Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MTM0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiI3OCIsImxvZ0luZGV4IjoiMTYxIn0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118531,
+      "at": "2026-11-07T05:14:12.752Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MTE0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiIzNyIsImxvZ0luZGV4IjoiOTkifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114615,
+      "at": "2026-11-07T05:14:12.969Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MDg0OSIsInRyYW5zYWN0aW9uSW5kZXgiOiI3IiwibG9nSW5kZXgiOiI2In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114525,
+      "at": "2026-11-07T05:14:13.057Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MDQzNSIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDAiLCJsb2dJbmRleCI6IjE4MyJ9",
+      "method": "GET",
+      "status": 200,
+      "bytes": 116466,
+      "at": "2026-11-07T05:14:13.172Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA4MDA4MiIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDMiLCJsb2dJbmRleCI6Ijg3In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 112785,
+      "at": "2026-11-07T05:14:13.375Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA3OTMyNSIsInRyYW5zYWN0aW9uSW5kZXgiOiI1MCIsImxvZ0luZGV4IjoiNDcifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 110566,
+      "at": "2026-11-07T05:14:13.728Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA3ODQ0NyIsInRyYW5zYWN0aW9uSW5kZXgiOiI2IiwibG9nSW5kZXgiOiIzIn0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 113510,
+      "at": "2026-11-07T05:14:13.976Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA3ODA0MiIsInRyYW5zYWN0aW9uSW5kZXgiOiI1NiIsImxvZ0luZGV4IjoiOTUifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114243,
+      "at": "2026-11-07T05:14:14.225Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTA5IiwiYmxvY2tOdW1iZXIiOiIxMjA3NzcxNCIsInRyYW5zYWN0aW9uSW5kZXgiOiI2MyIsImxvZ0luZGV4IjoiMTU0In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 112313,
+      "at": "2026-11-07T05:14:14.524Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118445,
+      "at": "2026-11-07T05:14:15.565Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MTM0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiI3OCIsImxvZ0luZGV4IjoiMTYxIn0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118531,
+      "at": "2026-11-07T05:14:15.913Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MTE0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiIzNyIsImxvZ0luZGV4IjoiOTkifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114615,
+      "at": "2026-11-07T05:14:16.194Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MDg0OSIsInRyYW5zYWN0aW9uSW5kZXgiOiI3IiwibG9nSW5kZXgiOiI2In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114525,
+      "at": "2026-11-07T05:14:16.462Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MDQzNSIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDAiLCJsb2dJbmRleCI6IjE4MyJ9",
+      "method": "GET",
+      "status": 200,
+      "bytes": 116466,
+      "at": "2026-11-07T05:14:16.716Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MDA4MiIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDMiLCJsb2dJbmRleCI6Ijg3In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 112785,
+      "at": "2026-11-07T05:14:16.971Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA3OTMyNSIsInRyYW5zYWN0aW9uSW5kZXgiOiI1MCIsImxvZ0luZGV4IjoiNDcifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 110566,
+      "at": "2026-11-07T05:14:17.178Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA3ODQ0NyIsInRyYW5zYWN0aW9uSW5kZXgiOiI2IiwibG9nSW5kZXgiOiIzIn0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 113510,
+      "at": "2026-11-07T05:14:17.422Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA3ODA0MiIsInRyYW5zYWN0aW9uSW5kZXgiOiI1NiIsImxvZ0luZGV4IjoiOTUifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114243,
+      "at": "2026-11-07T05:14:17.702Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA3NzcxNCIsInRyYW5zYWN0aW9uSW5kZXgiOiI2MyIsImxvZ0luZGV4IjoiMTU0In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 112313,
+      "at": "2026-11-07T05:14:17.987Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3294,
+      "at": "2026-11-07T05:14:19.986Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:14:20.049Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "method": "GET",
+      "status": 200,
+      "bytes": 36328,
+      "at": "2026-11-07T05:14:20.121Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/blocks",
+      "method": "GET",
+      "status": 200,
+      "bytes": 6656,
+      "at": "2026-11-07T05:14:20.138Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x12abac897a86161902406308528bc23e41d7a8da?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 22974,
+      "at": "2026-11-07T05:14:22.026Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x12abac897a86161902406308528bc23e41d7a8da/activity?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 26436,
+      "at": "2026-11-07T05:14:22.065Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118445,
+      "at": "2026-11-07T05:14:24.010Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MTM0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiI3OCIsImxvZ0luZGV4IjoiMTYxIn0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 118531,
+      "at": "2026-11-07T05:14:24.232Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MTE0MCIsInRyYW5zYWN0aW9uSW5kZXgiOiIzNyIsImxvZ0luZGV4IjoiOTkifQ",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114615,
+      "at": "2026-11-07T05:14:24.410Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MDg0OSIsInRyYW5zYWN0aW9uSW5kZXgiOiI3IiwibG9nSW5kZXgiOiI2In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 114525,
+      "at": "2026-11-07T05:14:24.555Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MDQzNSIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDAiLCJsb2dJbmRleCI6IjE4MyJ9",
+      "method": "GET",
+      "status": 200,
+      "bytes": 116466,
+      "at": "2026-11-07T05:14:24.770Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=players&limit=100&cursor=eyJ2ZXJzaW9uIjoxLCJraW5kIjoicHVibGljLWFjdGl2aXR5IiwiY2F0ZWdvcnkiOiJwbGF5ZXJzIiwic2FmZVRocm91Z2hCbG9jayI6IjEyMDgxNTEwIiwiYmxvY2tOdW1iZXIiOiIxMjA4MDA4MiIsInRyYW5zYWN0aW9uSW5kZXgiOiIxMDMiLCJsb2dJbmRleCI6Ijg3In0",
+      "method": "GET",
+      "status": 200,
+      "bytes": 112785,
+      "at": "2026-11-07T05:14:24.965Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3294,
+      "at": "2026-11-07T05:14:28.511Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 35733,
+      "at": "2026-11-07T05:14:28.587Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:14:28.603Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "method": "GET",
+      "status": 200,
+      "bytes": 36328,
+      "at": "2026-11-07T05:14:28.661Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/blocks",
+      "method": "GET",
+      "status": 200,
+      "bytes": 6759,
+      "at": "2026-11-07T05:14:28.677Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/status",
+      "method": "GET",
+      "status": 200,
+      "bytes": 3294,
+      "at": "2026-11-07T05:15:20.363Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+      "method": "GET",
+      "status": 200,
+      "bytes": 35733,
+      "at": "2026-11-07T05:15:20.373Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/core",
+      "method": "GET",
+      "status": 200,
+      "bytes": 23631,
+      "at": "2026-11-07T05:15:20.392Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "method": "GET",
+      "status": 200,
+      "bytes": 36328,
+      "at": "2026-11-07T05:15:20.462Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/measurement/blocks",
+      "method": "GET",
+      "status": 200,
+      "bytes": 7377,
+      "at": "2026-11-07T05:15:20.490Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x97468fedc9744d6370c4da41e2d1465d0a253295/activity?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 21740,
+      "at": "2026-11-07T05:15:29.452Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x97468fedc9744d6370c4da41e2d1465d0a253295?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 22489,
+      "at": "2026-11-07T05:15:29.478Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x35d5fd8a9e4402d0e04457e081d1f00fe26c38c1?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 22727,
+      "at": "2026-11-07T05:15:32.900Z"
+    },
+    {
+      "url": "https://api.squeekchain.com/v1/accounts/0x35d5fd8a9e4402d0e04457e081d1f00fe26c38c1/activity?limit=25",
+      "method": "GET",
+      "status": 200,
+      "bytes": 22802,
+      "at": "2026-11-07T05:15:32.917Z"
+    }
+  ],
+  "recoveredReads": [],
+  "verifiedLiveHashes": [
+    "0xd2f15dd7fa56beb572fb61722ad8af095eca95bbf689600fd2d070ec300b1806"
+  ],
+  "limitations": [
+    "Wallet prompts used a controlled EIP-6963 provider and an ephemeral in-memory signer. No physical extension, mobile app, passkey account or paid transaction was used.",
+    "Real-response browser tests forward unmodified public HTTP responses through Node because this sandbox’s direct Chromium API requests return ERR_EMPTY_RESPONSE. The production export fetches the official services directly."
+  ],
+  "passed": true
+}

@@ -1,12 +1,12 @@
 {
-  "checkedAt": "2026-11-07T03:26:50.750Z",
+  "checkedAt": "2026-11-07T05:09:24.356Z",
   "engine": "chromium",
   "scope": "Production export at /preview/. Controlled local saves and clearly synthetic height changes test adverse/settlement states. Final context forwards unmodified real API responses through a test-only Node transport adapter. Direct browser transport is reported separately. No adapter or fixture is shipped in the game.",
   "limitations": [
     {
       "name": "Direct official API browser transport",
       "verified": false,
-      "attemptedAt": "2026-11-07T03:26:49.853Z",
+      "attemptedAt": "2026-11-07T05:09:21.389Z",
       "errors": [
         {
           "url": "https://api.squeekchain.com/v1/status",
@@ -108,31 +108,31 @@
         {
           "url": "https://api.squeekchain.com/v1/status",
           "status": 200,
-          "at": "2026-11-07T03:26:50.372Z"
+          "at": "2026-11-07T05:09:22.924Z"
         },
         {
           "url": "https://api.squeekchain.com/v1/core",
           "status": 200,
-          "at": "2026-11-07T03:26:50.394Z"
+          "at": "2026-11-07T05:09:22.944Z"
         },
         {
           "url": "https://api.squeekchain.com/v1/measurement/blocks",
           "status": 200,
-          "at": "2026-11-07T03:26:50.421Z"
-        },
-        {
-          "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
-          "status": 200,
-          "at": "2026-11-07T03:26:50.436Z"
+          "at": "2026-11-07T05:09:23.011Z"
         },
         {
           "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
           "status": 200,
-          "at": "2026-11-07T03:26:50.458Z"
+          "at": "2026-11-07T05:09:23.022Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+          "status": 200,
+          "at": "2026-11-07T05:09:23.371Z"
         }
       ],
-      "panelText": "Chain Pulse\nConnected\nResting\n0 RPM · hardware\n#1,140 settled\nWheel data 48s old",
-      "observedAt": "2026-11-07T03:26:50.676Z",
+      "panelText": "Chain Pulse\nConnected\nResting\n0 RPM · hardware\n#1,484 settled\nWheel data 34s old",
+      "observedAt": "2026-11-07T05:09:24.227Z",
       "note": "Responses were forwarded unchanged; no synthetic height changes or fallback values. This adapter is test scaffolding and is not shipped in the game."
     },
     {
@@ -142,6 +142,88 @@
   ],
   "pageErrors": [],
   "localFailures": [],
+  "navigationAborts": [
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    },
+    {
+      "path": "/preview/",
+      "method": "HEAD",
+      "reason": "Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing"
+    }
+  ],
   "expectedExternalFailures": 55,
   "passed": true
 }

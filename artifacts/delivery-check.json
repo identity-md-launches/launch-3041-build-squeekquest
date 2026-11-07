@@ -1,26 +1,69 @@
 {
-  "checkedAt": "2026-11-07T03:32:11.720Z",
-  "requiredFiles": 18,
-  "requiredFilesValid": true,
-  "sourceMatchesBuiltCopy": true,
-  "protectedBuildInputsMatch": true,
-  "productionIndexMatchesBuild": true,
-  "screenshotFilesValidated": 14,
-  "shareImage": {
-    "format": "PNG",
-    "width": 1200,
-    "height": 630
+  "checkedAt": "2026-11-07T05:25:01.090Z",
+  "scope": "Worker-recorded results, not independent certification. Publication follows submission.",
+  "reports": {
+    "unit-tests": {
+      "passed": true,
+      "checks": 68,
+      "checkedAt": "2026-11-07T05:05:13.864Z"
+    },
+    "api-check": {
+      "passed": true,
+      "checks": 9,
+      "checkedAt": "2026-11-07T05:05:17.125Z"
+    },
+    "web3-chromium": {
+      "passed": true,
+      "checks": 9,
+      "checkedAt": "2026-11-07T05:09:18.441Z"
+    },
+    "web3-webkit": {
+      "passed": true,
+      "checks": 9,
+      "checkedAt": "2026-11-07T05:15:37.542Z"
+    },
+    "browser-chromium": {
+      "passed": true,
+      "checks": 19,
+      "checkedAt": "2026-11-07T05:09:24.356Z"
+    },
+    "browser-webkit": {
+      "passed": true,
+      "checks": 19,
+      "checkedAt": "2026-11-07T05:16:29.541Z"
+    },
+    "accessibility": {
+      "passed": true,
+      "checks": 48,
+      "checkedAt": "2026-11-07T05:13:41.730Z"
+    },
+    "web3-accessibility": {
+      "passed": true,
+      "checks": 28,
+      "checkedAt": "2026-11-07T05:15:57.080Z"
+    },
+    "quality": {
+      "passed": true,
+      "checks": 9,
+      "checkedAt": "2026-11-07T05:09:13.512Z"
+    },
+    "wallet-rebuild": {
+      "passed": true,
+      "checkedAt": "2026-11-07T05:11:13.849Z"
+    },
+    "export-check": {
+      "passed": true,
+      "checkedAt": "2026-11-07T05:10:57.632Z"
+    },
+    "build-check": {
+      "passed": true,
+      "checkedAt": "2026-11-07T05:13:45.182Z"
+    },
+    "taste": {
+      "passed": true,
+      "checks": 16
+    }
   },
-  "exportSha256": "ae643bbc5caa15ad932dbe701ac98f5d79fe3f1c817dcd2d3f89c149a4a129c4",
-  "domainTests": 38,
-  "chromiumSuccessfulEntries": 19,
-  "accessibilityScenarios": 48,
-  "designProbePasses": 16,
-  "qualityChecks": 9,
-  "materialVerificationLimits": [
-    "Direct browser API transport returned net::ERR_EMPTY_RESPONSE; actual Node/curl API and unmodified-response browser rendering passed.",
-    "WebKit could not launch because required runtime libraries are unavailable.",
-    "An organically occurring new settlement was not observed; transition/dedup behavior was tested with explicit synthetic cases."
-  ],
+  "publicDependencyRegistryOnly": true,
   "passed": true
 }

@@ -222,7 +222,7 @@ export const schemas = {
         blockTimestamp: iso,
         confirmationStatus: z.literal('safe'),
         logIndex: uint,
-        sqkMintedBaseUnits: uint.nullable(),
+        sqkMintedBaseUnits: uint.nullable().optional(),
       }),
     ),
   }),

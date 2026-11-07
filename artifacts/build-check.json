@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-11-07T05:13:45.182Z",
+  "commands": [
+    {
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    }
+  ],
+  "buildDirectory": "Isolated disposable mirror under test/scratch/build",
+  "reason": "Install the unchanged incumbent dependency graph without modifying protected repository package files or node_modules.",
+  "framework": "Existing Next.js 16.4.5 / React / TypeScript; static export",
+  "sourceMirrorMatches": true,
+  "sha256": {
+    "package.json": "c6a4e06c64dd50b5dcdb3c2d34ce9696d6cc9a02baf0de715d0ce3b72b37f252",
+    "package-lock.json": "e7dad99dfbef19791b67c883a771f65b0d06b1542066cdb84d38d98c05b5bc87",
+    "next.config.mjs": "b33a78f30ae8fc6fee577b2b5ef563be802db4a9d0a15f651d2276d5bb1abfd3",
+    "src/pages/index.tsx": "2043fa23858e8bace6e471d701d2756e04e6dfaac50fa28ed946c6adc3d82a43",
+    "src/components/web3-hub.tsx": "9e1bc21d2360dec940e8871b2048fda8f055b5c4966699bd118c9605d235806b",
+    "src/web3/service.ts": "9da74f4bdff041587cb58a10b88134ebc643f7a450d6b2488e39dc894b59c262",
+    "src/lib/api.ts": "926eee10f89300de1fb419b35179ef6b15cad1c1c7b4332d4596e4f3619e5d51",
+    "src/styles/web3.css": "ef05bbfb3d6f705f2e5228a30f008cef67e606336c21fb44f2b48ab64269d925",
+    "dist/index.html": "89a46f7d7258f2aafc3aa674e2b5e274ab25df04710f9d4eb41a0f7304ae03c7"
+  },
+  "passed": true
+}

@@ -1,5 +1,11 @@
 import Head from 'next/head';
 import { useChain } from '../hooks/use-chain';
+import { useWallet } from '../hooks/use-wallet';
+import { WalletControl } from '../components/wallet-control';
+import { Web3Hub, type Web3Tab } from '../components/web3-hub';
+import { EVIDENCE_KEY, evidenceFor, readEvidence } from '../web3/evidence';
+import { checkTransaction, type VerifiedTransaction } from '../web3/service';
+import { isAddress } from '../web3/network';
 import { PulseStrip, PulseDetails } from '../components/chain-pulse';
 import {
   PULSE_KEY,
@@ -73,6 +79,7 @@ import {
 } from '../lib/survival';
 
 type Panel =
+  | 'web3'
   | 'pulse'
   | 'inventory'
   | 'crafting'
@@ -85,6 +92,7 @@ type Panel =
   | 'new-game'
   | null;
 const PANEL_NAMES: Record<NonNullable<Panel>, string> = {
+  web3: 'SqueekQuest Web3',
   pulse: 'Chain Pulse',
   inventory: 'Your satchel',
   crafting: 'Crafting bench',
@@ -156,6 +164,12 @@ function PanelNote({ children }: { children: ReactNode }) {
 
 export default function Home() {
   const { state: chain, refresh } = useChain();
+  const wallet = useWallet();
+  const walletRef = useRef(wallet);
+  walletRef.current = wallet;
+  const [web3Tab, setWeb3Tab] = useState<Web3Tab>('dashboard');
+  const [web3Address, setWeb3Address] = useState('');
+  const [questKind, setQuestKind] = useState<'game' | 'hamster' | 'chain'>('game');
   const [now, setNow] = useState(0);
   useEffect(() => {
     setNow(Date.now());
@@ -339,11 +353,63 @@ export default function Home() {
   function open(p: NonNullable<Panel>) {
     setPanel(p);
   }
+  function openWeb3(tab: Web3Tab = 'dashboard', address = '') {
+    setWeb3Tab(tab);
+    setWeb3Address(address);
+    setPanel('web3');
+    history.replaceState(null, '', `#web3/${tab}${address ? '/' + address : ''}`);
+  }
+  useEffect(() => {
+    const route = () => {
+      // A profile link is public and never imports local game progress.
+      const parts = location.hash.slice(1).split('/');
+      if (parts[0] !== 'web3') return;
+      const selected = parts[1] as Web3Tab;
+      if (!['dashboard', 'profile', 'leaderboard', 'checker', 'nfts', 'quests'].includes(selected))
+        return;
+      setWeb3Tab(selected);
+      setWeb3Address(parts[2] && isAddress(parts[2]) ? parts[2] : '');
+      setPanel('web3');
+    };
+    route();
+    window.addEventListener('hashchange', route);
+    return () => window.removeEventListener('hashchange', route);
+  }, []);
+  async function recordSettlement(transaction: VerifiedTransaction) {
+    const checked = await checkTransaction(transaction.hash);
+    const execute = () => {
+      const records = readEvidence(localStorage.getItem(EVIDENCE_KEY));
+      const connected = walletRef.current;
+      const entry = evidenceFor(
+        checked,
+        records,
+        connected.verified && !connected.wrongNetwork ? connected.address : undefined,
+      );
+      // Commit the deduplication record before granting a reversible local benefit.
+      // If saving the adventure subsequently fails, a reward is lost rather than duplicated.
+      const next = [...records, entry];
+      localStorage.setItem(EVIDENCE_KEY, JSON.stringify(next));
+      stateRef.current = {
+        ...stateRef.current,
+        xp: stateRef.current.xp + 90,
+        stamina: Math.min(maxStamina(stateRef.current), stateRef.current.stamina + 20),
+      };
+      saveEnabled.current = true;
+      setHasSave(true);
+      snapshot();
+      persist();
+      setMessage('Settlement field note recorded. +90 local XP and up to +20 stamina.');
+      return next;
+    };
+    return navigator.locks ? navigator.locks.request(PULSE_KEY, execute) : execute();
+  }
   function focusWorld() {
     setTimeout(() => document.querySelector<HTMLCanvasElement>('.survival-canvas')?.focus(), 0);
   }
   function close() {
     setPanel(null);
+    if (location.hash.startsWith('#web3/'))
+      history.replaceState(null, '', location.pathname + location.search);
   }
   function start(fresh = false) {
     if (fresh) {
@@ -542,6 +608,10 @@ export default function Home() {
             </span>
           </a>
           <span className="sq-header-caption">A little life in the wild.</span>
+          <WalletControl
+            wallet={wallet}
+            onProfile={() => openWeb3('profile', wallet.address || '')}
+          />
           <div className="sq-utilities">
             <button
               className="sq-icon-button"
@@ -732,6 +802,20 @@ export default function Home() {
                 </button>
               ))}
             </nav>
+            <nav className="web3-launcher" aria-label="Squeekchain tools">
+              <button onClick={() => openWeb3('dashboard')}>
+                <Icon name="radio" size={17} />
+                Squeekchain
+              </button>
+              <button onClick={() => openWeb3('leaderboard')}>
+                <Icon name="trophy" size={17} />
+                Leaderboard
+              </button>
+              <button onClick={() => openWeb3('checker')}>
+                <Icon name="search" size={17} />
+                Check transaction
+              </button>
+            </nav>
             <div className="sq-game-footer">
               <p>
                 <span className="desktop-directions">
@@ -893,9 +977,73 @@ export default function Home() {
             'minigame',
             'map',
             'pulse',
+            'web3',
           ].includes(panel)}
         >
           <div className={`sq-panel panel-${panel}`}>
+            {panel === 'web3' && (
+              <Web3Hub
+                key={`${web3Tab}:${web3Address}`}
+                wallet={wallet}
+                save={save}
+                chain={chain}
+                initialTab={web3Tab}
+                initialAddress={web3Address}
+                onReward={recordSettlement}
+                retryChain={() =>
+                  void refresh(['status', 'core', 'blocks', 'measurements', 'stats'])
+                }
+              />
+            )}
+            {panel === 'quests' && (
+              <div className="sq-segmented" role="group" aria-label="Quest category">
+                <button aria-pressed={questKind === 'game'} onClick={() => setQuestKind('game')}>
+                  Game quests
+                </button>
+                <button
+                  aria-pressed={questKind === 'hamster'}
+                  onClick={() => setQuestKind('hamster')}
+                >
+                  Hamster quests
+                </button>
+                <button aria-pressed={questKind === 'chain'} onClick={() => setQuestKind('chain')}>
+                  On-chain quests
+                </button>
+              </div>
+            )}
+            {panel === 'quests' && questKind === 'hamster' && (
+              <section className="web3-journal-intro">
+                <h3>Follow the real wheel</h3>
+                <p>
+                  Accepted measurement field notes and safe Squeek block encounters live in Chain
+                  Pulse. Every note preserves the source’s provenance. Simulated, replay and derived
+                  readings stay labeled.
+                </p>
+                <p>
+                  {save.pulse.measurementClaims.length} measurement notes recorded ·{' '}
+                  {save.pulse.completed} confirmed-block encounters completed.
+                </p>
+                <button className="sq-button" onClick={() => open('pulse')}>
+                  Open hamster quests
+                </button>
+              </section>
+            )}
+            {panel === 'quests' && questKind === 'chain' && (
+              <section className="web3-journal-intro">
+                <h3>Witness a settlement</h3>
+                <p>
+                  Verify a real, successful SqueekCore settlement with 12 confirmations. Record a
+                  unique receipt for 90 local XP, up to 20 stamina and activity achievements.
+                </p>
+                <p>
+                  Evidence is kept on this device. No token reward or official quest contract
+                  exists.
+                </p>
+                <button className="sq-button" onClick={() => openWeb3('quests')}>
+                  Open on-chain quest journal
+                </button>
+              </section>
+            )}
             {panel === 'pulse' && (
               <PulseDetails
                 chain={chain}
@@ -1181,7 +1329,7 @@ export default function Home() {
                 </PanelNote>
               </>
             )}
-            {panel === 'quests' && (
+            {panel === 'quests' && questKind === 'game' && (
               <>
                 <div className="section-divider">
                   <h3>The forest’s heart</h3>
@@ -1487,6 +1635,19 @@ export default function Home() {
                       {save.xp} total XP · {Math.floor(save.playSeconds / 60)} minutes exploring
                     </p>
                   </div>
+                </div>
+                <div className="web3-profile-entry">
+                  <p>
+                    {wallet.address
+                      ? `Connected wallet: ${wallet.address}`
+                      : 'Wallet disconnected. Your local adventure is available without a wallet.'}
+                  </p>
+                  <button
+                    className="sq-button"
+                    onClick={() => openWeb3('profile', wallet.address || '')}
+                  >
+                    Open Web3 profile
+                  </button>
                 </div>
                 <form
                   className="rename-form"

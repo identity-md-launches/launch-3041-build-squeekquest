@@ -1,8 +1,10 @@
 # Squeekchain integration evidence
 
+The current wallet, NFT, ranking and receipt integration is documented in [INTEGRATIONS-WEB3.md](INTEGRATIONS-WEB3.md). The notes below describe the preserved Chain Pulse game adapter. Earlier transport observations are historical; current browser coverage is in [validation.md](validation.md).
+
 Runtime source: `src/lib/api.ts`, `src/hooks/use-chain.ts`, `src/lib/chain-pulse.ts`, `src/components/chain-pulse.tsx`.
 
-The game uses the five required public GET endpoints, with no wallet, token flow, private key, backend or paid service. Prior optional API adapters remain in source; normal gameplay polls only status, core, blocks, measurement events and seven-day stats. Exact endpoint URLs, schema versions and actual validation results are in `api-check.json`.
+The core adventure uses five public GET endpoints without requiring a wallet, token flow, private key, backend or paid service. Normal gameplay polls only status, core, blocks, measurement events and seven-day stats; the optional Web3 panels perform additional documented reads. Exact endpoint URLs, schema versions and actual validation results are in `api-check.json`.
 
 ## Settlement boundary
 

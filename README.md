@@ -2,7 +2,7 @@
 
 A complete, local-first hamster survival adventure built on the existing Next.js, React and TypeScript project. Explore the Forest, Ancient Ruins, Wilderness and Underground Cave; gather, fight, craft and build a home. Real, confirmed Squeekchain blocks create **Chain Pulse** encounters. The finished static export is in **`dist/`**.
 
-The existing art, local Nunito font, themes, sound, gathering, buildings, daily quests, save migration and Sunflower scramble minigame remain. Ancient Ruins continues the previous Abandoned Village map; Wilderness remains as an extra area. No wallet, signature, transaction, paid service, backend or database is needed.
+The existing art, local Nunito font, themes, sound, gathering, buildings, daily quests, save migration and Sunflower scramble minigame remain. Ancient Ruins continues the previous Abandoned Village map; Wilderness remains as an extra area. The adventure needs no wallet. Optional Web3 tools connect an Ethereum wallet, show real Sepolia activity and NFTs, and verify settlement field notes. No paid service, backend, database or game transaction is needed.
 
 ## Install, preview and rebuild
 
@@ -23,7 +23,41 @@ npm run build
 npm run check:export
 ```
 
-The production build uses the existing `output: 'export'` and `assetPrefix: '.'` configuration. `scripts/export.mjs` copies the Next export to `dist/`, removes source maps, and rebases document-owned URLs. All required images, fonts, scripts and styles are local. The single page uses dialogs, so static hosting needs no route rewriting. Deliver the contents of `dist/`; hosting and publishing are outside this assignment.
+The production build uses the existing `output: 'export'` and `assetPrefix: '.'` configuration. `scripts/export.mjs` copies the Next export to `dist/`, removes source maps, and rebases document-owned URLs. `_document.tsx` preserves the initial static directory as the document base before Next normalizes the address; lazy wallet assets therefore work at a gateway subpath. All required interface images, fonts, scripts and styles are local. The single page uses dialogs and `#web3/...` profile links, so static hosting needs no route rewriting. Deliver the contents of `dist/`; publication follows submission.
+
+## Web3 tools
+
+Use **Connect wallet** in the header. Browser wallets are discovered by EIP-6963, with a legacy browser-wallet fallback. On a phone without an injected wallet, the picker opens the current page in MetaMask, Coinbase Wallet, Rabby or Phantom. Coinbase Wallet also offers its SDK's passkey wallet flow. No relay, project ID, private credential or subscription is required. Wallet names indicate compatible Ethereum interfaces, not a claimed Squeekchain endorsement.
+
+The supported Squeekchain deployment is **Ethereum Sepolia, chain 11155111**, release `core-sepolia-20261103`, revision 7. A network mismatch offers **Switch to Sepolia**, including add-chain fallback. Disconnect removes the app's active connection. Ownership verification is an explicit, origin-bound message with a random nonce and ten-minute expiry; the proof stays in memory and clears on an account/network change or reload. It is not an official Community login.
+
+The tools below the map open six panels:
+
+- **Squeekchain:** fresh sensor status and provenance, safe settlement history, source links and official Genesis guidance. Simulated/replay/derived telemetry remains labeled. Missing or stale readings are Unknown.
+- **Web3 profile:** full wallet address, hamster avatar, this browser's XP/level/quests, local activity badges, public account history and NFT counts. Other wallets' private game progress is unavailable.
+- **Leaderboard:** global public **on-chain activity** reconstructed from safe official player events, ranked by actions or unique transactions, with daily/weekly/all-time windows, profile links and minute refreshes. A 1,000-event cap is disclosed when coverage is partial. The Game view shows your local record and explains why global game rankings are unavailable.
+- **Check transaction:** look up a hash or wallet. Receipts show status, confirmations, block, time, parties, recognized events and explorer links. Known pending transactions refresh every 15 seconds while open. Unknown hashes are Not found, never fabricated as Pending or Confirmed.
+- **NFT inventory:** safe wallet/Staking custody, pagination and official Squeek metadata. No NFT is invented or minted by this game.
+- **On-chain quests:** verify a real settlement and record a field note for **90 local XP and up to 20 stamina**, once per transaction on this device. The quest journal also retains Game quests and Hamster quests. Achievements count unique recorded settlements and active settled rounds; these are local game badges.
+
+The checker first uses the explorer RPC published in Squeekchain's deployment descriptor. If that transport is unavailable or rate limited, it uses **the same official explorer's REST API**, with the source visibly identified. The RPC path checks historical implementation storage and code hash. The REST path checks canonical block/log identity twice and grants settlement progress only when the receipt also matches safe official Squeekchain settlement history and the pinned Core identity. Historical proxy storage is explicitly unverified on that alternate path. It cannot approve a receipt that failed an RPC provenance check.
+
+The separate local evidence journal survives new games and old game-save imports. It is browser storage, not a global authority; clearing browser data removes it. Local save exports do not export that journal. Its records never feed the on-chain ranking. No private key or signature is persisted, and no game code broadcasts a transaction.
+
+### Supported limits
+
+Squeekchain publishes no shared game-score service, game quest contract, player ownership of physical hamster runs, or public Genesis-eligibility endpoint without Community authentication. Consequently global XP/level/quest rankings, player-ranked hamster runs/settlements, official quest transactions, and an in-game eligibility certificate are unavailable. The site explains these limits instead of inventing players, scores, contracts or token rewards. Genesis/testnet mint actions remain in the official Community application. No mainnet deployment or mint is performed here.
+
+### Rebuild the bundled wallet runtime
+
+The existing game's manifest and lockfile are unchanged. Required browser SDK assets are committed under `public/wallet-runtime/` and copied into `dist/` by the normal build. To regenerate them from the included SDK entrypoint and recorded exact dependency graph:
+
+```sh
+node scripts/rebuild-wallet.mjs
+npm run build
+```
+
+This installs only disposable build dependencies under `test/scratch/wallet/`; it does not alter the game's package files. `artifacts/wallet-dependencies.json` records versions, integrity values and the complete dependency graph. No dependency archive or registry mirror is shipped. See [official integration references](artifacts/INTEGRATIONS.md), [verified public transaction examples](artifacts/VERIFIED-EXAMPLES.md), and [the current testing report](artifacts/validation.md).
 
 ## Play
 
@@ -58,7 +92,7 @@ Build at the forest burrow clearing. Four fixed building sites have three upgrad
 
 Every 250 XP adds a level and one skill point. Spend points in **Explorer profile** on vitality (+15 maximum health), combat (+6 damage) or foraging (+1 resource per gather), each up to rank three. Ancient Ruins opens at level 2. The Underground Cave requires level 3, a pickaxe and a lantern. Previously visited areas remain accessible when migrating an existing save.
 
-The journal contains four main quests, two side quests, three UTC daily quests, and ten achievements. Claim completed rewards once. Hidden caches reward exploration. **Sunflower scramble** remains playable: collect five seeds, return home and claim its daily quest reward. Its latest 50 local run records remain in the profile. Nothing is a shared leaderboard.
+The game journal contains four main quests, two side quests, three UTC daily quests, and ten existing achievements, alongside the new Web3 field-note achievements. Claim completed rewards once. Hidden caches reward exploration. **Sunflower scramble** remains playable: collect five seeds, return home and claim its daily quest reward. Its latest 50 local run records remain in the profile; those records are excluded from community on-chain rankings.
 
 ## Chain Pulse
 
@@ -92,7 +126,7 @@ Progress saves every five seconds, after successful actions, when pausing/openin
 
 ## Verification and limitations
 
-The worker runs checks against the production export, served under `/preview/`. In this assignment, dependencies and a build copy were installed only in disposable `test/scratch/` to leave the protected root dependency directory untouched; the unchanged project scripts were used there. No generated dependency directories or browser downloads are delivered.
+The worker runs checks against the production export, served under `/preview/`. In this assignment, dependencies and a build copy were installed only in disposable `test/scratch/` to leave the protected root dependency directory untouched; the existing install, typecheck and production-build scripts were used there. No generated dependency directories or browser downloads are delivered.
 
 ```sh
 npm run typecheck
@@ -100,18 +134,25 @@ node scripts/check-unit.mjs
 npm run build
 npm run check:export
 npm run test:api
-npx playwright install chromium
+npx playwright install chromium webkit
 npm run test:browser
+node scripts/check-browser.mjs --webkit
 npm run test:a11y
+node scripts/check-web3-accessibility.mjs
+node scripts/rebuild-wallet.mjs
+node scripts/check-web3.mjs
+node scripts/check-web3.mjs --webkit
 node scripts/check-quality.mjs
 node scripts/check-budget.mjs
 ```
 
 `check-unit.mjs` runs the same test files as `npm test` and records actual counts. Browser tests cover real controls, movement/collision, combat and boss defeat, crafting/building, quests/skills, save/refresh/export/import, restart, denied storage, rate limits, responsive layouts and Pulse deduplication. Controlled saves and deliberately changed fixture heights are **test scaffolding only** and are not runtime fallback data.
 
+The Web3 browser harness uses the disposable wallet build's Viem package for an ephemeral, in-memory test signer, so run `rebuild-wallet.mjs` before that harness. Do not reinstall its dependencies while the harness is running. `SQUEEKQUEST_CHROMIUM` and `SQUEEKQUEST_WEBKIT` optionally select existing browser executables; `IMD_PLAYWRIGHT` optionally selects a compatible Playwright module for `check-web3.mjs`. WebKit combat checks advance its browser clock through attack cooldowns under software rendering; live chain reads use unmodified public responses. No real wallet transaction is sent by any check.
+
 Final commands, counts, screenshots, the eleven acceptance checks, the pinned design probe and the six-domain Better Interface review are recorded in [artifacts/validation.md](artifacts/validation.md). [DESIGN.md](DESIGN.md) documents the implemented design system. [Integration notes](artifacts/INTEGRATIONS.md) explain the evidence boundary.
 
-Concrete environment limitations: the supplied browser connector failed with **“Socket path too long”**. Standalone Chromium works. Direct browser requests to the official API returned **`net::ERR_EMPTY_RESPONSE`**, although actual Node/curl requests succeeded with HTTP 200 and valid schemas. A separate test-only transport adapter forwards unchanged official responses into Chromium to verify parsing/rendering; **no adapter, backend or synthetic API response is shipped in the game**. Direct end-user browser transport remains unverified here. WebKit could not launch because required runtime libraries are unavailable. Physical devices, screen-reader sessions, native 200% browser zoom and an organically occurring new settlement were not verified. New settlement behavior is verified with explicitly synthetic test transitions, not claimed as an observed live block.
+Current checks and environment limits are recorded in [artifacts/validation.md](artifacts/validation.md); the earlier game-only review is retained in [artifacts/validation-game.md](artifacts/validation-game.md). Real-response browser tests use unchanged official response bodies through a test-only Node transport because direct Chromium API reads in this environment return `net::ERR_EMPTY_RESPONSE`. No test adapter or fixture is shipped as runtime data. Real wallet apps, passkey enrollment, physical devices, screen-reader sessions and native browser zoom need manual verification; simulated wallet prompts are identified in the report. The public explorer RPC returned HTTP 429 during this assignment; its REST fallback was checked against real public transactions.
 
 No missing live data, transaction, measurement, API response or blockchain reward was fabricated. Successful API responses and controlled-test evidence are identified separately.
 

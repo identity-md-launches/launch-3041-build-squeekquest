@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-11-07T03:21:28.187Z",
-  "command": "node --import tsx --test tests/adventure.test.ts tests/api.test.ts tests/game.test.ts tests/survival.test.ts",
-  "tests": 38,
-  "passedTests": 38,
+  "checkedAt": "2026-11-07T05:05:13.864Z",
+  "command": "node --import tsx --test tests/adventure.test.ts tests/api.test.ts tests/game.test.ts tests/leaderboard.test.ts tests/survival.test.ts tests/web3.test.ts",
+  "tests": 68,
+  "passedTests": 68,
   "failedTests": 0,
   "checks": [
     {
@@ -78,6 +78,10 @@
       "passed": true
     },
     {
+      "name": "a safe settlement can precede its optional Mining issuance enrichment",
+      "passed": true
+    },
+    {
       "name": "formats large blockchain integers without float precision loss",
       "passed": true
     },
@@ -99,6 +103,26 @@
     },
     {
       "name": "bounded discovery history preserves lifetime XP and unlocked achievements",
+      "passed": true
+    },
+    {
+      "name": "community rank ignores duplicate log entries and counts unique transactions",
+      "passed": true
+    },
+    {
+      "name": "unsafe source blocks and another deployment cannot enter community rankings",
+      "passed": true
+    },
+    {
+      "name": "measurement receipts and client-reported XP are not player ranking inputs",
+      "passed": true
+    },
+    {
+      "name": "a repeated paginated feed is bounded and explicitly marked partial",
+      "passed": true
+    },
+    {
+      "name": "a changing safe snapshot cannot combine incompatible rank pages",
       "passed": true
     },
     {
@@ -155,6 +179,102 @@
     },
     {
       "name": "foraging minigame credits actual seeds, bounds history and grants daily XP only on claim",
+      "passed": true
+    },
+    {
+      "name": "real captured successful settlement passes canonical receipt checks",
+      "passed": true
+    },
+    {
+      "name": "unknown transaction is not called pending or confirmed",
+      "passed": true
+    },
+    {
+      "name": "known mempool transaction stays pending and has no evidence",
+      "passed": true
+    },
+    {
+      "name": "successful transaction below twelve confirmations cannot earn progress",
+      "passed": true
+    },
+    {
+      "name": "reverted receipt is failed and cannot earn progress",
+      "passed": true
+    },
+    {
+      "name": "wrong RPC chain rejects a real hash",
+      "passed": true
+    },
+    {
+      "name": "receipt from another transaction is rejected",
+      "passed": true
+    },
+    {
+      "name": "a reorg invalidates the receipt",
+      "passed": true
+    },
+    {
+      "name": "unrecognized receipt status is not approved",
+      "passed": true
+    },
+    {
+      "name": "a changed core implementation cannot verify a settlement",
+      "passed": true
+    },
+    {
+      "name": "a changed implementation runtime cannot verify a settlement",
+      "passed": true
+    },
+    {
+      "name": "unrelated successful transaction is confirmed without inventing a settlement",
+      "passed": true
+    },
+    {
+      "name": "transport and RPC failures never turn into confirmation",
+      "passed": true
+    },
+    {
+      "name": "invalid input sends no RPC request",
+      "passed": true
+    },
+    {
+      "name": "settlement journal rejects duplicates across wallets and rejects stale verification",
+      "passed": true
+    },
+    {
+      "name": "journal corruption is surfaced instead of silently forgetting rewarded hashes",
+      "passed": true
+    },
+    {
+      "name": "captured account and activity validate only for their requested wallet",
+      "passed": true
+    },
+    {
+      "name": "account responses from another chain or release and unsafe activity are rejected",
+      "passed": true
+    },
+    {
+      "name": "NFT duplicate ownership rows are rejected",
+      "passed": true
+    },
+    {
+      "name": "official explorer REST fallback requires matching canonical logs and safe settlement history",
+      "passed": true
+    },
+    {
+      "name": "explorer fallback never promotes a pending or reverted transaction",
+      "passed": true
+    },
+    {
+      "name": "explorer fallback rejects logs from another block",
+      "passed": true
+    },
+    {
+      "name": "explorer fallback cannot award a receipt absent from official safe history",
+      "passed": true
+    },
+    {
+      "name": "explorer fallback cannot reward a receipt below twelve confirmations",
       "passed": true
     }
   ],

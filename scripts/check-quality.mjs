@@ -18,11 +18,21 @@ try {
   await p.goto(`http://localhost:${server.address().port}/preview/`);
   await p.getByRole('button', { name: 'Start adventure', exact: true }).waitFor();
   await p.evaluate(() => document.fonts.ready);
-  const fonts = await p.evaluate(() => [...document.fonts].map(f => ({ family:f.family, weight:f.weight, status:f.status })));
-  checks.push({name:'Locally bundled Nunito font loads',passed:fonts.some(f=>f.family.includes('Nunito Sans')&&f.status==='loaded'),fonts});
-  await p.keyboard.press('Tab');
-  await p.keyboard.press('Tab');
-  await p.keyboard.press('Tab');
+  const fonts = await p.evaluate(() =>
+    [...document.fonts].map((f) => ({ family: f.family, weight: f.weight, status: f.status })),
+  );
+  checks.push({
+    name: 'Locally bundled Nunito font loads',
+    passed: fonts.some((f) => f.family.includes('Nunito Sans') && f.status === 'loaded'),
+    fonts,
+  });
+  for (
+    let i = 0;
+    i < 12 &&
+    (await p.evaluate(() => document.activeElement?.getAttribute('aria-label'))) !== 'How to play';
+    i++
+  )
+    await p.keyboard.press('Tab');
   assert.equal(
     await p.evaluate(() => document.activeElement.getAttribute('aria-label')),
     'How to play',

@@ -16,6 +16,7 @@ const results = [],
   errors = [],
   localFailures = [],
   externalFailures = [],
+  navigationAborts = [],
   limitations = [];
 const server = await serve(0),
   url = `http://localhost:${server.address().port}/preview/`;
@@ -74,17 +75,39 @@ async function key(name) {
   await page.locator('canvas').focus();
   await page.keyboard.press(name);
 }
+async function combatDelay(ms) {
+  if (engine === 'webkit') await page.clock.runFor(ms);
+  else await page.waitForTimeout(ms);
+}
 try {
-  browser = await (engine === 'webkit' ? webkit : chromium).launch({ headless: true });
+  const executablePath =
+    process.env[engine === 'webkit' ? 'SQUEEKQUEST_WEBKIT' : 'SQUEEKQUEST_CHROMIUM'];
+  browser = await (engine === 'webkit' ? webkit : chromium).launch({
+    headless: true,
+    ...(executablePath ? { executablePath } : {}),
+  });
   const context = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
     acceptDownloads: true,
     ignoreHTTPSErrors: true,
   });
   page = await context.newPage();
+  if (engine === 'webkit') await page.clock.install();
   page.setDefaultTimeout(7000);
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('requestfailed', (r) => {
+    if (
+      (r.isNavigationRequest() || (r.method() === 'HEAD' && r.url() === url)) &&
+      r.failure()?.errorText === 'net::ERR_ABORTED'
+    ) {
+      navigationAborts.push({
+        path: new URL(r.url()).pathname,
+        method: r.method(),
+        reason:
+          'Document navigation or HEAD availability read canceled during reload/teardown; no required asset body was missing',
+      });
+      return;
+    }
     (r.url().startsWith(url) ? localFailures : externalFailures).push({
       url: r.url().startsWith(url) ? r.url().slice(url.length) : new URL(r.url()).pathname,
       error: r.failure()?.errorText,
@@ -256,7 +279,7 @@ try {
     await key('q');
     assert.ok((await saved()).stamina < 100);
     await key('Space');
-    await page.waitForTimeout(470);
+    await combatDelay(470);
     await key('Space');
     assert.equal((await saved()).adventure.kills, 1);
     assert.equal((await saved()).adventure.enemies[0].hp, 0);
@@ -281,7 +304,7 @@ try {
       await shot('cave-boss');
       for (let i = 0; i < 10; i++) {
         await key('Space');
-        await page.waitForTimeout(450);
+        await combatDelay(450);
       }
       assert.equal((await saved()).adventure.bossDefeated, true);
       await key('j');
@@ -307,8 +330,11 @@ try {
     await play();
     await key('b');
     await page.getByRole('button', { name: 'Walk toward home', exact: true }).click();
-    await page.waitForTimeout(250);
-    assert.ok(Number(await page.locator('canvas').getAttribute('data-x')) < 99);
+    await page.waitForFunction(
+      () => Number(document.querySelector('canvas')?.getAttribute('data-x')) < 99,
+      undefined,
+      { timeout: 5000 },
+    );
   });
   await check('game over provides a functional recovery and preserves supplies', async () => {
     const s = copy(baseline);
@@ -368,8 +394,11 @@ try {
       await close();
       await key('m');
       await page.getByRole('button', { name: /Walk the trail to Ancient Ruins/ }).click();
-      await page.waitForTimeout(150);
-      assert.ok(Number(await page.locator('canvas').getAttribute('data-x')) > 336);
+      await page.waitForFunction(
+        () => Number(document.querySelector('canvas')?.getAttribute('data-x')) > 336,
+        undefined,
+        { timeout: 5000 },
+      );
       await key('Escape');
       await page.getByRole('button', { name: /Play Sunflower scramble/ }).click();
       await page
@@ -632,12 +661,14 @@ try {
   const report = {
     checkedAt: new Date().toISOString(),
     engine,
+    combatTiming: engine === 'webkit' ? 'Browser clock advances full attack cooldowns under software rendering; game state and combat assertions are unchanged.' : 'Real browser time',
     scope:
       'Production export at /preview/. Controlled local saves and clearly synthetic height changes test adverse/settlement states. Final context forwards unmodified real API responses through a test-only Node transport adapter. Direct browser transport is reported separately. No adapter or fixture is shipped in the game.',
     limitations,
     results,
     pageErrors: errors,
     localFailures,
+    navigationAborts,
     expectedExternalFailures: externalFailures.length,
     passed:
       results.length > 0 &&

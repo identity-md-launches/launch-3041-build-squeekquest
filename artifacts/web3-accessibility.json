@@ -1,0 +1,291 @@
+{
+  "checkedAt": "2026-11-07T05:15:57.080Z",
+  "scope": "Axe WCAG scan of wallet and six Web3 panels in two themes at two widths; offline/error and empty states. Real populated states are exercised by check-web3.mjs. Not a screen-reader session or accessibility certification.",
+  "results": [
+    {
+      "width": 390,
+      "theme": "light",
+      "view": "wallet",
+      "overflow": false,
+      "passes": 13,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "view": "Check transaction",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "view": "Web3 profile",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "view": "NFT inventory",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "view": "Leaderboard",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "view": "On-chain quests",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "view": "Squeekchain",
+      "overflow": false,
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "view": "wallet",
+      "overflow": false,
+      "passes": 13,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "view": "Check transaction",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "view": "Web3 profile",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "view": "NFT inventory",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "view": "Leaderboard",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "view": "On-chain quests",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "view": "Squeekchain",
+      "overflow": false,
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "view": "wallet",
+      "overflow": false,
+      "passes": 14,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "view": "Check transaction",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "view": "Web3 profile",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "view": "NFT inventory",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "view": "Leaderboard",
+      "overflow": false,
+      "passes": 18,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "view": "On-chain quests",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "view": "Squeekchain",
+      "overflow": false,
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "view": "wallet",
+      "overflow": false,
+      "passes": 14,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "view": "Check transaction",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "view": "Web3 profile",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "view": "NFT inventory",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "view": "Leaderboard",
+      "overflow": false,
+      "passes": 18,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "view": "On-chain quests",
+      "overflow": false,
+      "passes": 19,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "view": "Squeekchain",
+      "overflow": false,
+      "passes": 21,
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "passed": true
+}

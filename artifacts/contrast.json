@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-07T03:26:02.127Z",
+  "checkedAt": "2026-11-07T05:09:13.506Z",
   "method": "WCAG sRGB relative luminance of browser-computed foreground and nearest opaque solid background. These pairs do not certify canvas pixels or translucent image overlays.",
   "results": [
     {

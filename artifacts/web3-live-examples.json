@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-11-07T04:55:02.487Z",
+  "chainId": 11155111,
+  "explorer": "https://eth-sepolia.blockscout.com",
+  "implementation": {
+    "address": "0x6869d6102696243fd17013ab955d99cd0c522ad3",
+    "historicalCodeFixture": "tests/fixtures/web3-receipt.json",
+    "codeHash": "0x65b5780a4fccafedeca1260806364d2bb512b4501c097253f792ae2839565a9c",
+    "matchesPublishedRuntime": true
+  },
+  "examples": [
+    {
+      "hash": "0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+      "source": "https://eth-sepolia.blockscout.com/api/v2/transactions/0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4",
+      "httpStatus": 200,
+      "logsHttpStatus": 200,
+      "blockHttpStatus": 200,
+      "status": "ok",
+      "result": "success",
+      "confirmations": 269,
+      "blockNumber": 12081156,
+      "blockHash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a",
+      "timestamp": "2026-11-07T04:00:36.000000Z",
+      "from": "0x4c63E6365DF8471f4f45f1A9614b51b633b9B5a7",
+      "to": "0xFD6C166D4B8E2962E65746a13e5a0797CD4dE0c4",
+      "events": [
+        {
+          "contract": "0xFD6C166D4B8E2962E65746a13e5a0797CD4dE0c4",
+          "event": "RoundRecorded(uint64 indexed roundId, uint64 work, uint64 cumulativeWork, uint96 cumulativeBlockUnits, uint32 workPerThousandBlocks, bytes32 dataHash)",
+          "index": 294,
+          "blockHash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a"
+        },
+        {
+          "contract": "0xFD6C166D4B8E2962E65746a13e5a0797CD4dE0c4",
+          "event": "BatchSettled(bytes32 indexed digest, address indexed reporter, uint64 indexed settledThroughRound, uint256 nonce, uint64 previousSettledThroughRound, uint16 activeRoundCount, uint64 cumulativeWork, uint96 cumulativeBlockUnits)",
+          "index": 295,
+          "blockHash": "0x0adefd3bdb6100fd71a33325a8be1d70476a050165272a22d1e0f3088272ae5a"
+        }
+      ],
+      "logsMatchCanonicalBlock": true,
+      "explorer": "https://eth-sepolia.blockscout.com/tx/0x36241b56acbf8c82e4a7e24cbfce7d561d58a279fc1199954835d8a61b5309f4"
+    },
+    {
+      "hash": "0xad46f709574dfa7eb52cc1827448fe6f0cbbb0c4e2818577d71baeb2048efe9a",
+      "source": "https://eth-sepolia.blockscout.com/api/v2/transactions/0xad46f709574dfa7eb52cc1827448fe6f0cbbb0c4e2818577d71baeb2048efe9a",
+      "httpStatus": 200,
+      "logsHttpStatus": 200,
+      "blockHttpStatus": 200,
+      "status": "ok",
+      "result": "success",
+      "confirmations": 244,
+      "blockNumber": 12081181,
+      "blockHash": "0x22ca131bba61d8b9a842eae57efd2a514bcadeff7a85e37cd8d8d23eb2a67a42",
+      "timestamp": "2026-11-07T04:05:36.000000Z",
+      "from": "0x35D5FD8A9E4402d0e04457E081D1F00Fe26C38c1",
+      "to": "0x50fd1780526C3186A0c037c7622203bC4fb611ca",
+      "events": [
+        {
+          "contract": "0x50fd1780526C3186A0c037c7622203bC4fb611ca",
+          "event": "Deposited(address indexed account, address indexed collection, uint256 indexed tokenId, uint8 level, uint64 basePower, uint256 power)",
+          "index": 34,
+          "blockHash": "0x22ca131bba61d8b9a842eae57efd2a514bcadeff7a85e37cd8d8d23eb2a67a42"
+        },
+        {
+          "contract": "0xC4C7982657f00509548F3a3a41db7FA439a6856B",
+          "event": "Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+          "index": 35,
+          "blockHash": "0x22ca131bba61d8b9a842eae57efd2a514bcadeff7a85e37cd8d8d23eb2a67a42"
+        },
+        {
+          "contract": "0x50fd1780526C3186A0c037c7622203bC4fb611ca",
+          "event": "PowerChanged(address indexed account, uint256 nftPower, uint256 sqkPower)",
+          "index": 36,
+          "blockHash": "0x22ca131bba61d8b9a842eae57efd2a514bcadeff7a85e37cd8d8d23eb2a67a42"
+        }
+      ],
+      "logsMatchCanonicalBlock": true,
+      "explorer": "https://eth-sepolia.blockscout.com/tx/0xad46f709574dfa7eb52cc1827448fe6f0cbbb0c4e2818577d71baeb2048efe9a"
+    }
+  ]
+}

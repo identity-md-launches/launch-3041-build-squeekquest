@@ -1,14 +1,14 @@
 {
-  "checkedAt": "2026-11-07T03:32:11.871Z",
+  "checkedAt": "2026-11-07T05:25:02.051Z",
   "method": "Sum of regular deliverable files within this repository only. Supplied inputs, protected Git metadata, existing generated/cache exclusions and disposable test/scratch are omitted. No machine configuration was inspected.",
   "limitBytes": 8388608,
-  "totalBytes": 3843036,
-  "remainingBytes": 4545572,
-  "files": 111,
+  "totalBytes": 8018673,
+  "remainingBytes": 369935,
+  "files": 207,
   "groups": {
-    "productionExport": 1044540,
-    "artifactsAndScreenshots": 1950878,
-    "sourceManifestsAndDocumentation": 847618
+    "productionExport": 2389314,
+    "artifactsAndScreenshots": 3125622,
+    "sourceManifestsAndDocumentation": 2503737
   },
   "gitignore": {
     "changed": false,
@@ -19,7 +19,7 @@
   "generated": [],
   "symlinks": [],
   "criticalSha256": {
-    "dist/index.html": "ae643bbc5caa15ad932dbe701ac98f5d79fe3f1c817dcd2d3f89c149a4a129c4",
+    "dist/index.html": "89a46f7d7258f2aafc3aa674e2b5e274ab25df04710f9d4eb41a0f7304ae03c7",
     "package.json": "c6a4e06c64dd50b5dcdb3c2d34ce9696d6cc9a02baf0de715d0ce3b72b37f252",
     "package-lock.json": "e7dad99dfbef19791b67c883a771f65b0d06b1542066cdb84d38d98c05b5bc87",
     "src/lib/survival.ts": "d31a120bef48e573730c1034d2a33b1bd376d86c0cadca9e71a84c8eb6cf66df",

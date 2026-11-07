@@ -51,6 +51,14 @@ test('rejects impossible settlement ranges', () => {
   data.recentSettlements[0].completedBlockCount = '99999';
   assert.throws(() => validate('settlements', data));
 });
+
+test('a safe settlement can precede its optional Mining issuance enrichment', () => {
+  const data = fixture('settlements');
+  delete data.recentSettlements[0].sqkMintedBaseUnits;
+  const validated = validate('settlements', data);
+  assert.equal(validated.recentSettlements[0].sqkMintedBaseUnits, undefined);
+  assert.equal(validated.recentSettlements[0].confirmationStatus, 'safe');
+});
 test('formats large blockchain integers without float precision loss', () => {
   assert.equal(formatSqk('214188859285691262889981289'), '214,188,859.28');
   assert.equal(formatSqk('1000000000000000001', 18), '1.000000000000000001');

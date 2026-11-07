@@ -1,17 +1,149 @@
 {
-  "checkedAt": "2026-11-07T03:16:18.204Z",
+  "checkedAt": "2026-11-07T05:16:29.541Z",
   "engine": "webkit",
+  "combatTiming": "Browser clock advances full attack cooldowns under software rendering; game state and combat assertions are unchanged.",
   "scope": "Production export at /preview/. Controlled local saves and clearly synthetic height changes test adverse/settlement states. Final context forwards unmodified real API responses through a test-only Node transport adapter. Direct browser transport is reported separately. No adapter or fixture is shipped in the game.",
-  "limitations": [],
+  "limitations": [
+    {
+      "name": "Direct official API browser transport",
+      "verified": false,
+      "attemptedAt": "2026-11-07T05:16:24.984Z",
+      "errors": [
+        {
+          "url": "https://api.squeekchain.com/v1/status",
+          "error": "Error resolving “api.squeekchain.com”: Temporary failure in name resolution"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/core",
+          "error": "Error resolving “api.squeekchain.com”: Temporary failure in name resolution"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+          "error": "Error resolving “api.squeekchain.com”: Temporary failure in name resolution"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+          "error": "Error resolving “api.squeekchain.com”: Temporary failure in name resolution"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/blocks",
+          "error": "Error resolving “api.squeekchain.com”: Temporary failure in name resolution"
+        }
+      ],
+      "impact": "Direct browser live readings could not be verified here. The app safely shows Unknown. Node HTTP requests and application parsing are verified separately."
+    }
+  ],
   "results": [
     {
-      "name": "browser launch / fatal setup",
-      "passed": false,
-      "error": "WebKit could not launch: required browser runtime libraries are unavailable."
+      "name": "offline first screen has the game, start action and no overflow at 390",
+      "passed": true
+    },
+    {
+      "name": "keyboard movement and pause/resume change real player position",
+      "passed": true
+    },
+    {
+      "name": "collision stops movement into a water obstacle",
+      "passed": true
+    },
+    {
+      "name": "gather, inspect inventory and discard spend real stacks",
+      "passed": true
+    },
+    {
+      "name": "crafting, equipment toggles and all four structures work with exact resource costs",
+      "passed": true
+    },
+    {
+      "name": "enemy combat, dodge, kill XP and physical item drops work",
+      "passed": true
+    },
+    {
+      "name": "Root Warden defeat, main quest reward and level skills work in the rendered game",
+      "passed": true
+    },
+    {
+      "name": "cave building guide starts a real path toward the return exit",
+      "passed": true
+    },
+    {
+      "name": "game over provides a functional recovery and preserves supplies",
+      "passed": true
+    },
+    {
+      "name": "quest claims, save/refresh, export and restart preserve expected progress",
+      "passed": true
+    },
+    {
+      "name": "settings, name, help, map routing and preserved minigame controls work",
+      "passed": true
+    },
+    {
+      "name": "validated save import restores progress and rejects malformed files without replacement",
+      "passed": true
+    },
+    {
+      "name": "denied storage leaves gameplay and save export available",
+      "passed": true
+    },
+    {
+      "name": "controlled API: confirmed height creates one Pulse; projection creates none; duplicate reads cannot repeat it",
+      "passed": true
+    },
+    {
+      "name": "controlled API: accepted measurement field notes claim once and never imply missing hardware provenance",
+      "passed": true
+    },
+    {
+      "name": "API loss and rate limiting keep normal play available and live values unknown",
+      "passed": true
+    },
+    {
+      "name": "responsive layouts, keyboard dialog focus and reduced motion remain usable",
+      "passed": true
+    },
+    {
+      "name": "Actual API observations via test-only transport adapter",
+      "passed": true,
+      "observations": [
+        {
+          "url": "https://api.squeekchain.com/v1/status",
+          "status": 200,
+          "at": "2026-11-07T05:16:27.648Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+          "status": 200,
+          "at": "2026-11-07T05:16:27.704Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/core",
+          "status": 200,
+          "at": "2026-11-07T05:16:27.716Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+          "status": 200,
+          "at": "2026-11-07T05:16:27.729Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/blocks",
+          "status": 200,
+          "at": "2026-11-07T05:16:27.785Z"
+        }
+      ],
+      "panelText": "Chain Pulse\nConnected\nResting\n62.3 RPM · hardware\n#1,512 settled\nWheel data 3s old",
+      "observedAt": "2026-11-07T05:16:29.315Z",
+      "note": "Responses were forwarded unchanged; no synthetic height changes or fallback values. This adapter is test scaffolding and is not shipped in the game."
+    },
+    {
+      "name": "actual official responses parse and render through a test-only Node transport adapter",
+      "passed": true
     }
   ],
   "pageErrors": [],
   "localFailures": [],
-  "expectedExternalFailures": 0,
-  "passed": false
+  "navigationAborts": [],
+  "expectedExternalFailures": 59,
+  "passed": true
 }
