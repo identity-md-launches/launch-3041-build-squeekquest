@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 import { Icon } from './icons';
+import { attack, dodge, stepAdventure, nearPulse, pulseNames } from '../lib/adventure';
+import type { Enemy, PulseEvent } from '../lib/adventure-state';
 import {
   AREA_NAMES,
   BUILDINGS,
@@ -9,6 +11,7 @@ import {
   WIDTH,
   WORLDS,
   distance,
+  consume,
   findPath,
   gather,
   movePlayer,
@@ -24,6 +27,15 @@ import {
 } from '../lib/survival';
 
 const PALETTES = {
+  cave: {
+    ground: '#3d4952',
+    light: '#424e56',
+    dark: '#38434b',
+    path: '#667071',
+    tree: '#354047',
+    treeTop: '#53656a',
+    trunk: '#31434b',
+  },
   forest: {
     ground: '#93ae68',
     light: '#9ab66f',
@@ -56,6 +68,16 @@ const hash = (x: number, y: number) => Math.abs(Math.sin(x * 127.1 + y * 311.7) 
 
 function drawTree(ctx: CanvasRenderingContext2D, x: number, y: number, area: Area, small = false) {
   const c = PALETTES[area];
+  if (area === 'cave') {
+    ctx.fillStyle = c.trunk;
+    ctx.fillRect(x - 16, y - 20, 32, 34);
+    ctx.fillStyle = c.treeTop;
+    ctx.fillRect(x - 12, y - 26, 22, 22);
+    ctx.fillStyle = '#79b9b2';
+    ctx.fillRect(x - 6, y - 32, 7, 19);
+    ctx.fillRect(x + 4, y - 21, 5, 15);
+    return;
+  }
   ctx.fillStyle = '#344d3833';
   ctx.fillRect(x - 17, y + 8, 36, 8);
   ctx.fillStyle = c.trunk;
@@ -252,6 +274,82 @@ function drawPlayer(ctx: CanvasRenderingContext2D, p: Vec, moving: boolean, time
   ctx.fillRect(x + 5, y + 6, 5, 3);
 }
 
+function drawEnemy(ctx: CanvasRenderingContext2D, e: Enemy, time: number, reduced: boolean) {
+  const x = Math.round(e.x),
+    y = Math.round(e.y),
+    boss = e.kind === 'warden',
+    size = boss ? 29 : 13;
+  ctx.fillStyle = '#172d3344';
+  ctx.fillRect(x - size, y + 8, size * 2, 8);
+  if (e.windup > 0) {
+    ctx.strokeStyle = '#ffe2a2';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    ctx.arc(x, y, boss ? 88 : 40, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#aa403c44';
+    ctx.beginPath();
+    ctx.arc(x, y, boss ? 78 : 29, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  const bob = reduced ? 0 : Math.round(Math.sin(time * 0.008 + e.homeX) * 2);
+  ctx.fillStyle = boss
+    ? '#634b40'
+    : e.kind === 'beetle'
+      ? '#7d4549'
+      : e.kind === 'bat'
+        ? '#85759a'
+        : '#527c56';
+  ctx.fillRect(x - size, y - size + bob, size * 2, size + 14);
+  ctx.fillRect(x - size + 5, y - size - 5 + bob, size * 2 - 10, 8);
+  if (boss) {
+    ctx.fillStyle = '#78905b';
+    ctx.fillRect(x - 29, y - 33, 15, 18);
+    ctx.fillRect(x + 17, y - 38, 10, 24);
+    ctx.fillRect(x - 12, y - 36, 22, 10);
+    ctx.fillStyle = '#baa779';
+    ctx.fillRect(x - 20, y - 10, 40, 14);
+  } else if (e.kind === 'bat') {
+    ctx.fillRect(x - 25, y - 7 + bob, 14, 7);
+    ctx.fillRect(x + 12, y - 7 + bob, 14, 7);
+  }
+  ctx.fillStyle = boss ? '#ffd998' : '#f8eac5';
+  ctx.fillRect(x - (boss ? 14 : 7), y - 10 + bob, boss ? 7 : 4, 5);
+  ctx.fillRect(x + (boss ? 8 : 4), y - 10 + bob, boss ? 7 : 4, 5);
+  ctx.fillStyle = '#263e35';
+  ctx.fillRect(x - size, y - size - 16, size * 2, 4);
+  ctx.fillStyle = boss ? '#e8bb78' : '#e3d7a5';
+  ctx.fillRect(x - size, y - size - 16, size * 2 * (e.hp / e.maxHp), 4);
+}
+function drawPulse(ctx: CanvasRenderingContext2D, e: PulseEvent, time: number, reduced: boolean) {
+  const x = e.x,
+    y = e.y,
+    kind = e.kind;
+  ctx.strokeStyle = '#f6e2aa';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x - 18, y - 28, 36, 40);
+  ctx.fillStyle = kind === 'portal' ? '#83bfc1' : kind === 'wave' ? '#ab5357' : '#d9b464';
+  ctx.fillRect(x - 12, y - 19, 24, 23);
+  ctx.fillStyle = '#304b42';
+  ctx.fillRect(x - 7, y - 14, 14, 15);
+  ctx.fillStyle = '#f6e2aa';
+  if (kind === 'wave') {
+    ctx.fillRect(x - 2, y - 13, 4, 10);
+    ctx.fillRect(x - 2, y, 4, 3);
+  } else {
+    ctx.fillRect(x - 2, y - 11, 4, 16);
+    ctx.fillRect(x - 7, y - 5, 14, 4);
+  }
+  if (!reduced) {
+    ctx.fillStyle = '#f8e3a4';
+    const offset = Math.round(Math.sin(time * 0.003) * 4);
+    ctx.fillRect(x - 21, y - 13 + offset, 3, 3);
+    ctx.fillRect(x + 19, y - 24 - offset, 3, 3);
+  }
+}
+
 export function paintWorld(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -262,6 +360,8 @@ export function paintWorld(
   moving = false,
   path: Vec[] = [],
 ) {
+  const reduced =
+    typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scale = w < 500 ? 1.35 : 1.7,
     viewW = w / scale,
     viewH = h / scale;
@@ -288,6 +388,18 @@ export function paintWorld(
         ctx.fillRect(x * TILE + 12, y * TILE + 10, 2, 4);
       }
     }
+  // Fine grass, fallen leaves and flowers share a deterministic pixel palette.
+  for (let i = 0; i < 210; i++) {
+    const x = Math.floor(hash(i, 71) * WIDTH),
+      y = Math.floor(hash(i, 19) * HEIGHT);
+    if (x < left - 10 || x > left + viewW + 10 || y < top - 10 || y > top + viewH + 10) continue;
+    ctx.fillStyle = s.area === 'cave' ? '#83a6aa' : i % 5 === 0 ? '#dfd5a0' : c.treeTop;
+    ctx.fillRect(x, y, 2, i % 5 === 0 ? 2 : 4);
+    if (i % 5 === 0) {
+      ctx.fillStyle = '#c49b75';
+      ctx.fillRect(x + 2, y + 2, 2, 2);
+    }
+  }
   // The route stays clear across each area; branching trails lead into resources.
   ctx.fillStyle = c.path;
   ctx.fillRect(TILE, 13 * TILE, WIDTH - 2 * TILE, TILE * 2);
@@ -359,7 +471,55 @@ export function paintWorld(
     draw: () => drawNode(ctx, n, s),
   }));
   if (s.area === 'forest') drawable.push({ y: BURROW.y, draw: () => drawBurrow(ctx, s) });
-  drawable.push({ y: s.position.y, draw: () => drawPlayer(ctx, s.position, moving, time) });
+  for (const e of s.adventure.enemies)
+    if (e.area === s.area && e.hp > 0)
+      drawable.push({ y: e.y, draw: () => drawEnemy(ctx, e, time, reduced) });
+  for (const d of s.adventure.drops)
+    if (d.area === s.area)
+      drawable.push({
+        y: d.y,
+        draw: () => {
+          ctx.fillStyle = '#f3dca2';
+          ctx.fillRect(d.x - 6, d.y - 8, 12, 10);
+          ctx.fillStyle = '#916244';
+          ctx.fillRect(d.x - 3, d.y - 5, 6, 6);
+        },
+      });
+  if (s.area === 'forest')
+    for (const e of s.pulse.events)
+      if (!e.resolved) drawable.push({ y: e.y, draw: () => drawPulse(ctx, e, time, reduced) });
+  drawable.push({
+    y: s.position.y,
+    draw: () => {
+      const a = s.adventure;
+      ctx.save();
+      if (a.invulnerable > 0 && !reduced) ctx.globalAlpha = 0.6;
+      if (a.dodgeTime > 0) {
+        ctx.fillStyle = '#f7e6ae88';
+        ctx.fillRect(s.position.x - 22, s.position.y - 15, 44, 25);
+      }
+      drawPlayer(ctx, s.position, moving, reduced ? 0 : time);
+      if (a.armored) {
+        ctx.fillStyle = '#5a7a69';
+        ctx.fillRect(s.position.x - 10, s.position.y, 20, 6);
+      }
+      if (a.weapon !== 'paws') {
+        ctx.fillStyle = a.weapon === 'ironSword' ? '#c4dfdb' : '#c4b789';
+        ctx.fillRect(s.position.x + 15, s.position.y - 17, 4, 24);
+        ctx.fillStyle = '#815c3d';
+        ctx.fillRect(s.position.x + 11, s.position.y + 2, 12, 3);
+      }
+      if (a.attackFlash > 0) {
+        ctx.strokeStyle = '#fff1bf';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        const angle = Math.atan2(a.facing.y, a.facing.x);
+        ctx.arc(s.position.x, s.position.y - 5, 45, angle - 1.8, angle + 1.8);
+        ctx.stroke();
+      }
+      ctx.restore();
+    },
+  });
   drawable.sort((a, b) => a.y - b.y).forEach((d) => d.draw());
   const nearest = nearestNode(s);
   if (nearest && distance(s.position, nearest) < 58) {
@@ -368,6 +528,20 @@ export function paintWorld(
     ctx.strokeRect(nearest.x - 19, nearest.y - 24, 38, 40);
   }
   ctx.restore();
+  if (s.area === 'cave') {
+    const glow = ctx.createRadialGradient(
+      w / 2,
+      h / 2,
+      Math.min(w, h) * 0.22,
+      w / 2,
+      h / 2,
+      Math.max(w, h) * 0.7,
+    );
+    glow.addColorStop(0, '#12272b00');
+    glow.addColorStop(1, '#0f1d29aa');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, w, h);
+  }
   // Small overview of the whole area, with an actual player-position marker.
   const mw = 104,
     mh = 72,
@@ -390,6 +564,11 @@ export function paintWorld(
     ctx.fillStyle = '#ecdaa5';
     ctx.fillRect(mx + 3 + (e.x / WIDTH) * (mw - 8), my + 3 + (e.y / HEIGHT) * (mh - 8), 4, 4);
   }
+  for (const e of s.adventure.enemies)
+    if (e.area === s.area && e.hp > 0) {
+      ctx.fillStyle = e.kind === 'warden' ? '#a83144' : '#884c51';
+      ctx.fillRect(mx + 3 + (e.x / WIDTH) * (mw - 8), my + 3 + (e.y / HEIGHT) * (mh - 8), 3, 3);
+    }
   ctx.fillStyle = '#fff3d3';
   ctx.fillRect(
     mx + 2 + (s.position.x / WIDTH) * (mw - 8),
@@ -401,6 +580,10 @@ export function paintWorld(
 }
 
 export function contextAction(s: SurvivalSave) {
+  const pulse = nearPulse(s);
+  if (pulse) return pulseNames[pulse.kind];
+  if (s.adventure.drops.some((d) => d.area === s.area && distance(d, s.position) < 58))
+    return 'Collect item drop';
   const exit = WORLDS[s.area].exits.find((e) => distance(s.position, e) < 65);
   if (exit) return exit.name;
   const n = nearestNode(s);
@@ -492,7 +675,7 @@ export function SurvivalMap({
       last = time;
       let s = stateRef.current,
         moving = false;
-      if (active.current && !document.hidden) {
+      if (active.current && !document.hidden && !s.adventure.dead) {
         let dx = 0,
           dy = 0;
         const k = keys.current;
@@ -512,10 +695,16 @@ export function SurvivalMap({
             dy = (next.y - s.position.y) / d;
           }
         }
+        if (s.adventure.dodgeTime > 0 && !dx && !dy) {
+          dx = s.adventure.facing.x;
+          dy = s.adventure.facing.y;
+        }
         moving = !!(dx || dy);
         const sprint = (k.has('shift') || sprintRef.current) && moving && s.stamina > 2;
         s = movePlayer(s, dx, dy, dt, sprint);
-        const advanced = tick(s, dt, moving, sprint);
+        const survival = tick(s, dt, moving, sprint);
+        const combat = stepAdventure(survival.save, dt);
+        const advanced = { ...combat, message: combat.message || survival.message };
         s = advanced.save;
         stateRef.current = s;
         if (advanced.message) {
@@ -552,6 +741,9 @@ export function SurvivalMap({
       c.dataset.x = s.position.x.toFixed(2);
       c.dataset.y = s.position.y.toFixed(2);
       c.dataset.area = s.area;
+      c.dataset.health = s.health.toFixed(1);
+      c.dataset.kills = String(s.adventure.kills);
+      c.dataset.dead = String(s.adventure.dead);
       frame = requestAnimationFrame(animate);
     };
     frame = requestAnimationFrame(animate);
@@ -580,10 +772,11 @@ export function SurvivalMap({
           role="group"
           tabIndex={running ? 0 : -1}
           className="survival-canvas"
-          aria-label={`${AREA_NAMES[state.area]} adventure. Arrow keys or W A S D to move. E to interact. Shift to sprint. I inventory, C crafting, B building, J quests, M map. Escape pauses.`}
+          aria-label={`${AREA_NAMES[state.area]} adventure. Arrow keys or W A S D to move. E to interact. Space to attack. Q to dodge. R to eat berries. Shift to sprint. I inventory, C crafting, B building, J quests, M map. Escape pauses.`}
           onKeyDown={(e) => {
             if (!running) return;
             const k = e.key.toLowerCase();
+            if (['q', 'r'].includes(k)) e.preventDefault();
             if (
               [
                 'w',
@@ -621,7 +814,10 @@ export function SurvivalMap({
             )
               keys.current.add(k);
             if (e.repeat) return;
-            if (k === 'e' || k === ' ') callbacks.current.onInteract();
+            if (k === 'e') callbacks.current.onInteract();
+            if (k === ' ') callbacks.current.onResult(attack(stateRef.current));
+            if (k === 'q') callbacks.current.onResult(dodge(stateRef.current));
+            if (k === 'r') callbacks.current.onResult(consume(stateRef.current, 'berry'));
             if (k === 'escape') callbacks.current.onPause();
             const panels = {
               i: 'inventory',
@@ -642,6 +838,13 @@ export function SurvivalMap({
                 y: (e.clientY - r.top) / geo.scale + geo.top,
               },
               s = stateRef.current;
+            const enemy = s.adventure.enemies.find(
+              (v) => v.area === s.area && v.hp > 0 && distance(v, goal) < 25,
+            );
+            if (enemy && distance(s.position, enemy) < 68) {
+              callbacks.current.onResult(attack(s));
+              return;
+            }
             const n = WORLDS[s.area].nodes.find(
               (n) =>
                 distance(n, goal) < 24 &&
@@ -671,6 +874,19 @@ export function SurvivalMap({
             }
           }}
         />
+        {state.area === 'cave' && !state.adventure.bossDefeated && (
+          <div className="boss-hud">
+            <span>
+              Root Warden {state.adventure.enemies.find((e) => e.kind === 'warden')?.hp.toFixed(0)}{' '}
+              / 420
+            </span>
+            <progress
+              aria-label="Root Warden health"
+              max={420}
+              value={state.adventure.enemies.find((e) => e.kind === 'warden')?.hp ?? 420}
+            />
+          </div>
+        )}
         <div className="scene-corner" aria-hidden="true">
           <span className="scene-dot" /> {AREA_NAMES[state.area]}
           <span className="scene-weather">
@@ -678,7 +894,9 @@ export function SurvivalMap({
               ? 'Sunlit clearing'
               : state.area === 'village'
                 ? 'Quiet ruins'
-                : 'The wilds'}
+                : state.area === 'cave'
+                  ? 'Warden’s hollow'
+                  : 'The wilds'}
           </span>
         </div>
       </div>
@@ -707,6 +925,26 @@ export function SurvivalMap({
         >
           <span className="key-hint">E</span>
           {contextAction(state)}
+        </button>
+        <button
+          className="sq-button combat-button"
+          disabled={!running}
+          onClick={() => {
+            onResult(attack(stateRef.current));
+            canvas.current?.focus();
+          }}
+        >
+          <span className="key-hint">Space</span> Attack
+        </button>
+        <button
+          className="sq-button combat-button"
+          disabled={!running}
+          onClick={() => {
+            onResult(dodge(stateRef.current));
+            canvas.current?.focus();
+          }}
+        >
+          <span className="key-hint">Q</span> Dodge
         </button>
         <button
           className="sq-button sprint-button"

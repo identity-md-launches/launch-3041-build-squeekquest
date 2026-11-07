@@ -8,12 +8,12 @@ export default function Document() {
         <link rel="stylesheet" href="./fonts/nunito.css" />
         <meta
           name="description"
-          content="Explore the forest, gather supplies, craft tools and build a cozy burrow in SqueekQuest, a little hamster survival adventure."
+          content="Explore, fight, craft and build a burrow in SqueekQuest, a pixel-art hamster survival adventure powered by confirmed Squeekchain data."
         />
         <meta property="og:title" content="SqueekQuest | Small paws. Wild world." />
         <meta
           property="og:description"
-          content="A hamster survival adventure. Explore three wild places, craft your tools and make yourself at home."
+          content="Four wild places, one brave hamster. Fight the Root Warden, build your burrow and discover real Squeekchain-powered world events."
         />
         <meta property="og:image" content="./survival-card.png" />
         <meta property="og:type" content="website" />

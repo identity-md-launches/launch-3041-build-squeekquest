@@ -1,17 +1,17 @@
 {
-  "checkedAt": "2026-11-06T11:37:52.111Z",
+  "checkedAt": "2026-11-07T03:16:18.204Z",
   "engine": "webkit",
-  "scope": "Worker browser validation of the production export. Controlled saves are test inputs only; no runtime test hook.",
+  "scope": "Production export at /preview/. Controlled local saves and clearly synthetic height changes test adverse/settlement states. Final context forwards unmodified real API responses through a test-only Node transport adapter. Direct browser transport is reported separately. No adapter or fixture is shipped in the game.",
+  "limitations": [],
   "results": [
     {
-      "name": "Browser launch or runner",
+      "name": "browser launch / fatal setup",
       "passed": false,
-      "error": "browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libgtk-4.so.1                                    ║\n║     libpangocairo-1.0.so.0                           ║\n║     libgdk_pixbuf-2.0.so.0                           ║\n║     libcairo-gobject.so.2                            ║\n║     libgraphene-1.0.so.0                             ║\n║     liblcms2.so.2                                    ║\n║     libevent-2.1.so.7                                ║\n║     libopus.so.0                                     ║\n║     libgstallocators-1.0.so.0                        ║\n║     libgstapp-1.0.so.0                               ║\n║     libgstpbutils-1.0.so.0                           ║\n║     libgstaudio-1.0.so.0                             ║\n║     libgsttag-1.0.so.0                               ║\n║     libgstvideo-1.0.so.0                             ║\n║     libgstgl-1.0.so.0                                ║\n║     libgstcodecparsers-1.0.so.0                      ║\n║     libgstfft-1.0.so.0                               ║\n║     libwebpdemux.so.2                                ║\n║     libavif.so.16                                    ║\n║     libharfbuzz-icu.so.0                             ║\n║     libepoxy.so.0                                    ║\n║     libwebpmux.so.3                                  ║\n║     libwayland-server.so.0                           ║\n║     libwayland-egl.so.1                              ║\n║     libwayland-client.so.0                           ║\n║     libmanette-0.2.so.0                              ║\n║     libenchant-2.so.2                                ║\n║     libsecret-1.so.0                                 ║\n║     libhyphen.so.0                                   ║\n║     libGLESv2.so.2                                   ║\n║     libx264.so                                       ║\n╚══════════════════════════════════════════════════════╝"
+      "error": "WebKit could not launch: required browser runtime libraries are unavailable."
     }
   ],
   "pageErrors": [],
-  "consoleErrors": [],
-  "resourceErrors": [],
-  "externalRequests": [],
+  "localFailures": [],
+  "expectedExternalFailures": 0,
   "passed": false
 }

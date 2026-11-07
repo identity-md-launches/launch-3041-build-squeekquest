@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-07T03:32:11.720Z",
+  "requiredFiles": 18,
+  "requiredFilesValid": true,
+  "sourceMatchesBuiltCopy": true,
+  "protectedBuildInputsMatch": true,
+  "productionIndexMatchesBuild": true,
+  "screenshotFilesValidated": 14,
+  "shareImage": {
+    "format": "PNG",
+    "width": 1200,
+    "height": 630
+  },
+  "exportSha256": "ae643bbc5caa15ad932dbe701ac98f5d79fe3f1c817dcd2d3f89c149a4a129c4",
+  "domainTests": 38,
+  "chromiumSuccessfulEntries": 19,
+  "accessibilityScenarios": 48,
+  "designProbePasses": 16,
+  "qualityChecks": 9,
+  "materialVerificationLimits": [
+    "Direct browser API transport returned net::ERR_EMPTY_RESPONSE; actual Node/curl API and unmodified-response browser rendering passed.",
+    "WebKit could not launch because required runtime libraries are unavailable.",
+    "An organically occurring new settlement was not observed; transition/dedup behavior was tested with explicit synthetic cases."
+  ],
+  "passed": true
+}

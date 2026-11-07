@@ -1,28 +1,30 @@
 {
-  "method": "Sum of existing regular Git deliverable files, including this report. Supplied .imd inputs, test/scratch and existing generated/cache exclusions are omitted. Removed old export chunks are omitted.",
+  "checkedAt": "2026-11-07T03:32:11.871Z",
+  "method": "Sum of regular deliverable files within this repository only. Supplied inputs, protected Git metadata, existing generated/cache exclusions and disposable test/scratch are omitted. No machine configuration was inspected.",
   "limitBytes": 8388608,
-  "totalBytes": 3156949,
-  "remainingBytes": 5231659,
-  "files": 108,
+  "totalBytes": 3843036,
+  "remainingBytes": 4545572,
+  "files": 111,
   "groups": {
-    "productionExport": 996946,
-    "artifactsAndScreenshots": 1428186,
-    "sourceManifestsAndDocumentation": 731817
+    "productionExport": 1044540,
+    "artifactsAndScreenshots": 1950878,
+    "sourceManifestsAndDocumentation": 847618
   },
   "gitignore": {
+    "changed": false,
     "budgetBytes": 1024,
-    "actualBytes": 399,
-    "changed": false
+    "actualBytes": 399
   },
   "unnecessaryDependencyArchives": [],
   "generated": [],
   "symlinks": [],
   "criticalSha256": {
-    "dist/index.html": "c84a3550aa4d47fb0b1a8c05bfaff22fe93d0d5525dafe8708cde9e7d6182f23",
+    "dist/index.html": "ae643bbc5caa15ad932dbe701ac98f5d79fe3f1c817dcd2d3f89c149a4a129c4",
     "package.json": "c6a4e06c64dd50b5dcdb3c2d34ce9696d6cc9a02baf0de715d0ce3b72b37f252",
     "package-lock.json": "e7dad99dfbef19791b67c883a771f65b0d06b1542066cdb84d38d98c05b5bc87",
-    "src/lib/survival.ts": "725e109409756c2145d5a00b039173079cdc558b779d584840a8e5b14546dedf",
-    "src/lib/game.ts": "ead98e72b846ba8677de5587c648775babfc9dfd60dc1175766e822482dee67e"
+    "src/lib/survival.ts": "d31a120bef48e573730c1034d2a33b1bd376d86c0cadca9e71a84c8eb6cf66df",
+    "src/lib/adventure.ts": "9d365885f83b4443988a8dfa18831cfc0c9fb8eea32906a7ec2577a586080357",
+    "src/lib/chain-pulse.ts": "22ae450c6f5527738cc59c208383a765802334db878303a3bf0ef907b42a837d"
   },
   "passed": true
 }

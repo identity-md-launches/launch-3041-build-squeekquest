@@ -1,4 +1,27 @@
 import Head from 'next/head';
+import { useChain } from '../hooks/use-chain';
+import { PulseStrip, PulseDetails } from '../components/chain-pulse';
+import {
+  PULSE_KEY,
+  advancePulse,
+  claimMeasurement,
+  ingestMeasurements,
+  mergePulse,
+  readPulse,
+} from '../lib/chain-pulse';
+import {
+  attackDamage,
+  claimStory,
+  collectDrop,
+  equip,
+  learn,
+  nearPulse,
+  recover,
+  resolvePulse,
+  skillPoints,
+  STORY_QUESTS,
+  weaponName,
+} from '../lib/adventure';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Dialog } from '../components/dialog';
 import { GameMap } from '../components/game-map';
@@ -8,6 +31,7 @@ import { SurvivalMap } from '../components/survival-map';
 import { STORAGE_KEY } from '../lib/game';
 import {
   AREA_HINTS,
+  areaLock,
   AREA_NAMES,
   BUILDINGS,
   BURROW,
@@ -49,6 +73,7 @@ import {
 } from '../lib/survival';
 
 type Panel =
+  | 'pulse'
   | 'inventory'
   | 'crafting'
   | 'building'
@@ -60,6 +85,7 @@ type Panel =
   | 'new-game'
   | null;
 const PANEL_NAMES: Record<NonNullable<Panel>, string> = {
+  pulse: 'Chain Pulse',
   inventory: 'Your satchel',
   crafting: 'Crafting bench',
   building: 'Home at the burrow',
@@ -129,6 +155,13 @@ function PanelNote({ children }: { children: ReactNode }) {
 }
 
 export default function Home() {
+  const { state: chain, refresh } = useChain();
+  const [now, setNow] = useState(0);
+  useEffect(() => {
+    setNow(Date.now());
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
   const stateRef = useRef<SurvivalSave>(newGame());
   const [save, setSave] = useState<SurvivalSave>(stateRef.current);
   const [nameDraft, setNameDraft] = useState(stateRef.current.name);
@@ -153,9 +186,14 @@ export default function Home() {
   const persist = useCallback(() => {
     if (!saveEnabled.current) return;
     try {
-      const current = { ...rollDaily(stateRef.current), savedAt: new Date().toISOString() };
+      const current = {
+        ...rollDaily(stateRef.current),
+        pulse: mergePulse(stateRef.current.pulse, readPulse(localStorage.getItem(PULSE_KEY))),
+        savedAt: new Date().toISOString(),
+      };
       stateRef.current = current;
       localStorage.setItem(SAVE_KEY, JSON.stringify(current));
+      localStorage.setItem(PULSE_KEY, JSON.stringify(current.pulse));
       setHasSave(true);
       setStorageError('');
       setSavingLabel('Saved on this device');
@@ -172,6 +210,7 @@ export default function Home() {
         stored = readSave(raw);
       const migrated = stored ?? (!raw ? migrateLegacy(localStorage.getItem(STORAGE_KEY)) : null);
       if (migrated) {
+        migrated.pulse = mergePulse(migrated.pulse, readPulse(localStorage.getItem(PULSE_KEY)));
         stateRef.current = migrated;
         setSave(migrated);
         setHasSave(true);
@@ -187,6 +226,17 @@ export default function Home() {
       setStorageError(
         'Browser storage is unavailable. Export your save before leaving to keep your progress.',
       );
+    }
+    if (!saveEnabled.current) {
+      try {
+        stateRef.current.pulse = mergePulse(
+          stateRef.current.pulse,
+          readPulse(localStorage.getItem(PULSE_KEY)),
+        );
+        setSave({ ...stateRef.current });
+      } catch {
+        /* Show storage error above. */
+      }
     }
     setLoaded(true);
     const timer = setInterval(() => {
@@ -257,13 +307,29 @@ export default function Home() {
       stateRef.current = r.save;
       setSave({ ...r.save });
       if (r.message) setMessage(r.message);
-      if (r.success) sound();
+      if (r.success) {
+        sound();
+        persist();
+      }
+      if (r.save.adventure.dead) setMode('paused');
     },
-    [sound],
+    [sound, persist],
   );
   function act(fn: (s: SurvivalSave) => Result) {
-    apply(fn(stateRef.current));
-    persist();
+    const execute = () => {
+      try {
+        stateRef.current = {
+          ...stateRef.current,
+          pulse: mergePulse(stateRef.current.pulse, readPulse(localStorage.getItem(PULSE_KEY))),
+        };
+      } catch {
+        /* Ordinary gameplay works without storage. */
+      }
+      apply(fn(stateRef.current));
+      persist();
+    };
+    if (navigator.locks) void navigator.locks.request(PULSE_KEY, execute);
+    else execute();
   }
   function setSetting(patch: Partial<SurvivalSave>) {
     stateRef.current = { ...stateRef.current, ...patch };
@@ -282,7 +348,12 @@ export default function Home() {
   function start(fresh = false) {
     if (fresh) {
       const current = stateRef.current;
-      stateRef.current = { ...newGame(current.name), sound: current.sound, theme: current.theme };
+      stateRef.current = {
+        ...newGame(current.name),
+        pulse: current.pulse,
+        sound: current.sound,
+        theme: current.theme,
+      };
       snapshot();
       setNavigateTo(null);
     }
@@ -303,6 +374,17 @@ export default function Home() {
   function interact() {
     const s = stateRef.current,
       e = WORLDS[s.area].exits.find((e) => distance(s.position, e) < 65);
+    const pulse = nearPulse(s);
+    if (pulse) {
+      act((s) => resolvePulse(s, pulse.id));
+      return;
+    }
+    const drop = collectDrop(s);
+    if (drop) {
+      apply(drop);
+      persist();
+      return;
+    }
     if (e) {
       apply(travel(s, e));
       persist();
@@ -351,8 +433,8 @@ export default function Home() {
   }
   async function importSave(file?: File) {
     if (!file) return;
-    if (file.size > 250000) {
-      setMessage('Choose a SqueekQuest JSON save smaller than 250 KB.');
+    if (file.size > 2000000) {
+      setMessage('Choose a SqueekQuest JSON save smaller than 2 MB.');
       return;
     }
     try {
@@ -362,6 +444,7 @@ export default function Home() {
         setMessage('This file is not a valid SqueekQuest save. Your current progress is safe.');
         return;
       }
+      s.pulse = mergePulse(s.pulse, readPulse(localStorage.getItem(PULSE_KEY)));
       stateRef.current = s;
       snapshot();
       saveEnabled.current = true;
@@ -374,10 +457,49 @@ export default function Home() {
     }
     if (importRef.current) importRef.current.value = '';
   }
-  const earned = survivalAchievements(save),
+  useEffect(() => {
+    if (!loaded || !saveEnabled.current || storageError) return;
+    const execute = () => {
+      try {
+        const current = stateRef.current;
+        const ledger = mergePulse(current.pulse, readPulse(localStorage.getItem(PULSE_KEY)));
+        const next = ingestMeasurements(advancePulse(ledger, chain.core), chain.measurements);
+        if (JSON.stringify(next) !== JSON.stringify(current.pulse)) {
+          localStorage.setItem(PULSE_KEY, JSON.stringify(next));
+          stateRef.current = { ...current, pulse: next };
+          snapshot();
+          persist();
+        }
+      } catch {
+        setStorageError(
+          'Chain Pulse is paused because local storage is unavailable. Export your adventure to keep it.',
+        );
+      }
+    };
+    if (navigator.locks) void navigator.locks.request(PULSE_KEY, execute);
+    else execute();
+  }, [loaded, hasSave, chain.core, chain.measurements, storageError, snapshot, persist]);
+  const earned = [
+      ...survivalAchievements(save),
+      {
+        name: 'Root guardian',
+        detail: 'Defeat the Root Warden.',
+        earned: save.adventure.bossDefeated,
+      },
+      {
+        name: 'Pulse keeper',
+        detail: 'Complete a confirmed-block encounter.',
+        earned: save.pulse.completed > 0,
+      },
+      {
+        name: 'Field researcher',
+        detail: 'Record an accepted measurement receipt.',
+        earned: save.pulse.measurementClaims.length > 0,
+      },
+    ],
     currentLevel = playerLevel(save),
     atHome = save.area === 'forest' && distance(save.position, BURROW) < 170;
-  const running = mode === 'playing' && !panel;
+  const running = mode === 'playing' && !panel && !save.adventure.dead;
   const firstQuest =
     DAILY_QUESTS.find((q) => !save.daily.claimed.includes(q.id)) ?? DAILY_QUESTS[0];
   const allItems = (Object.keys(ITEMS) as Item[]).filter(
@@ -387,7 +509,9 @@ export default function Home() {
         ? ['berry', 'bandage', 'mix'].includes(i)
         : !['berry', 'bandage', 'mix'].includes(i)),
   );
-  const ownedTools = (['axe', 'pickaxe', 'backpack'] as const).filter((k) => save.tools[k]);
+  const ownedTools = (['axe', 'pickaxe', 'backpack', 'lantern'] as const).filter(
+    (k) => save.tools[k],
+  );
   return (
     <div className="quest-app">
       <Head>
@@ -516,6 +640,7 @@ export default function Home() {
                 <Icon name={mode === 'playing' ? 'pause' : 'home'} />
               </button>
             </div>
+            <PulseStrip chain={chain} now={now} onOpen={() => open('pulse')} />
             <div className="sq-world">
               <SurvivalMap
                 stateRef={stateRef}
@@ -527,35 +652,44 @@ export default function Home() {
                 onInteract={interact}
                 navigateTo={navigateTo}
               />
-              {mode !== 'playing' && (
+              {(mode !== 'playing' || save.adventure.dead) && (
                 <div className="adventure-overlay">
                   <div className="adventure-menu">
                     <div className="menu-hamster">
                       <Hamster />
                     </div>
                     <h2>
-                      {mode === 'paused'
-                        ? 'A little breather.'
-                        : hasSave
-                          ? 'Your burrow is waiting.'
-                          : 'A small adventure awaits.'}
+                      {save.adventure.dead
+                        ? 'A brave little adventure.'
+                        : mode === 'paused'
+                          ? 'A little breather.'
+                          : hasSave
+                            ? 'Your burrow is waiting.'
+                            : 'A small adventure awaits.'}
                     </h2>
                     <p>
-                      {mode === 'paused'
-                        ? 'Your progress is safe. The wild can wait.'
-                        : 'Explore. Gather. Build a place to belong.'}
+                      {save.adventure.dead
+                        ? 'Recover at the burrow. Keep your supplies; lose up to 20 XP.'
+                        : mode === 'paused'
+                          ? 'Your progress is safe. The wild can wait.'
+                          : 'Explore. Gather. Build a place to belong.'}
                     </p>
                     <button
                       className="sq-button sq-primary sq-start"
                       disabled={!loaded}
-                      onClick={() => start(false)}
+                      onClick={() => {
+                        if (stateRef.current.adventure.dead) apply(recover(stateRef.current));
+                        start(false);
+                      }}
                     >
                       <Icon name="play" size={17} />
                       {!loaded
                         ? 'Loading save…'
-                        : hasSave
-                          ? 'Continue adventure'
-                          : 'Start adventure'}
+                        : save.adventure.dead
+                          ? 'Recover at burrow'
+                          : hasSave
+                            ? 'Continue adventure'
+                            : 'Start adventure'}
                       <Icon name="arrow" size={17} />
                     </button>
                     {hasSave && (
@@ -571,6 +705,19 @@ export default function Home() {
                   </div>
                 </div>
               )}
+            </div>
+            <div className="adventure-vitals">
+              <span>
+                {weaponName(save)} · {attackDamage(save)} damage
+              </span>
+              <span>Food {Math.ceil(save.adventure.hunger)} / 100</span>
+              <button
+                className="sq-text-button"
+                disabled={!save.inventory.berry || !hasSave}
+                onClick={() => act((s) => consume(s, 'berry'))}
+              >
+                Eat berries <kbd>R</kbd>
+              </button>
             </div>
             <nav className="sq-toolbar" aria-label="Adventure panels">
               {MENU.map((m) => (
@@ -593,7 +740,7 @@ export default function Home() {
                   <kbd>S</kbd>
                   <kbd>D</kbd> move <span>·</span> <kbd>Shift</kbd> sprint <span>·</span>{' '}
                 </span>
-                Select the ground to walk.
+                Select ground to walk. Space attacks · Q dodges · R eats.
               </p>
               <button onClick={() => open('help')} className="sq-text-button">
                 Field guide <Icon name="arrow" size={14} />
@@ -615,18 +762,22 @@ export default function Home() {
                   ? 'Tools make light work.'
                   : !save.buildings.shelter
                     ? 'A place to call home.'
-                    : save.visited.length < 3
-                      ? 'Follow the trail.'
-                      : 'Make your burrow thrive.'}
+                    : !save.visited.includes('cave')
+                      ? 'A light beneath the roots.'
+                      : save.adventure.bossDefeated
+                        ? 'Make your burrow thrive.'
+                        : 'The Root Warden waits.'}
               </h3>
               <p>
                 {!save.tools.axe
                   ? 'Gather wood, stone and fiber, then craft your first axe.'
                   : !save.buildings.shelter
                     ? 'Build a shelter in the forest clearing to rest and recover.'
-                    : save.visited.length < 3
-                      ? 'The path east leads to an abandoned village. The wilderness lies north of it.'
-                      : 'Upgrade your structures, find hidden caches, and finish your daily quests.'}
+                    : !save.visited.includes('cave')
+                      ? 'Ancient Ruins open at level 2. Find the wilderness beyond them; the cave needs level 3, a pickaxe and a lantern.'
+                      : save.adventure.bossDefeated
+                        ? 'Upgrade your structures, find hidden caches, and finish your daily quests.'
+                        : 'Face the Root Warden in the northeast cave chamber. Dodge its warning rings and strike between attacks.'}
               </p>
               <button
                 className="sq-button"
@@ -734,9 +885,51 @@ export default function Home() {
         <Dialog
           title={PANEL_NAMES[panel]}
           onClose={close}
-          wide={['inventory', 'crafting', 'building', 'quests', 'minigame', 'map'].includes(panel)}
+          wide={[
+            'inventory',
+            'crafting',
+            'building',
+            'quests',
+            'minigame',
+            'map',
+            'pulse',
+          ].includes(panel)}
         >
           <div className={`sq-panel panel-${panel}`}>
+            {panel === 'pulse' && (
+              <PulseDetails
+                chain={chain}
+                pulse={save.pulse}
+                now={now}
+                retry={() => void refresh(['status', 'core', 'blocks', 'measurements', 'stats'])}
+                walk={(x, y) => {
+                  if (save.area !== 'forest') {
+                    setMessage('Return to the forest using the world map to reach this encounter.');
+                    setPanel('map');
+                    return;
+                  }
+                  setNavigateTo({ x, y });
+                  close();
+                  if (mode !== 'playing') start(false);
+                }}
+                claim={(id) => {
+                  act((s) => {
+                    const pulse = claimMeasurement(s.pulse, id);
+                    return pulse
+                      ? {
+                          save: { ...s, pulse, xp: s.xp + 45 },
+                          message: 'Measurement field note recorded. +45 local XP.',
+                          success: true,
+                        }
+                      : {
+                          save: s,
+                          message: 'This receipt has already been recorded.',
+                          success: false,
+                        };
+                  });
+                }}
+              />
+            )}
             {panel === 'inventory' && (
               <>
                 <div className="panel-summary">
@@ -805,6 +998,39 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+                <div className="equipment-row">
+                  <h3>Equipment</h3>
+                  <div className="equipment-actions">
+                    {(['paws', 'sword', 'ironSword'] as const).map((w) => (
+                      <button
+                        key={w}
+                        className="sq-button"
+                        aria-pressed={save.adventure.weapon === w}
+                        disabled={w !== 'paws' && !save.tools[w]}
+                        onClick={() => act((s) => equip(s, w))}
+                      >
+                        {w === 'paws'
+                          ? 'Little paws'
+                          : w === 'sword'
+                            ? 'Bramble blade'
+                            : 'Iron fang'}
+                        {save.adventure.weapon === w ? ' · equipped' : ''}
+                      </button>
+                    ))}
+                    <button
+                      className="sq-button"
+                      disabled={!save.tools.armor}
+                      aria-pressed={save.adventure.armored}
+                      onClick={() =>
+                        setSetting({
+                          adventure: { ...save.adventure, armored: !save.adventure.armored },
+                        })
+                      }
+                    >
+                      Bark armor {save.adventure.armored ? 'on' : 'off'}
+                    </button>
+                  </div>
+                </div>
                 <div className="tools-row">
                   <strong>Tools</strong>
                   {ownedTools.length ? (
@@ -815,7 +1041,9 @@ export default function Home() {
                           ? 'Woodland axe'
                           : k === 'pickaxe'
                             ? 'Stone pickaxe'
-                            : 'Explorer pack'}
+                            : k === 'lantern'
+                              ? 'Glowroot lantern'
+                              : 'Explorer pack'}
                         <Icon name="check" size={14} />
                       </span>
                     ))
@@ -832,8 +1060,8 @@ export default function Home() {
             {panel === 'crafting' && (
               <>
                 <PanelNote>
-                  Craft tools once; they stay equipped. Recipes consume the materials shown. The
-                  explorer pack needs the burrow workbench.
+                  Craft tools once; weapons auto-equip and can be changed in Inventory. Recipes
+                  consume the materials shown. The explorer pack needs the burrow workbench.
                 </PanelNote>
                 <div className="recipe-list">
                   {RECIPES.map((r) => {
@@ -842,10 +1070,7 @@ export default function Home() {
                     return (
                       <article className="recipe-row" key={r.id}>
                         <span className="recipe-sprite">
-                          <ItemIcon
-                            item={r.id as Item | 'axe' | 'pickaxe' | 'backpack'}
-                            size={36}
-                          />
+                          <ItemIcon item={r.id as Item | keyof SurvivalSave['tools']} size={36} />
                         </span>
                         <div className="recipe-copy">
                           <h3>
@@ -866,7 +1091,7 @@ export default function Home() {
                           {owned ? (
                             <>
                               <Icon name="check" size={15} />
-                              Equipped
+                              Crafted
                             </>
                           ) : (
                             'Craft'
@@ -895,7 +1120,7 @@ export default function Home() {
                       setNavigateTo(
                         save.area === 'forest'
                           ? { x: BURROW.x + 70, y: BURROW.y + 40 }
-                          : WORLDS[save.area].exits.find((e) => e.to !== 'wilderness')!,
+                          : WORLDS[save.area].exits[0],
                       );
                       close();
                       if (mode !== 'playing') setMode('playing');
@@ -958,6 +1183,37 @@ export default function Home() {
             )}
             {panel === 'quests' && (
               <>
+                <div className="section-divider">
+                  <h3>The forest’s heart</h3>
+                  <span>
+                    {save.adventure.claimed.length} / {STORY_QUESTS.length} complete
+                  </span>
+                </div>
+                <div className="story-quests">
+                  {STORY_QUESTS.map((q) => (
+                    <article key={q.id}>
+                      <div>
+                        <h3>{q.name}</h3>
+                        <p>{q.detail}</p>
+                        <small>+{q.xp} XP</small>
+                      </div>
+                      <button
+                        className="sq-button"
+                        disabled={!q.ready(save) || save.adventure.claimed.includes(q.id)}
+                        onClick={() => act((s) => claimStory(s, q.id))}
+                      >
+                        {save.adventure.claimed.includes(q.id)
+                          ? 'Claimed'
+                          : q.ready(save)
+                            ? 'Claim reward'
+                            : 'In progress'}
+                      </button>
+                    </article>
+                  ))}
+                </div>
+                <button className="sq-text-button" onClick={() => open('pulse')}>
+                  Open measurement field notes <Icon name="arrow" size={14} />
+                </button>
                 <div className="panel-summary">
                   <p>New little goals every day. Resets at 00:00 UTC.</p>
                   <span>{save.daily.date}</span>
@@ -1033,11 +1289,12 @@ export default function Home() {
             {panel === 'map' && (
               <>
                 <PanelNote>
-                  The forest trail leads east to the village. Follow the village trail north to the
-                  wilderness. Walk to a marker and interact to cross.
+                  Follow the forest trail east to Ancient Ruins (level 2), then north to the
+                  wilderness. The eastern cave needs level 3, a pickaxe and a lantern. Walk to a
+                  marker and interact to cross.
                 </PanelNote>
                 <div className="world-map-cards">
-                  {(['forest', 'village', 'wilderness'] as Area[]).map((a, i) => (
+                  {(['forest', 'village', 'wilderness', 'cave'] as Area[]).map((a, i) => (
                     <article
                       key={a}
                       className={`area-card area-${a} ${a === save.area ? 'current-area' : ''}`}
@@ -1056,15 +1313,22 @@ export default function Home() {
                             ? 'You are here'
                             : save.visited.includes(a)
                               ? 'Explored'
-                              : 'Unexplored'}
+                              : areaLock(save, a)
+                                ? 'Locked'
+                                : 'Unexplored'}
                         </span>
                         <p>{AREA_HINTS[a]}</p>
+                        {areaLock(save, a) && !save.visited.includes(a) && (
+                          <p className="area-lock">{areaLock(save, a)}</p>
+                        )}
                         <p className="area-materials">
                           {a === 'forest'
                             ? 'Wood · berries · fiber'
                             : a === 'village'
                               ? 'Stone · herbs · old ruins'
-                              : 'Iron ore · herbs · thorns'}
+                              : a === 'cave'
+                                ? 'Root Warden · iron ore · hidden cache'
+                                : 'Iron ore · herbs · thorns'}
                         </p>
                       </div>
                     </article>
@@ -1120,6 +1384,13 @@ export default function Home() {
                     </dd>
                   </div>
                   <div>
+                    <dt>Combat</dt>
+                    <dd>
+                      Space swings your equipped weapon. Q dodges for 20 stamina. Move outside enemy
+                      warning rings before attacks land. Red markers on the minimap show enemies.
+                    </dd>
+                  </div>
+                  <div>
                     <dt>Sprint</dt>
                     <dd>
                       Hold Shift or turn Sprint on. It spends stamina; standing still restores it.
@@ -1144,7 +1415,7 @@ export default function Home() {
                     <dd>
                       Follow the path east to the village, then north to the wilderness. Press E at
                       a trail marker to cross. Fainting returns you home and costs up to 20 XP;
-                      supplies are kept.
+                      supplies are kept. The northeast cave chamber holds the Root Warden.
                     </dd>
                   </div>
                   <div>
@@ -1179,6 +1450,35 @@ export default function Home() {
                   onChange={(e) => void importSave(e.target.files?.[0])}
                 />
 
+                <div className="section-divider">
+                  <h3>Explorer skills</h3>
+                  <span>{skillPoints(save)} points available</span>
+                </div>
+                <div className="skill-list">
+                  {(['vitality', 'combat', 'foraging'] as const).map((k) => (
+                    <article key={k}>
+                      <div>
+                        <h3>
+                          {k[0].toUpperCase() + k.slice(1)} · {save.adventure.skills[k]} / 3
+                        </h3>
+                        <p>
+                          {k === 'vitality'
+                            ? '+15 maximum health each rank'
+                            : k === 'combat'
+                              ? '+6 damage each rank'
+                              : '+1 gathered resource each rank'}
+                        </p>
+                      </div>
+                      <button
+                        className="sq-button"
+                        disabled={!skillPoints(save) || save.adventure.skills[k] >= 3}
+                        onClick={() => act((s) => learn(s, k))}
+                      >
+                        Learn {k}
+                      </button>
+                    </article>
+                  ))}
+                </div>
                 <div className="profile-summary">
                   <Hamster face />
                   <div>
@@ -1310,8 +1610,9 @@ export default function Home() {
             {panel === 'new-game' && (
               <>
                 <p className="new-game-copy">
-                  This replaces the adventure saved in this browser, including your inventory,
-                  buildings, quests and XP. Export your save first if you want to keep it.
+                  Chain Pulse receipts remain recorded to prevent duplicate rewards. This replaces
+                  the adventure saved in this browser, including your inventory, buildings, quests
+                  and XP. Export your save first if you want to keep it.
                 </p>
                 <div className="save-actions">
                   <button className="sq-button" onClick={exportSave}>

@@ -1,90 +1,106 @@
-import { execFileSync } from 'node:child_process';
-import { lstat, readFile, writeFile } from 'node:fs/promises';
+import { readdir, lstat, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-
-// Git's existing exclusions omit every nesting level of generated dependencies/caches.
-const limitBytes = 8388608,
-  reportPath = 'artifacts/submission-budget.json';
-const listed = execFileSync(
-  'git',
-  ['ls-files', '--cached', '--others', '--exclude-standard', '-z'],
-  { encoding: 'utf8' },
-)
-  .split('\0')
-  .filter(Boolean);
-const files = [...new Set([...listed, reportPath])].filter(
-  (p) => !/^\.(?:git|github|imd|env)(?:\/|\.|$)/.test(p) && !p.startsWith('test/scratch/'),
-);
+import { join } from 'node:path';
+const excluded = new Set([
+  '.git',
+  '.github',
+  '.imd',
+  'node_modules',
+  '.next',
+  'out',
+  '.cache',
+  '.tmp',
+  'npm-cache',
+  '.npm',
+  '.pnpm-store',
+  '.turbo',
+  'coverage',
+]);
+const files = [];
+async function walk(dir = '.') {
+  for (const name of await readdir(dir)) {
+    const p = dir === '.' ? name : join(dir, name);
+    if (
+      excluded.has(name) ||
+      p === 'test/scratch' ||
+      name === '.env' ||
+      name.startsWith('.env.') ||
+      name.endsWith('.log') ||
+      name.endsWith('.tsbuildinfo')
+    )
+      continue;
+    const s = await lstat(p);
+    if (s.isDirectory()) await walk(p);
+    else files.push({ p, s });
+  }
+}
+await walk();
 const criticalSha256 = {};
 for (const p of [
   'dist/index.html',
   'package.json',
   'package-lock.json',
   'src/lib/survival.ts',
-  'src/lib/game.ts',
+  'src/lib/adventure.ts',
+  'src/lib/chain-pulse.ts',
 ])
   criticalSha256[p] = createHash('sha256')
     .update(await readFile(p))
     .digest('hex');
-let previous = -1,
+const reportPath = 'artifacts/submission-budget.json',
+  limitBytes = 8388608;
+let prior = -1,
   report;
-for (let iteration = 0; iteration < 6; iteration++) {
-  let totalBytes = 0,
-    count = 0;
+for (let i = 0; i < 5; i++) {
+  let totalBytes = 0;
   const groups = {
       productionExport: 0,
       artifactsAndScreenshots: 0,
       sourceManifestsAndDocumentation: 0,
     },
     symlinks = [],
-    unnecessaryDependencyArchives = [],
+    archives = [],
     generated = [];
-  for (const p of files) {
-    let s;
-    try {
-      s = await lstat(p);
-    } catch {
-      continue;
-    }
+  for (const { p, s } of files) {
     if (s.isSymbolicLink()) symlinks.push(p);
     if (!s.isFile()) continue;
-    count++;
-    totalBytes += s.size;
+    const size = p === reportPath ? (await lstat(p)).size : s.size;
+    totalBytes += size;
     groups[
       p.startsWith('dist/')
         ? 'productionExport'
         : p.startsWith('artifacts/')
           ? 'artifactsAndScreenshots'
           : 'sourceManifestsAndDocumentation'
-    ] += s.size;
-    if (/\.(?:tgz|tar|zip|gz)$/.test(p)) unnecessaryDependencyArchives.push(p);
-    if (/(?:^|\/)(?:node_modules|\.next|out|\.cache|npm-cache|browsers)(?:\/|$)/.test(p))
-      generated.push(p);
+    ] += size;
+    if (/\.(tgz|tar|zip|gz)$/.test(p)) archives.push(p);
+    if (/(?:^|\/)(node_modules|\.next|out|npm-cache|browsers)(?:\/|$)/.test(p)) generated.push(p);
   }
-  const ignore = (await lstat('.gitignore')).size;
+  const ignoreBytes = (await lstat('.gitignore')).size;
   report = {
+    checkedAt: new Date().toISOString(),
     method:
-      'Sum of existing regular Git deliverable files, including this report. Supplied .imd inputs, test/scratch and existing generated/cache exclusions are omitted. Removed old export chunks are omitted.',
+      'Sum of regular deliverable files within this repository only. Supplied inputs, protected Git metadata, existing generated/cache exclusions and disposable test/scratch are omitted. No machine configuration was inspected.',
     limitBytes,
     totalBytes,
     remainingBytes: limitBytes - totalBytes,
-    files: count,
+    files: files.length,
     groups,
-    gitignore: { budgetBytes: 1024, actualBytes: ignore, changed: false },
-    unnecessaryDependencyArchives,
+    gitignore: { changed: false, budgetBytes: 1024, actualBytes: ignoreBytes },
+    unnecessaryDependencyArchives: archives,
     generated,
     symlinks,
     criticalSha256,
     passed:
       totalBytes <= limitBytes &&
-      ignore <= 1024 &&
-      !unnecessaryDependencyArchives.length &&
+      ignoreBytes <= 1024 &&
+      !archives.length &&
       !generated.length &&
       !symlinks.length,
   };
   await writeFile(reportPath, JSON.stringify(report, null, 2) + '\n');
-  if (totalBytes === previous) break;
-  previous = totalBytes;
+  if (totalBytes === prior) break;
+  prior = totalBytes;
 }
 console.log(JSON.stringify(report, null, 2));
 if (!report.passed) process.exitCode = 1;

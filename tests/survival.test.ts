@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { recover } from '../src/lib/adventure';
 import { addRun, award, freshSave } from '../src/lib/game';
 import {
   BUILDINGS,
@@ -137,7 +138,7 @@ test('collision prevents water, walls, tree trunks, burrow and boundaries from b
   assert.ok(HEIGHT > 0);
 });
 test('actual movement follows collision-aware paths to every exit and every resource node', () => {
-  for (const area of ['forest', 'village', 'wilderness'] as Area[]) {
+  for (const area of ['forest', 'village', 'wilderness', 'cave'] as Area[]) {
     const initial = newGame();
     initial.area = area;
     initial.position = area === 'forest' ? { ...SPAWN } : { x: 3.5 * TILE, y: 13.5 * TILE };
@@ -204,7 +205,7 @@ test('recipes consume exact costs atomically, tools equip once, and advanced cra
   s.inventory.plank = 4;
   s.inventory.ore = 3;
   assert.equal(craft(s, 'backpack').success, true);
-  assert.equal(RECIPES.length, 6);
+  assert.equal(RECIPES.length, 10);
 });
 test('build and upgrade all four structures use exact costs and apply actual benefits', () => {
   for (const key of Object.keys(BUILDINGS) as (keyof typeof BUILDINGS)[]) {
@@ -269,32 +270,36 @@ test('consumables, item drops, thorn damage and safe respawn preserve the expect
   s.health = 0.1;
   s.xp = 10;
   const fallen = tick(s, 0.1);
-  assert.equal(fallen.save.area, 'forest');
-  assert.equal(fallen.save.health, 100);
-  assert.equal(fallen.save.xp, 0);
-  assert.deepEqual(fallen.save.inventory, s.inventory);
-  assert.deepEqual(fallen.save.position, SPAWN);
+  assert.equal(fallen.save.adventure.dead, true);
+  assert.equal(fallen.save.health, 0);
+  const recovered = recover(fallen.save);
+  assert.equal(recovered.save.area, 'forest');
+  assert.equal(recovered.save.health, 100);
+  assert.equal(recovered.save.xp, 0);
+  assert.deepEqual(recovered.save.inventory, s.inventory);
+  assert.deepEqual(recovered.save.position, SPAWN);
 });
 test('travel is proximity gated, bidirectional and discovery XP is earned only once', () => {
   let s = newGame(),
     exit = WORLDS.forest.exits[0];
   assert.equal(travel(s, exit).success, false);
   s.position = { ...exit };
+  s.xp = 250;
   s = travel(s, exit).save;
   assert.equal(s.area, 'village');
-  assert.equal(s.xp, 35);
+  assert.equal(s.xp, 285);
   assert.deepEqual(s.visited, ['forest', 'village']);
   exit = WORLDS.village.exits[1];
   s.position = { ...exit };
   s = travel(s, exit).save;
   assert.equal(s.area, 'wilderness');
-  assert.equal(s.xp, 70);
+  assert.equal(s.xp, 320);
   assert.equal(s.visited.length, 3);
   const back = WORLDS.wilderness.exits[0];
   s.position = { ...back };
   s = travel(s, back).save;
   assert.equal(s.area, 'village');
-  assert.equal(s.xp, 70);
+  assert.equal(s.xp, 320);
   assert.equal(travel(s, { ...back }).success, false);
 });
 test('daily quest claims are gated, idempotent and roll over without losing lifetime XP', () => {

@@ -74,6 +74,7 @@ export const schemas = {
     schemaVersion: z.literal(1),
     identities: z.object({ core: pin(CONTRACTS.core) }),
     core: z.object({
+      cumulativeBlockUnits: uint.optional(),
       blockHeight: uint,
       blockProgress: uint.refine((v) => BigInt(v) < 1_000_000_000n),
       cumulativeWork: uint,
@@ -103,6 +104,31 @@ export const schemas = {
           transactionHash: hash,
           logIndex: uint,
           confirmationStatus: z.literal('safe'),
+        }),
+        payload: z.record(z.string(), z.unknown()),
+      }),
+    ),
+  }),
+  measurements: z.object({
+    ...envelope,
+    schemaVersion: z.literal(4),
+    status: z.literal('available'),
+    generatedAt: iso,
+    category: z.literal('measurement'),
+    events: z.array(
+      z.object({
+        id: z.string().min(1).max(250),
+        type: z.string().startsWith('measurement.'),
+        occurredAt: iso,
+        source: z.object({
+          kind: z.literal('measurement'),
+          installationId: z.literal(INSTALLATION),
+          receiptCursor: uint,
+          telemetryId: z.string().min(1),
+          observedAt: iso,
+          receivedAt: iso,
+          disposition: z.literal('accepted'),
+          provenance: z.enum(['hardware', 'simulated', 'replay', 'derived']).optional(),
         }),
         payload: z.record(z.string(), z.unknown()),
       }),
@@ -226,6 +252,7 @@ export type ChainEvent = DataTypes['events']['events'][number];
 export type Settlement = DataTypes['settlements']['recentSettlements'][number];
 export const paths: Record<Endpoint, string> = {
   status: '/status',
+  measurements: '/events?category=measurement&limit=40',
   core: '/core',
   events: '/events?limit=20',
   stats: '/measurement/stats?range=7d',
@@ -259,6 +286,16 @@ export function validate<K extends Endpoint>(key: K, input: unknown): DataTypes[
       'This response could not be validated for the supported Sepolia deployment. Try refreshing later.',
     );
   const data = parsed.data as DataTypes[K];
+  if (key === 'core') {
+    const d = data as DataTypes['core'];
+    if (
+      !d.source ||
+      BigInt(d.source.blockNumber) > BigInt(d.chain.safeThroughBlock) ||
+      (d.core.cumulativeBlockUnits !== undefined &&
+        BigInt(d.core.cumulativeBlockUnits) / 1_000_000_000n !== BigInt(d.core.blockHeight))
+    )
+      throw new DataError('SqueekCore settlement is not confirmed by the safe snapshot.');
+  }
   if (key === 'events') {
     const d = data as DataTypes['events'];
     const allowed = Object.values(CONTRACTS) as string[];

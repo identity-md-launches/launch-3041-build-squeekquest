@@ -5,7 +5,7 @@ export function ItemIcon({
   item,
   size = 32,
 }: {
-  item: Item | 'axe' | 'pickaxe' | 'backpack';
+  item: Item | 'axe' | 'pickaxe' | 'backpack' | 'sword' | 'ironSword' | 'armor' | 'lantern';
   size?: number;
 }) {
   return (
@@ -17,6 +17,26 @@ export function ItemIcon({
       aria-hidden="true"
       className="item-icon"
     >
+      {(item === 'sword' || item === 'ironSword') && (
+        <>
+          <path fill={item === 'ironSword' ? '#a2bdb3' : '#a99b71'} d="M15 2h5v5L10 17l-4-4z" />
+          <path fill="#705537" d="M3 17l4 4 6-6-4-4z" />
+          <path fill="#dfc18c" d="M4 11l3-3 10 10-3 3z" />
+        </>
+      )}
+      {item === 'armor' && (
+        <>
+          <path fill="#4d6c59" d="M6 4h12l4 5-4 3v10H6V12L2 9z" />
+          <path fill="#b39e6d" d="M9 4h6v5H9zM7 15h10v3H7z" />
+        </>
+      )}
+      {item === 'lantern' && (
+        <>
+          <path fill="#73573c" d="M8 2h8v3H8zM6 5h12v17H6z" />
+          <path fill="#f1ce7f" d="M8 8h8v11H8z" />
+          <path fill="#fff1bc" d="M10 9h4v8h-4z" />
+        </>
+      )}
       {item === 'wood' && (
         <>
           <path fill="#7b573a" d="M4 9h3V6h14v6h-3v6H4z" />

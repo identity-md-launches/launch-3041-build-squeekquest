@@ -31,6 +31,7 @@ try {
       await setTheme();
       await measure('playing');
       for (const [name, label] of [
+        ['pulse', 'Open Chain Pulse details'],
         ['inventory', 'Open inventory'],
         ['crafting', 'Open crafting'],
         ['building', 'Open build'],
@@ -91,7 +92,7 @@ try {
   await new Promise((r) => server.close(r));
   await mkdir('artifacts', { recursive: true });
   const passed =
-    results.length === 44 &&
+    results.length === 48 &&
     results.every((r) => !r.error && !r.overflow && r.violations.length === 0);
   await writeFile(
     'artifacts/accessibility.json',
@@ -99,7 +100,7 @@ try {
       {
         checkedAt: new Date().toISOString(),
         scope:
-          'Automated axe WCAG checks in two themes and two widths across menu, game and nine panels; not a screen-reader session or compliance certification.',
+          'Automated axe WCAG checks in two themes and two widths across menu, game and ten panels; not a screen-reader session or compliance certification.',
         results,
         passed,
       },

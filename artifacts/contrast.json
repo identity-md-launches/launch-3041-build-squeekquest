@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-06T12:00:43.872Z",
+  "checkedAt": "2026-11-07T03:26:02.127Z",
   "method": "WCAG sRGB relative luminance of browser-computed foreground and nearest opaque solid background. These pairs do not certify canvas pixels or translucent image overlays.",
   "results": [
     {
@@ -58,8 +58,8 @@
           "name": "Text action",
           "selector": ".sq-text-button",
           "foreground": "rgb(47, 91, 62)",
-          "background": "rgb(247, 248, 242)",
-          "ratio": 7.32
+          "background": "rgb(255, 254, 250)",
+          "ratio": 7.74
         }
       ]
     },
@@ -119,8 +119,8 @@
           "name": "Text action",
           "selector": ".sq-text-button",
           "foreground": "rgb(194, 213, 155)",
-          "background": "rgb(23, 35, 29)",
-          "ratio": 10.26
+          "background": "rgb(33, 48, 40)",
+          "ratio": 8.75
         }
       ]
     }

@@ -1,20 +1,29 @@
 {
-  "checkedAt": "2026-11-06T10:08:37.965Z",
+  "checkedAt": "2026-11-07T03:21:29.362Z",
   "scope": "Actual public read requests and application schema validation. Not independent chain verification.",
   "checks": [
     {
       "endpoint": "https://api.squeekchain.com/v1/status",
       "key": "status",
       "passed": true,
-      "durationMs": 139,
+      "durationMs": 210,
       "schemaVersion": 1,
       "installationId": "sepolia-core-sepolia-20261103"
+    },
+    {
+      "endpoint": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+      "key": "measurements",
+      "passed": true,
+      "durationMs": 284,
+      "schemaVersion": 4,
+      "installationId": "sepolia-core-sepolia-20261103",
+      "recordCount": 17
     },
     {
       "endpoint": "https://api.squeekchain.com/v1/core",
       "key": "core",
       "passed": true,
-      "durationMs": 110,
+      "durationMs": 250,
       "schemaVersion": 1,
       "installationId": "sepolia-core-sepolia-20261103",
       "chainId": "11155111"
@@ -23,7 +32,7 @@
       "endpoint": "https://api.squeekchain.com/v1/events?limit=20",
       "key": "events",
       "passed": true,
-      "durationMs": 500,
+      "durationMs": 308,
       "schemaVersion": 4,
       "installationId": "sepolia-core-sepolia-20261103",
       "chainId": "11155111",
@@ -33,7 +42,7 @@
       "endpoint": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
       "key": "stats",
       "passed": true,
-      "durationMs": 640,
+      "durationMs": 404,
       "schemaVersion": 1,
       "installationId": "sepolia-core-sepolia-20261103"
     },
@@ -41,7 +50,7 @@
       "endpoint": "https://api.squeekchain.com/v1/measurement/blocks",
       "key": "blocks",
       "passed": true,
-      "durationMs": 436,
+      "durationMs": 302,
       "schemaVersion": "game-block-projection.v1",
       "installationId": "sepolia-core-sepolia-20261103",
       "chainId": "11155111",
@@ -51,7 +60,7 @@
       "endpoint": "https://api.squeekchain.com/v1/economy/state",
       "key": "economy",
       "passed": true,
-      "durationMs": 430,
+      "durationMs": 241,
       "schemaVersion": 3,
       "installationId": "sepolia-core-sepolia-20261103",
       "chainId": "11155111"
@@ -60,7 +69,7 @@
       "endpoint": "https://api.squeekchain.com/v1/settlements?range=24h",
       "key": "settlements",
       "passed": true,
-      "durationMs": 416,
+      "durationMs": 229,
       "schemaVersion": 3,
       "installationId": "sepolia-core-sepolia-20261103",
       "chainId": "11155111",
@@ -70,7 +79,7 @@
       "endpoint": "https://api.squeekchain.com/v1/squeeks/1",
       "key": "nft",
       "passed": true,
-      "durationMs": 536,
+      "durationMs": 285,
       "schemaVersion": 3,
       "installationId": "sepolia-core-sepolia-20261103",
       "chainId": "11155111"

@@ -1,11 +1,163 @@
 {
-  "checkedAt": "2026-11-06T12:02:22.170Z",
-  "command": "npm test --prefix test/scratch/build",
-  "source": "tests/*.test.ts",
-  "total": 24,
-  "passed": 24,
-  "failed": 0,
-  "skipped": 0,
-  "scope": "14 survival tests plus 10 preserved game/API validator tests. API fixtures are offline historical test data, not live reads.",
-  "workerReported": true
+  "checkedAt": "2026-11-07T03:21:28.187Z",
+  "command": "node --import tsx --test tests/adventure.test.ts tests/api.test.ts tests/game.test.ts tests/survival.test.ts",
+  "tests": 38,
+  "passedTests": 38,
+  "failedTests": 0,
+  "checks": [
+    {
+      "name": "old survival v2 saves migrate combat, food, equipment and Pulse state without losing progress",
+      "passed": true
+    },
+    {
+      "name": "weapons consume materials and equip; damage, cooldown, drops and XP are genuine and one-time",
+      "passed": true
+    },
+    {
+      "name": "enemy AI approaches, telegraphs damage, respects dodge and pauses after death",
+      "passed": true
+    },
+    {
+      "name": "Root Warden can be defeated with normal attacks and its quest can be claimed exactly once",
+      "passed": true
+    },
+    {
+      "name": "skills spend earned points, alter stats and cave unlock requires real progress and tools",
+      "passed": true
+    },
+    {
+      "name": "food declines only during active simulation; eating restores food, health and stamina",
+      "passed": true
+    },
+    {
+      "name": "Pulse establishes a baseline, emits one event per NEW confirmed height, ignores duplicates and optimistic blocks",
+      "passed": true
+    },
+    {
+      "name": "Pulse backlog is bounded, catches up without skipping heights and survives imported older saves",
+      "passed": true
+    },
+    {
+      "name": "all four real-block world encounter types are playable and reward only once after refresh",
+      "passed": true
+    },
+    {
+      "name": "accepted real measurement schema parses; missing provenance remains unknown; receipt XP cannot replay",
+      "passed": true
+    },
+    {
+      "name": "live panel never converts unavailable or stale measurements to zero; preserves all provenance types",
+      "passed": true
+    },
+    {
+      "name": "retired Pulse receipts cannot be resurrected by importing an old save after journal pruning",
+      "passed": true
+    },
+    {
+      "name": "safe snapshots below a previously confirmed target cannot emit unconfirmed backlog heights",
+      "passed": true
+    },
+    {
+      "name": "bark armor reduces telegraphed combat damage without consuming inventory",
+      "passed": true
+    },
+    {
+      "name": "all eight captured real API responses pass the application validators",
+      "passed": true
+    },
+    {
+      "name": "unavailable is an error and is never interpreted as empty or zero",
+      "passed": true
+    },
+    {
+      "name": "rejects wrong chain, version, deployment and unsafe event provenance",
+      "passed": true
+    },
+    {
+      "name": "rejects impossible settlement ranges",
+      "passed": true
+    },
+    {
+      "name": "formats large blockchain integers without float precision loss",
+      "passed": true
+    },
+    {
+      "name": "daily rewards are idempotent and reset on UTC date boundaries",
+      "passed": true
+    },
+    {
+      "name": "XP, levels and achievements derive from earned quest receipts",
+      "passed": true
+    },
+    {
+      "name": "damaged, unknown-version and malformed browser storage recover safely",
+      "passed": true
+    },
+    {
+      "name": "movement reaches its destination without skipping tiles and stays in bounds",
+      "passed": true
+    },
+    {
+      "name": "bounded discovery history preserves lifetime XP and unlocked achievements",
+      "passed": true
+    },
+    {
+      "name": "survival save round-trips world, inventory, costs, position, quests, settings and runs",
+      "passed": true
+    },
+    {
+      "name": "previous project saves retain names, XP, achievements, preferences and foraging records",
+      "passed": true
+    },
+    {
+      "name": "movement is smooth, normalized diagonally, and sprint spends real stamina",
+      "passed": true
+    },
+    {
+      "name": "collision prevents water, walls, tree trunks, burrow and boundaries from being crossed",
+      "passed": true
+    },
+    {
+      "name": "actual movement follows collision-aware paths to every exit and every resource node",
+      "passed": true
+    },
+    {
+      "name": "gathering checks range, tool, cooldown, stamina and capacity without losing resources",
+      "passed": true
+    },
+    {
+      "name": "recipes consume exact costs atomically, tools equip once, and advanced crafting needs home",
+      "passed": true
+    },
+    {
+      "name": "build and upgrade all four structures use exact costs and apply actual benefits",
+      "passed": true
+    },
+    {
+      "name": "campfires heal and gardens require 90 active seconds and capacity before harvesting",
+      "passed": true
+    },
+    {
+      "name": "consumables, item drops, thorn damage and safe respawn preserve the expected supplies",
+      "passed": true
+    },
+    {
+      "name": "travel is proximity gated, bidirectional and discovery XP is earned only once",
+      "passed": true
+    },
+    {
+      "name": "daily quest claims are gated, idempotent and roll over without losing lifetime XP",
+      "passed": true
+    },
+    {
+      "name": "hidden rewards can be collected once, and do not vanish when inventory is full",
+      "passed": true
+    },
+    {
+      "name": "foraging minigame credits actual seeds, bounds history and grants daily XP only on claim",
+      "passed": true
+    }
+  ],
+  "exitCode": 0,
+  "passed": true
 }

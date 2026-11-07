@@ -1,6 +1,17 @@
 {
-  "checkedAt": "2026-11-06T12:00:43.874Z",
+  "checkedAt": "2026-11-07T03:26:02.132Z",
   "checks": [
+    {
+      "name": "Locally bundled Nunito font loads",
+      "passed": true,
+      "fonts": [
+        {
+          "family": "Nunito Sans",
+          "weight": "400 800",
+          "status": "loaded"
+        }
+      ]
+    },
     {
       "name": "Keyboard focus ring, modal focus trap, Escape and trigger restoration",
       "passed": true

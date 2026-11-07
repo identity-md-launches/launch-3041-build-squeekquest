@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { DataTypes, Endpoint, fetchData } from '../lib/api';
+import { DataTypes, Endpoint, fetchData, paths } from '../lib/api';
 
 export type Resource<T> = { data?: T; loading: boolean; error?: string; checkedAt?: number };
 export type ChainState = { [K in Endpoint]: Resource<DataTypes[K]> };
-const keys: Endpoint[] = ['status', 'core', 'events', 'stats', 'blocks', 'economy', 'settlements'];
+const keys: Endpoint[] = ['status', 'core', 'measurements', 'stats', 'blocks'];
 const initial = Object.fromEntries(
-  [...keys, 'nft'].map((k) => [k, { loading: false }]),
+  Object.keys(paths).map((k) => [k, { loading: false }]),
 ) as ChainState;
 
 export function useChain() {
@@ -43,12 +43,15 @@ export function useChain() {
     void refresh();
     const timer = setInterval(() => {
       if (document.visibilityState === 'visible')
-        void refresh(['status', 'core', 'events', 'blocks', 'economy', 'settlements']);
+        void refresh(['status', 'core', 'measurements', 'blocks']);
     }, 30000);
     const statsTimer = setInterval(() => {
       if (document.visibilityState === 'visible') void refresh(['stats']);
     }, 120000);
+    const reconnect = () => void refresh();
+    window.addEventListener('online', reconnect);
     return () => {
+      window.removeEventListener('online', reconnect);
       alive.current = false;
       clearInterval(timer);
       clearInterval(statsTimer);

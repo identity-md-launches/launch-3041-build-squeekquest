@@ -1,102 +1,147 @@
 {
-  "checkedAt": "2026-11-06T12:01:25.232Z",
+  "checkedAt": "2026-11-07T03:26:50.750Z",
   "engine": "chromium",
-  "scope": "Worker browser validation of the production export. Controlled saves are test inputs only; no runtime test hook.",
+  "scope": "Production export at /preview/. Controlled local saves and clearly synthetic height changes test adverse/settlement states. Final context forwards unmodified real API responses through a test-only Node transport adapter. Direct browser transport is reported separately. No adapter or fixture is shipped in the game.",
+  "limitations": [
+    {
+      "name": "Direct official API browser transport",
+      "verified": false,
+      "attemptedAt": "2026-11-07T03:26:49.853Z",
+      "errors": [
+        {
+          "url": "https://api.squeekchain.com/v1/status",
+          "error": "net::ERR_EMPTY_RESPONSE"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/core",
+          "error": "net::ERR_EMPTY_RESPONSE"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+          "error": "net::ERR_EMPTY_RESPONSE"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+          "error": "net::ERR_EMPTY_RESPONSE"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/blocks",
+          "error": "net::ERR_EMPTY_RESPONSE"
+        }
+      ],
+      "impact": "Direct browser live readings could not be verified here. The app safely shows Unknown. Node HTTP requests and application parsing are verified separately."
+    }
+  ],
   "results": [
     {
-      "name": "Production export hydrates at /preview/ with local fonts and metadata",
-      "passed": true,
-      "durationMs": 1403
+      "name": "offline first screen has the game, start action and no overflow at 390",
+      "passed": true
     },
     {
-      "name": "First screen and controls work at 320, 390, 768 and 1440 with no horizontal overflow",
-      "passed": true,
-      "durationMs": 1372
+      "name": "keyboard movement and pause/resume change real player position",
+      "passed": true
     },
     {
-      "name": "WASD movement is continuous and Escape freezes the world until Continue",
-      "passed": true,
-      "durationMs": 1052
+      "name": "collision stops movement into a water obstacle",
+      "passed": true
     },
     {
-      "name": "Select a tree: player walks there, gathers wood, spends stamina and saves position",
-      "passed": true,
-      "durationMs": 847
+      "name": "gather, inspect inventory and discard spend real stacks",
+      "passed": true
     },
     {
-      "name": "Keyboard opens crafting, recipe consumes exact costs and axe equips once",
-      "passed": true,
-      "durationMs": 3637
+      "name": "crafting, equipment toggles and all four structures work with exact resource costs",
+      "passed": true
     },
     {
-      "name": "Base building and upgrades consume resources; shelter rest restores health and stamina",
-      "passed": true,
-      "durationMs": 3958
+      "name": "enemy combat, dodge, kill XP and physical item drops work",
+      "passed": true
     },
     {
-      "name": "Inventory filters, selecting a stack, consuming food and dropping one update counts",
-      "passed": true,
-      "durationMs": 3017
+      "name": "Root Warden defeat, main quest reward and level skills work in the rendered game",
+      "passed": true
     },
     {
-      "name": "Daily quest requires progress, claims XP once and keeps claimed state after reload",
-      "passed": true,
-      "durationMs": 2948
+      "name": "cave building guide starts a real path toward the return exit",
+      "passed": true
     },
     {
-      "name": "World map navigation walks to the village marker; E crosses and saves area",
-      "passed": true,
-      "durationMs": 1915
+      "name": "game over provides a functional recovery and preserves supplies",
+      "passed": true
     },
     {
-      "name": "Village north trail reaches Wilderness; ore requires a crafted pickaxe",
-      "passed": true,
-      "durationMs": 4666
+      "name": "quest claims, save/refresh, export and restart preserve expected progress",
+      "passed": true
     },
     {
-      "name": "Hidden cache grants loot once; thorn damage visibly changes health",
-      "passed": true,
-      "durationMs": 2100
+      "name": "settings, name, help, map routing and preserved minigame controls work",
+      "passed": true
     },
     {
-      "name": "Original foraging mini-game completes a real five-seed run and saves records",
-      "passed": true,
-      "durationMs": 10524
+      "name": "validated save import restores progress and rejects malformed files without replacement",
+      "passed": true
     },
     {
-      "name": "Profile rename, save export and valid/invalid import work without losing valid data",
-      "passed": true,
-      "durationMs": 2544
+      "name": "denied storage leaves gameplay and save export available",
+      "passed": true
     },
     {
-      "name": "New game offers a safe cancel and only resets after its explicit confirmation",
-      "passed": true,
-      "durationMs": 2238
+      "name": "controlled API: confirmed height creates one Pulse; projection creates none; duplicate reads cannot repeat it",
+      "passed": true
     },
     {
-      "name": "Mobile direction controls, dark theme, dialogs and reduced motion remain usable",
-      "passed": true,
-      "durationMs": 1913
+      "name": "controlled API: accepted measurement field notes claim once and never imply missing hardware provenance",
+      "passed": true
     },
     {
-      "name": "Legacy profile migrates without requiring the old chain integration",
-      "passed": true,
-      "durationMs": 610
+      "name": "API loss and rate limiting keep normal play available and live values unknown",
+      "passed": true
     },
     {
-      "name": "Unavailable browser storage reports export recovery; game stays playable",
-      "passed": true,
-      "durationMs": 1419
+      "name": "responsive layouts, keyboard dialog focus and reduced motion remain usable",
+      "passed": true
     },
     {
-      "name": "Offline game has no external requests, browser errors or broken local assets",
+      "name": "Actual API observations via test-only transport adapter",
       "passed": true,
-      "durationMs": 6
+      "observations": [
+        {
+          "url": "https://api.squeekchain.com/v1/status",
+          "status": 200,
+          "at": "2026-11-07T03:26:50.372Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/core",
+          "status": 200,
+          "at": "2026-11-07T03:26:50.394Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/blocks",
+          "status": 200,
+          "at": "2026-11-07T03:26:50.421Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/measurement/stats?range=7d",
+          "status": 200,
+          "at": "2026-11-07T03:26:50.436Z"
+        },
+        {
+          "url": "https://api.squeekchain.com/v1/events?category=measurement&limit=40",
+          "status": 200,
+          "at": "2026-11-07T03:26:50.458Z"
+        }
+      ],
+      "panelText": "Chain Pulse\nConnected\nResting\n0 RPM · hardware\n#1,140 settled\nWheel data 48s old",
+      "observedAt": "2026-11-07T03:26:50.676Z",
+      "note": "Responses were forwarded unchanged; no synthetic height changes or fallback values. This adapter is test scaffolding and is not shipped in the game."
+    },
+    {
+      "name": "actual official responses parse and render through a test-only Node transport adapter",
+      "passed": true
     }
   ],
   "pageErrors": [],
-  "consoleErrors": [],
-  "resourceErrors": [],
-  "externalRequests": [],
+  "localFailures": [],
+  "expectedExternalFailures": 55,
   "passed": true
 }

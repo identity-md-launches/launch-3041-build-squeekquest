@@ -17,6 +17,9 @@ try {
   const p = await context.newPage();
   await p.goto(`http://localhost:${server.address().port}/preview/`);
   await p.getByRole('button', { name: 'Start adventure', exact: true }).waitFor();
+  await p.evaluate(() => document.fonts.ready);
+  const fonts = await p.evaluate(() => [...document.fonts].map(f => ({ family:f.family, weight:f.weight, status:f.status })));
+  checks.push({name:'Locally bundled Nunito font loads',passed:fonts.some(f=>f.family.includes('Nunito Sans')&&f.status==='loaded'),fonts});
   await p.keyboard.press('Tab');
   await p.keyboard.press('Tab');
   await p.keyboard.press('Tab');
@@ -25,7 +28,7 @@ try {
     'How to play',
   );
   await p.screenshot({
-    path: 'artifacts/screenshots/chromium-keyboard-focus.webp',
+    path: 'artifacts/screenshots/chromium-keyboard-focus.png',
     fullPage: true,
   });
   await p.keyboard.press('Enter');
@@ -127,7 +130,7 @@ try {
     });
     if (width === 390)
       await p.screenshot({
-        path: 'artifacts/screenshots/chromium-text-200-mobile.webp',
+        path: 'artifacts/screenshots/chromium-text-200-mobile.png',
         fullPage: true,
       });
     await p.keyboard.press('Escape');

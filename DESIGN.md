@@ -2,99 +2,95 @@
 
 ## Overview
 
-SqueekQuest is a small desktop web survival adventure with a responsive touch layout. It retains the established hamster identity, locally bundled Nunito Sans, forest greens, warm oats and quiet rounded controls. Original pixel sprites carry the survival world; the earlier illustrated valley remains in Sunflower scramble. The game and its Start/Continue action precede explanatory content, including at 390 pixels wide.
+SqueekQuest is a desktop hamster survival adventure with responsive action controls. The existing forest-and-oat identity, rounded Nunito Sans, hamster illustrations and original foraging game remain. The new combat, cave and Chain Pulse systems belong to the same visual language. Pixel artwork carries the world; clear native controls carry inventory, progression and live-data explanations.
 
-The source of truth is `src/styles/globals.css` (existing tokens, base controls and original mini-game), followed by `src/styles/survival.css` (active survival UI). `src/pages/_app.tsx` imports them in that order. No framework or dependency configuration was changed.
+The style source of truth is `src/styles/globals.css`, followed by the active survival overrides in `src/styles/survival.css`; `_app.tsx` imports them in that order. The game and Start/Continue action precede supporting content at 390px. The compact Chain Pulse control sits immediately above the world, beside the health/stamina context rather than in a separate dashboard.
 
 ## Colors
 
-Use the existing hexadecimal semantic tokens; components reference their roles rather than introducing another palette. Themes use `html[data-theme='dark']`. Scene art has a separate, intentional pixel palette and does not recolor with the page theme.
+Reuse the existing hexadecimal semantic tokens. `html[data-theme='dark']` changes the interface; world art retains its location palette.
 
 | Token | Light | Dark | Role |
 | --- | --- | --- | --- |
 | `--page` | `#f7f8f2` | `#17231d` | Page background |
-| `--surface` | `#fffefa` | `#213028` | HUD, controls, menu and dialogs |
-| `--surface-alt` | `#edf1e4` | `#2a3b30` | Inventory tiles, neutral grouping, meter tracks |
+| `--surface` | `#fffefa` | `#213028` | HUD, controls, menu, dialogs |
+| `--surface-alt` | `#edf1e4` | `#2a3b30` | Tracks and neutral grouping |
 | `--ink` | `#293729` | `#edf1e3` | Main text |
-| `--muted` | `#646e5d` | `#b1bdab` | Secondary text and counts |
+| `--muted` | `#646e5d` | `#b1bdab` | Secondary text |
 | `--line` | `#dfe5d7` | `#3e5140` | Separators |
-| `--control-line` | `#87927c` | `#81947d` | Button and input borders |
-| `--accent` | `#2f5b3e` | `#c2d59b` | Primary actions and progress |
-| `--accent-hover` | `#244b31` | `#d0dfa9` | Primary action hover |
-| `--on-accent` | `#fffefa` | `#223820` | Filled-action text |
-| `--accent-soft` | `#e9efdb` | `#344a31` | Next-step grouping and selected support surfaces |
-| `--warm` | `#f3ecd9` | `#3a3827` | Storage recovery notice |
-| `--warm-ink` | `#725a32` | `#e5d2a2` | Warm labels, rewards and upgrade descriptions |
+| `--control-line` | `#87927c` | `#81947d` | Control borders |
+| `--accent` | `#2f5b3e` | `#c2d59b` | Primary action and progress |
+| `--accent-hover` | `#244b31` | `#d0dfa9` | Action hover |
+| `--on-accent` | `#fffefa` | `#223820` | Filled action text |
+| `--accent-soft` | `#e9efdb` | `#344a31` | Selected and next-step surfaces |
+| `--warm` | `#f3ecd9` | `#3a3827` | Recovery/API notice surface |
+| `--warm-ink` | `#725a32` | `#e5d2a2` | Requirements and warm labels |
 | `--focus` | `#456d36` | `#d2dfa5` | Keyboard focus |
-| `--error` | `#934330` | `#f6b29b` | Missing materials, destructive action, save errors |
-| `--health` | `#a5534b` | `#e6a69b` | Health label and meter |
+| `--error` | `#934330` | `#f6b29b` | Save errors and missing materials |
+| `--health` | `#a5534b` | `#e6a69b` | Health |
 | `--stamina` | `#8c7938` | `#d8c37d` | Stamina fill |
 
-`--scene-frame: #293f32` frames the world. The canvas focus perimeter uses `#f3dda3`; scene labels use solid `#2d4736` behind `#f9f4df` text. `PALETTES` in `survival-map.tsx` defines each area’s ground, path, tree, foliage and trunk colors. Violet rectangular brambles identify damage; the field guide and damage feedback give a textual explanation as well.
+`--scene-frame` is `#293f32`. Scene labels use `#f9f4df` on solid `#2d4736`; the canvas focus ring is `#f3dda3`. `PALETTES` in `survival-map.tsx` owns location art: forest green, weathered ruin stone, cool wilderness greens, and cave ground `#3d4952` with pale mineral highlights. The cave vignette is artwork, not a text surface. Enemy telegraphs have a visible circular outline as well as warm danger fill. Pulse marker shapes distinguish encounters.
 
-Measured text contrast and its coverage limits are recorded in validation. Do not infer canvas-art contrast from the DOM-only design probe.
+Measured foreground/background pairs are in `artifacts/contrast.json`. Their scope is actual opaque DOM backgrounds; the design probe does not establish arbitrary canvas-pixel contrast.
 
 ## Typography
 
-The existing local variable WOFF2 is `public/fonts/nunito-sans-latin.woff2`, loaded by `public/fonts/nunito.css` for normal weights 400–800. The stack is `'Nunito Sans', ui-sans-serif, system-ui, sans-serif`. The survival interface uses three weights: 400, 600 and 800.
+The local `public/fonts/nunito-sans-latin.woff2` is declared by `public/fonts/nunito.css`, with normal weights 400–800 and `font-display: swap`. The stack is `'Nunito Sans', ui-sans-serif, system-ui, sans-serif`. The interface uses weights 400, 600 and 800.
 
-| Token | Size | Use |
+| Token | Size | Role |
 | --- | --- | --- |
-| `--text-xs` | `0.75rem` / 12px | Counters, captions, key hints, compact touch labels |
-| `--text-sm` | `0.875rem` / 14px | Button labels, descriptions and panel copy |
-| `--text-base` | `1rem` / 16px | Body, inputs, recipe/quest titles |
-| `--text-lg` | `1.25rem` / 20px | Sidebar titles, mobile menu title, small dialog titles |
-| `--text-xl` | `1.75rem` / 28px | Desktop menu/dialog titles and narrow page title |
-| `--text-display` | `2.5rem` / 40px | Wide page title |
+| `--text-xs` | 0.75rem / 12px | Counts, freshness, keys and compact labels |
+| `--text-sm` | 0.875rem / 14px | Buttons and supporting copy |
+| `--text-base` | 1rem / 16px | Body, inputs and recipe/quest titles |
+| `--text-lg` | 1.25rem / 20px | Section headings and narrow menu/dialog titles |
+| `--text-xl` | 1.75rem / 28px | Menu/dialog headings and narrow page title |
+| `--text-display` | 2.5rem / 40px | Wide page title |
 
-Body line-height is 1.5; descriptions use 1.55–1.6; headings use 1.15–1.35. The page display title tracks at −0.045em, changing to −0.025em at 960px and below. Other headings use −0.01 to −0.03em. Content uses natural case. Headings balance; paragraphs wrap with `text-wrap: pretty`. Inputs stay at 16px. Dynamic numeric values use tabular figures. Keyboard hints use the same sans family in the survival UI; the original mini-game retains its existing hints.
+Body line-height is 1.5; descriptions use 1.4–1.6. Headings are tighter and balance where supported. The wide display title uses −0.045em tracking, relaxed on narrow layouts. Content uses natural casing; API enum values and keyboard keys are data. Inputs remain 16px. Dynamic counters use tabular figures. The survival keys use the same sans family. Monospace is limited to receipt IDs, whose containers wrap rather than clip.
 
 ## Layout
 
-`.sq-header-inner` and `.sq-page` share a maximum width of 1440px and 42px desktop side insets. The main layout is `minmax(0, 1fr) 290px` with a 32px gap, keeping the game dominant. The sidebar groups next action, current supplies, daily progress and the mini-game. Space groups content before separators; nested bordered cards are avoided.
+The header and page share a 1440px maximum width and 42px wide-screen side insets. `.adventure-layout` uses `minmax(0, 1fr) 290px`, separated by 32px. The scene remains dominant. The sidebar starts with the next useful step, then supplies, daily progress and the preserved minigame. An unnecessary duplicate Chain Pulse summary was removed so it cannot leave an empty phone grid column.
 
-The spacing rhythm uses 4/8/12/16/20/24/28/32px steps, with a few optical adjustments. The HUD sits directly on the scene. The scene contains the location label and a small overview map. Interaction controls and five panel controls follow it in normal document flow. Save recovery is a visible notice above the game; status feedback sits below the controls and inside open dialogs.
+The spacing rhythm uses 4/8/12/16/20/24/28/32px steps with existing optical adjustments. Health, stamina and XP sit above the compact live panel and scene. Gathering, Attack, Dodge and Sprint follow the scene; food/equipment status and five panel controls remain in document flow. Save warnings sit before the game, with export recovery adjacent.
 
-Implemented breakpoints:
+The existing 1180px breakpoint reduces side insets to 28px and the sidebar to 250px. At 960px the game becomes one main column, with a 460px scene and supporting grid below. At 640px, 16px page insets, compact header, 350px scene, compact toolbar, stacked panel layouts and viewport-sized dialogs take over. At 360px, insets become 12px and the existing compact header/HUD tighten further.
 
-- **1180px:** 28px page/header insets, 250px sidebar, 24px grid gap; keyboard badges leave the toolbar.
-- **960px:** one main column, 460px scene, 28px page title, three-column sidebar; mini-game teaser spans the sidebar.
-- **640px:** 16px insets, compact header, 350px scene, four direction buttons, compact Sprint icon and five icon/label controls; their grid adds rows when text is enlarged. The header and HUD also wrap rather than overlap. Sidebar becomes two columns with the next step spanning both. Dialogs use viewport-minus-24px width, at most 92dvh, with internal scrolling. Inventory becomes three columns and item details move below. Recipes wrap actions to a separate line. Buildings and milestones become one column. Map cards become horizontal rows. Footer stacks.
-- **360px:** 12px insets, reduced header art and tighter movement/HUD spacing. Controls still meet the 24px baseline or spacing exception.
-
-Browser validation covers 320, 390, 768 and 1440px, with panels inspected at 390 and 1440 in both themes. See validation for 200% text enlargement and other stress-test coverage. Native browser zoom, RTL localization and physical devices are not claimed as tested.
+The adventure extension adds a 600px breakpoint: the Pulse strip uses up to three columns with a 6rem minimum that adapts to enlarged text; action controls become a two-row grid with four proportional movement targets, a wide context action, Attack, Dodge and Sprint. Pulse readings become two columns; quest, skill and receipt rows wrap their actions. There is no fixed text width on IDs or error copy. The 320/390/768/1440 layouts and 200% text enlargement are covered by validation. Native zoom, physical devices and localized RTL layouts are not claimed as verified.
 
 ## Elevation & Depth
 
-Ordinary game UI uses tonal grouping and separators. The welcome/pause menu floats over a translucent green scene scrim with `0 12px 48px #1d312133`. Native dialogs use `0 18px 90px #172c3250` and a `#20352be0` backdrop with 3px blur. These elevated surfaces have no border. Buttons use borders for affordance; selected inventory tiles use a 2px accent border for state. No gradient text or decorative infinite animation is used.
+Ordinary UI uses tonal grouping and separators. The welcome/pause menu has a green translucent scene scrim and `0 12px 48px #1d312133` shadow, with no border. Native dialogs retain their original shadow and backdrop, without nested decorative cards. Buttons have structural borders; selected inventory/equipment has an accent state. The Pulse strip is a flat action row with separators.
 
-The world is drawn in depth order by world Y coordinate, so the hamster can walk behind trees. Pixel shadows, roofs, water edges and ground patches belong to the art layer rather than the web surface system.
+The canvas sorts characters, nodes, enemies and drops by world Y. Pixel shadows, foliage, cave lighting, weapon arcs, dodge trails and boss telegraphs belong to that art layer. The boss health bar is an actual DOM progress control above the scene. Essential simulation can be paused; decorative bobbing, particle motion and interpolated camera following stop under reduced motion.
 
 ## Shapes
 
-`--radius-control` is 10px. The game/HUD perimeter and menu use 16px desktop radii, reducing to 12px on mobile. The next-step panel uses 14px; inventory tiles and sprites use 10px; toolbar controls use 8px; key hints use 3–4px. Dialogs use 20px desktop and 16px mobile. The canvas is rectangular and clips at the scene boundary; text containers wrap rather than clip. Pixel sprites deliberately retain square edges.
+`--radius-control` is 10px. The game/HUD and menu use 16px radii, reduced to 12px on mobile. Next-step grouping is 14px. Inventory and sprite frames use 10px, toolbar controls 8px, key hints 3–4px, and dialogs 20px desktop / 16px mobile. Pixel art intentionally keeps square edges. Text reflows instead of being clipped to art geometry.
 
 ## Components
 
-- **Buttons:** `.sq-button`, `.sq-primary`, `.sq-danger`, `.sq-text-button` and `.sq-icon-button` in `survival.css`. Normal actions have a surface background and structural border. Start/Continue and the current interaction are filled. Disabled craft/build actions retain their adjacent material requirements. Targets usually have a 44px minimum height. The phone direction buttons are 30px wide (25px below 360px); this is a deliberate compact game control with a 24px baseline, not a 44px claim. Native button semantics, hover, pressed, focus and disabled states are implemented.
-- **World:** `SurvivalMap` in `src/components/survival-map.tsx` renders the actual map and character via `paintWorld`, uses time-based movement, collision-aware pointer paths, camera following and proximity interactions. Canvas has a named, keyboard-focusable group while playing. Keyboard bindings and touch controls are equivalent for movement. Decorative scene overlays do not intercept input. Game pause, panel opening and tab visibility stop simulation. Reduced motion removes camera interpolation while preserving essential player movement.
-- **Meters:** `Meter` in `src/pages/index.tsx` uses native labeled `meter` elements plus numeric health/stamina labels; XP and quests use labeled `progress` elements. Numbers and text supplement color.
-- **Panels:** `Dialog` in `src/components/dialog.tsx` uses native `showModal()`, Escape/backdrop dismissal, a named heading and focus restoration. Survival styling adds responsive widths and scroll containment. Closing a panel restores focus to its trigger; panels opened from a canvas shortcut return to the world. The world stays paused while a panel is open.
-- **Inventory:** `.inventory-slot` and `.item-detail` in the inventory panel expose item quantities, selection, description and real use/drop actions. `.sq-segmented` filters all items, materials and supplies. Empty slots retain visible names. Tools are a separate persistent row. Capacity errors explain ways to make space.
-- **Craft/build:** `CostLine` displays actual owned/required quantities with item sprites. `.recipe-row` shows the recipe, effect, cost and craft/equipped state. `.building-card` separates current benefit from the next upgrade and shows real level and cost. Rest and harvest actions appear after their corresponding structure exists.
-- **Quests and milestones:** `.journal-quest` exposes objective, progress, reward and claim state. Claims are disabled until ready and after claim; milestones use words and an icon to show locked/unlocked state.
-- **Persistence:** recovery notices and stable `role='status'` regions expose save failures and action results. The profile’s visible name label remains after entry. New game has a consequence-specific confirmation; imports validate before replacing state; export creates a JSON download.
-- **Art/icons:** reuse `Icon` and `Hamster` in `icons.tsx` for interface artwork. `ItemIcon` in `item-icon.tsx` contains original crisp local SVG pixel sprites. Avoid adding an icon or font dependency. The old `GameMap`, `valley.svg` and hamster illustration remain for the foraging mini-game. `public/survival-card.png` is a 1200×630 capture of the current product for sharing.
+- **Buttons:** `.sq-button`, `.sq-primary`, `.sq-danger`, `.sq-text-button` and `.sq-icon-button` in `survival.css`. Start/Continue and the context action are emphasized. Attack/Dodge are neutral peers. Controls expose disabled, pressed, focus and hover states. Craft costs and locked requirements remain visible beside unavailable actions. Most actions have 44px minimum height; narrow direction targets meet the 24px baseline, without claiming all are 44px wide.
+- **World:** `SurvivalMap` in `src/components/survival-map.tsx` accepts the live state ref, running state and action callbacks. `paintWorld` draws actual saved world state. Keyboard, pointer paths and direction buttons share collision. Space attacks, Q dodges, R eats and E interacts. The named canvas is focusable during play. Panels, pause, hidden tabs and defeat stop simulation.
+- **Meters:** `Meter` in `index.tsx` uses labeled native meters, with numeric health/stamina. XP, quests and boss health use labeled progress elements. The food number and equipment summary supplement the world view.
+- **Dialogs:** `Dialog` in `dialog.tsx` uses native `showModal()`, a named heading, Escape/backdrop dismissal, focus trapping and restoration. The existing responsive panel styling supplies scroll containment and viewport limits. Panels reached by a canvas shortcut return focus to the canvas.
+- **Inventory/equipment:** Item slots expose counts, selection, use/drop actions and three real filters. Equipment buttons call `equip`; armor has a pressed toggle. Crafting a weapon equips it automatically, while the crafting row says Crafted once owned. The tool row includes axe, pickaxe, pack and lantern.
+- **Craft/build:** `CostLine` presents actual available/required materials. Recipe and building rows show real effects, levels and costs. Rest/harvest appear with their structures. Building has fixed, visible world sites.
+- **Progression:** Story/side/daily quest rows show their objectives and claim states. `learn` spends a real earned skill point, up to three ranks. Achievements derive from game state. The next-step panel points from tools and shelter toward the cave and boss.
+- **Chain Pulse:** `PulseStrip` exposes connection, hamster status, RPM, reported provenance, settled height and explicitly labeled wheel-data age in one button. `PulseDetails` displays source links, pending encounters, transaction snapshot evidence, measurement receipts, derived activity/coverage and reconnect. Unknown is explicit; historical field notes retain their dates and do not imply hardware provenance. Find encounter starts an actual forest path, and Record is disabled after its one receipt reward.
+- **Persistence/recovery:** Stable status regions expose action/save feedback. New game has a consequence-specific confirmation. Imports validate before replacing progress; invalid imports preserve it. Export is an actual local JSON download. Storage errors keep recovery guidance visible.
+- **Art:** `Icon`, `Hamster`, `ItemIcon`, original canvas drawing functions and the preserved valley illustration are the reuse points. Added blade, armor and lantern sprites are original local SVGs. The local 1200×630 survival share card retains the established game branding; favicon and metadata remain in `_document.tsx`.
 
-High-frequency button transitions name background color, transform and border color at 120ms ease-out. Press scale is 0.96. They run only with `prefers-reduced-motion: no-preference`. Theme changes temporarily suppress transitions. Focus uses the existing 3px perimeter with 4px offset; the canvas uses an inset 3px light perimeter. Forced-colors rules preserve system focus and button borders.
+High-frequency transitions name their properties and use approximately 120ms ease-out. Press feedback uses scale 0.96 only when motion is permitted. Theme switches temporarily suppress transitions. Existing global focus is a 3px perimeter with 4px offset; the canvas uses an inset light ring. Forced-colors styling retains system focus and control borders.
 
 ## Do’s and Don’ts
 
-- Start another survival panel inside `Dialog`, use its named heading, and keep actions adjacent to the content they change.
-- Reuse the existing semantic tokens, six-size scale, 400/600/800 weights and locally bundled font. Keep game art separate from text contrast roles.
-- Show costs, capacity and locked requirements from actual state. Keep success feedback and disabled explanations visible.
-- Keep the game and primary action in the first phone viewport. New supporting content belongs after the adventure.
-- Preserve native links, buttons, labeled inputs and dialog focus behavior. Add explicit accessible names when responsive CSS hides visible labels.
-- Do not put a shadow and decorative border on the same surface, animate every page change, add small tracked capital kickers, or restore a remote data dependency to this offline game.
+- Add a panel through `Dialog`, the six-size scale and semantic surface/text tokens. Keep actions beside the state they change.
+- Keep world art and UI roles separate; use the pixel renderer for world effects and native elements for readable controls.
+- Preserve the game and Start/Continue on the first phone screen. New explanations belong in the guide or journal.
+- Derive counts, costs, unlocks and rewards from state. Distinguish reported hardware, simulated, replay, derived and unknown provenance.
+- Keep Unknown and retry/export recovery visible when data or persistence fails. Never substitute plausible measurements.
+- Preserve native controls, labels, dialog focus and reduced-motion behavior. Avoid decorative badges, redundant summaries, tracked capital kickers and extra font/icon dependencies.
 
-The six-domain review, measured findings and remaining test limitations are in `artifacts/validation.md`. Guidance credits and complete license notices are preserved in `artifacts/ATTRIBUTION.md` and `artifacts/licenses/design-guidance.txt`.
+The six-domain review, source findings, fixes, measured checks and remaining limitations are in `artifacts/validation.md`. Better Interface and Impeccable guidance credits and licenses are retained in `artifacts/ATTRIBUTION.md` and `artifacts/licenses/design-guidance.txt`.

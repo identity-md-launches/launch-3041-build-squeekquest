@@ -1,20 +1,23 @@
 import { z } from 'zod';
+import { adventureSchema, newAdventure, newPulse, pulseSchema } from './adventure-state';
 import { loadSave as loadLegacy, totalXp as legacyXp, saveSchema as legacySchema } from './game';
 
 export const TILE = 32,
   WIDTH = 38 * TILE,
   HEIGHT = 26 * TILE;
-export type Area = 'forest' | 'village' | 'wilderness';
+export type Area = 'forest' | 'village' | 'wilderness' | 'cave';
 export type Vec = { x: number; y: number };
 export const AREA_NAMES: Record<Area, string> = {
   forest: 'Forest',
-  village: 'Abandoned Village',
+  village: 'Ancient Ruins',
   wilderness: 'Wilderness',
+  cave: 'Underground Cave',
 };
 export const AREA_HINTS: Record<Area, string> = {
   forest: 'A quiet place to put down roots.',
   village: 'Old walls. Useful things left behind.',
   wilderness: 'Rare ore grows beyond the thorn fields.',
+  cave: 'Light a lantern. The Root Warden waits below.',
 };
 export const ITEMS = {
   wood: {
@@ -32,7 +35,11 @@ export const ITEMS = {
     icon: 'fiber',
     detail: 'Gather tall grass. Used for bandages and shelter.',
   },
-  berry: { name: 'Berries', icon: 'berry', detail: 'Eat to restore 10 health and 18 stamina.' },
+  berry: {
+    name: 'Berries',
+    icon: 'berry',
+    detail: 'Eat to restore 10 health, 18 stamina and 18 food.',
+  },
   seed: {
     name: 'Seeds',
     icon: 'seed',
@@ -46,7 +53,7 @@ export const ITEMS = {
   ore: {
     name: 'Iron ore',
     icon: 'ore',
-    detail: 'Mine in the wilderness with a pickaxe. Used for upgrades.',
+    detail: 'Mine in the wilderness or cave with a pickaxe. Used for upgrades.',
   },
   plank: {
     name: 'Planks',
@@ -54,7 +61,11 @@ export const ITEMS = {
     detail: 'Crafted from wood. Strong enough for advanced structures.',
   },
   bandage: { name: 'Bandage', icon: 'bandage', detail: 'Use to restore 45 health.' },
-  mix: { name: 'Trail mix', icon: 'mix', detail: 'Eat to restore 20 health and 60 stamina.' },
+  mix: {
+    name: 'Trail mix',
+    icon: 'mix',
+    detail: 'Eat to restore 20 health, 60 stamina and 50 food.',
+  },
 } as const;
 export type Item = keyof typeof ITEMS;
 export type Bag = Record<Item, number>;
@@ -82,12 +93,22 @@ export const SPAWN: Vec = { x: 10.5 * TILE, y: 14.5 * TILE };
 const saveSchema = z.object({
   version: z.literal(2),
   name: z.string().min(1).max(24),
-  area: z.enum(['forest', 'village', 'wilderness']),
+  area: z.enum(['forest', 'village', 'wilderness', 'cave']),
   position: vecSchema,
-  health: z.number().min(0).max(120),
-  stamina: z.number().min(0).max(140),
+  health: z.number().min(0).max(200),
+  stamina: z.number().min(0).max(200),
   inventory: bagSchema,
-  tools: z.object({ axe: z.boolean(), pickaxe: z.boolean(), backpack: z.boolean() }),
+  tools: z.object({
+    axe: z.boolean(),
+    pickaxe: z.boolean(),
+    backpack: z.boolean(),
+    sword: z.boolean().default(false),
+    ironSword: z.boolean().default(false),
+    armor: z.boolean().default(false),
+    lantern: z.boolean().default(false),
+  }),
+  adventure: adventureSchema.default(() => newAdventure()),
+  pulse: pulseSchema.default(() => newPulse()),
   buildings: z.object({
     shelter: z.number().int().min(0).max(3),
     campfire: z.number().int().min(0).max(3),
@@ -98,7 +119,7 @@ const saveSchema = z.object({
     .record(z.string().max(60), z.number().nonnegative())
     .refine((v) => Object.keys(v).length <= 500),
   treasures: z.array(z.string().max(60)).max(10),
-  visited: z.array(z.enum(['forest', 'village', 'wilderness'])).max(3),
+  visited: z.array(z.enum(['forest', 'village', 'wilderness', 'cave'])).max(4),
   xp: z.number().int().nonnegative().max(100000000),
   playSeconds: z.number().nonnegative(),
   gardenAt: z.number().nonnegative(),
@@ -139,7 +160,17 @@ export function newGame(name = 'Little explorer'): SurvivalSave {
     health: 100,
     stamina: 100,
     inventory: { ...emptyBag(), berry: 3 },
-    tools: { axe: false, pickaxe: false, backpack: false },
+    tools: {
+      axe: false,
+      pickaxe: false,
+      backpack: false,
+      sword: false,
+      ironSword: false,
+      armor: false,
+      lantern: false,
+    },
+    adventure: newAdventure(),
+    pulse: newPulse(),
     buildings: { shelter: 0, campfire: 0, chest: 0, garden: 0 },
     depleted: {},
     treasures: [],
@@ -196,7 +227,8 @@ export function rollDaily(s: SurvivalSave, date = utcDay()): SurvivalSave {
 }
 export const distance = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.y - b.y);
 export const playerLevel = (s: SurvivalSave) => Math.floor(s.xp / 250) + 1;
-export const maxHealth = (s: SurvivalSave) => 100 + (s.buildings.shelter >= 3 ? 20 : 0);
+export const maxHealth = (s: SurvivalSave) =>
+  100 + (s.buildings.shelter >= 3 ? 20 : 0) + s.adventure.skills.vitality * 15;
 export const maxStamina = (s: SurvivalSave) =>
   100 + (s.tools.backpack ? 20 : 0) + (s.buildings.shelter >= 2 ? 20 : 0);
 export const capacity = (s: SurvivalSave) =>
@@ -287,7 +319,7 @@ function makeWorld(area: Area): World {
         { x: 20 * TILE, y: 7 * TILE, w: 5 * TILE, h: 5 * TILE, kind: 'water' },
         { x: 17 * TILE, y: 11 * TILE, w: 2 * TILE, h: 2 * TILE, kind: 'thorns' },
       ],
-      exits: [{ ...p(36, 13), name: 'To the village', to: 'village', arrival: p(2, 13) }],
+      exits: [{ ...p(36, 13), name: 'To Ancient Ruins', to: 'village', arrival: p(2, 13) }],
     };
   }
   if (area === 'village') {
@@ -349,6 +381,40 @@ function makeWorld(area: Area): World {
       ],
     };
   }
+  if (area === 'cave') {
+    add('ore', [
+      [7, 8],
+      [10, 16],
+      [17, 18],
+      [26, 18],
+      [30, 10],
+      [28, 5],
+    ]);
+    add('herb', [
+      [8, 12],
+      [14, 20],
+      [24, 7],
+    ]);
+    add('berry', [
+      [4, 15],
+      [12, 18],
+    ]);
+    add('stone', [
+      [12, 7],
+      [22, 19],
+      [30, 17],
+    ]);
+    add('cache', [[32, 5]]);
+    return {
+      nodes,
+      rects: [
+        { x: 14 * TILE, y: 4 * TILE, w: 2 * TILE, h: 7 * TILE, kind: 'wall' },
+        { x: 21 * TILE, y: 16 * TILE, w: 5 * TILE, h: 2 * TILE, kind: 'water' },
+        { x: 23 * TILE, y: 6 * TILE, w: 2 * TILE, h: 2 * TILE, kind: 'thorns' },
+      ],
+      exits: [{ ...p(1, 13), name: 'To the wilderness', to: 'wilderness', arrival: p(35, 13) }],
+    };
+  }
   add('wood', [
     [8, 17],
     [11, 11],
@@ -408,13 +474,17 @@ function makeWorld(area: Area): World {
       { x: 25 * TILE, y: 12 * TILE, w: 4 * TILE, h: 2 * TILE, kind: 'thorns' },
       { x: 8 * TILE, y: 12 * TILE, w: 2 * TILE, h: 2 * TILE, kind: 'mud' },
     ],
-    exits: [{ ...p(20, 24), name: 'To the village', to: 'village', arrival: p(20, 2) }],
+    exits: [
+      { ...p(20, 24), name: 'To Ancient Ruins', to: 'village', arrival: p(20, 2) },
+      { ...p(36, 13), name: 'Enter the cave', to: 'cave', arrival: p(2, 13) },
+    ],
   };
 }
 export const WORLDS: Record<Area, World> = {
   forest: makeWorld('forest'),
   village: makeWorld('village'),
   wilderness: makeWorld('wilderness'),
+  cave: makeWorld('cave'),
 };
 export function inside(v: Vec, r: Rect, margin = 0) {
   return (
@@ -451,16 +521,21 @@ export function movePlayer(
   dt: number,
   sprint: boolean,
 ): SurvivalSave {
-  if (!dx && !dy) return s;
+  if ((!dx && !dy) || s.adventure.dead) return s;
   const norm = Math.hypot(dx, dy),
     dash = sprint && s.stamina > 2;
   const mud = WORLDS[s.area].rects.some((r) => r.kind === 'mud' && inside(s.position, r));
-  const speed = (dash ? 155 : 96) * (mud ? 0.55 : 1),
+  const speed = (s.adventure.dodgeTime > 0 ? 310 : dash ? 155 : 96) * (mud ? 0.55 : 1),
     step = Math.min(dt, 0.05) * speed;
   let { x, y } = s.position;
   if (canStand(s.area, { x: x + (dx / norm) * step, y })) x += (dx / norm) * step;
   if (canStand(s.area, { x, y: y + (dy / norm) * step })) y += (dy / norm) * step;
-  return { ...s, position: { x, y }, stamina: dash ? Math.max(0, s.stamina - 18 * dt) : s.stamina };
+  return {
+    ...s,
+    adventure: { ...s.adventure, facing: { x: dx / norm, y: dy / norm } },
+    position: { x, y },
+    stamina: dash ? Math.max(0, s.stamina - 18 * dt) : s.stamina,
+  };
 }
 /** Deterministic A* over the same collision grid used for direct movement. */
 export function findPath(area: Area, start: Vec, goal: Vec): Vec[] {
@@ -557,11 +632,12 @@ export function gather(s: SurvivalSave, nodeId?: string): Result {
   const cost = node.kind === 'wood' || node.kind === 'stone' || node.kind === 'ore' ? 8 : 4;
   if (s.stamina < cost) return result(s, 'Catch your breath or eat berries to restore stamina.');
   const amount =
-    (node.kind === 'wood' && s.tools.axe) || (node.kind === 'stone' && s.tools.pickaxe)
+    s.adventure.skills.foraging +
+    ((node.kind === 'wood' && s.tools.axe) || (node.kind === 'stone' && s.tools.pickaxe)
       ? 4
       : node.kind === 'ore'
         ? 2
-        : 2;
+        : 2);
   if (bagCount(s) + amount > capacity(s))
     return result(s, 'Your bag is full. Use supplies, craft, or build a storage chest.');
   return result(
@@ -579,6 +655,34 @@ export function gather(s: SurvivalSave, nodeId?: string): Result {
   );
 }
 export const RECIPES = [
+  {
+    id: 'sword',
+    name: 'Bramble blade',
+    detail: 'Equip a blade: 25 damage per swing.',
+    cost: { wood: 4, stone: 2, fiber: 2 },
+    tool: 'sword',
+  },
+  {
+    id: 'ironSword',
+    name: 'Iron fang',
+    detail: 'Equip an iron blade: 42 damage per swing.',
+    cost: { ore: 6, plank: 2, fiber: 2 },
+    tool: 'ironSword',
+  },
+  {
+    id: 'armor',
+    name: 'Bark armor',
+    detail: 'Wear armor to absorb 35% of incoming combat damage.',
+    cost: { fiber: 8, wood: 4, ore: 2 },
+    tool: 'armor',
+  },
+  {
+    id: 'lantern',
+    name: 'Glowroot lantern',
+    detail: 'Opens the Underground Cave at level 3.',
+    cost: { wood: 4, herb: 2, fiber: 2 },
+    tool: 'lantern',
+  },
   {
     id: 'axe',
     name: 'Woodland axe',
@@ -630,7 +734,7 @@ export const RECIPES = [
   name: string;
   detail: string;
   cost: Cost;
-  tool?: 'axe' | 'pickaxe' | 'backpack';
+  tool?: keyof SurvivalSave['tools'];
   output?: Item;
   amount?: number;
   workbench?: boolean;
@@ -658,6 +762,11 @@ export function craft(s: SurvivalSave, id: string): Result {
       ...s,
       inventory,
       tools,
+      adventure: {
+        ...s.adventure,
+        weapon: id === 'sword' ? 'sword' : id === 'ironSword' ? 'ironSword' : s.adventure.weapon,
+        armored: id === 'armor' ? true : s.adventure.armored,
+      },
       xp: s.xp + 15,
       stats: { ...s.stats, crafted: s.stats.crafted + 1 },
       daily: { ...s.daily, crafted: s.daily.crafted + 1 },
@@ -762,12 +871,22 @@ export function consume(s: SurvivalSave, item: Item): Result {
   };
   const effect = effects[item];
   if (!effect) return result(s, 'Use this material in crafting or building.');
-  if (s.health >= maxHealth(s) && (effect[1] === 0 || s.stamina >= maxStamina(s)))
+  if (
+    s.health >= maxHealth(s) &&
+    (effect[1] === 0 || (s.stamina >= maxStamina(s) && s.adventure.hunger >= 100))
+  )
     return result(s, 'Already fully restored. Your supplies were kept.');
   return result(
     {
       ...s,
       inventory: { ...s.inventory, [item]: s.inventory[item] - 1 },
+      adventure: {
+        ...s.adventure,
+        hunger: Math.min(
+          100,
+          s.adventure.hunger + (item === 'berry' ? 18 : item === 'mix' ? 50 : 0),
+        ),
+      },
       health: Math.min(maxHealth(s), s.health + effect[0]),
       stamina: Math.min(maxStamina(s), s.stamina + effect[1]),
     },
@@ -788,7 +907,12 @@ export function rest(s: SurvivalSave): Result {
     return result(s, 'Walk back to the burrow clearing to rest.');
   if (!s.buildings.shelter) return result(s, 'Build a burrow shelter to rest here.');
   return result(
-    { ...s, health: maxHealth(s), stamina: maxStamina(s) },
+    {
+      ...s,
+      health: maxHealth(s),
+      stamina: maxStamina(s),
+      adventure: { ...s.adventure, hunger: Math.max(s.adventure.hunger, 50) },
+    },
     'Rested at home. Health and stamina restored.',
     true,
   );
@@ -818,6 +942,8 @@ export function harvest(s: SurvivalSave): Result {
 export function travel(s: SurvivalSave, exit: Exit): Result {
   if (!WORLDS[s.area].exits.includes(exit) || distance(s.position, exit) > 65)
     return result(s, 'Walk to the trail marker to travel.');
+  const locked = areaLock(s, exit.to);
+  if (locked && !s.visited.includes(exit.to)) return result(s, locked);
   const first = !s.visited.includes(exit.to);
   return result(
     {
@@ -839,19 +965,11 @@ export function tick(s: SurvivalSave, dt: number, moving = false, sprinting = fa
       ? s.buildings.campfire * 2
       : 0;
   const health = Math.min(maxHealth(s), s.health + ((thorns ? -12 : 0) + fire) * dt);
+  if (s.adventure.dead) return result(s, '');
   if (health <= 0)
     return result(
-      {
-        ...s,
-        area: 'forest',
-        position: { ...SPAWN },
-        health: maxHealth(s),
-        stamina: maxStamina(s),
-        xp: Math.max(0, s.xp - 20),
-        playSeconds: s.playSeconds + dt,
-      },
-      `You fainted. Back at the burrow with your supplies. Lost ${Math.min(20, s.xp)} XP.`,
-      true,
+      { ...s, health: 0, adventure: { ...s.adventure, dead: true } },
+      'Your adventure needs a little breather. Recover at the burrow.',
     );
   return result(
     {
@@ -939,11 +1057,11 @@ export function survivalAchievements(s: SurvivalSave) {
       detail: 'Build your first structure.',
       earned: s.stats.built >= 1,
     },
-    { name: 'Beyond the trees', detail: 'Visit all three areas.', earned: s.visited.length === 3 },
+    { name: 'Beyond the trees', detail: 'Explore three wild areas.', earned: s.visited.length >= 3 },
     {
       name: 'Hidden in plain sight',
-      detail: 'Find all three hidden caches.',
-      earned: s.treasures.length === 3,
+      detail: 'Find three hidden supply caches.',
+      earned: s.treasures.length >= 3,
     },
     { name: 'Happy cheeks', detail: 'Finish a foraging run.', earned: s.stats.runs > 0 },
     {
@@ -952,4 +1070,12 @@ export function survivalAchievements(s: SurvivalSave) {
       earned: Object.values(s.buildings).some((v) => v === 3),
     },
   ];
+}
+
+export function areaLock(s: SurvivalSave, area: Area): string | null {
+  if (area === 'village' && playerLevel(s) < 2)
+    return 'Ancient Ruins unlock at level 2. Gather, craft and claim quests to gain XP.';
+  if (area === 'cave' && (playerLevel(s) < 3 || !s.tools.lantern || !s.tools.pickaxe))
+    return 'The cave needs level 3, a pickaxe and a glowroot lantern.';
+  return null;
 }
